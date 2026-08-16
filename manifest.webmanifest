@@ -1,8 +1,8 @@
 {
-  "name": "Controle de estoque e movimentações — Offline",
-  "short_name": "Controle BAGS",
+  "name": "Controle de estoque e movimentações",
+  "short_name": "Controle Estoque",
   "id": "./",
-  "description": "Controle offline de estoque, consumo, lotes, descarte e Flotamil.",
+  "description": "Controle de estoque, consumo, lotes, descarte e Flotamil com funcionamento offline.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

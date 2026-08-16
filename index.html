@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.16-offline">
+<meta name="app-version" content="2026.08.15-pwa-mobile">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Controle BAGS">
+<meta name="apple-mobile-web-app-title" content="Controle de estoque e movimentações">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>Controle de estoque e movimentações — Offline</title>
+<title>Controle de estoque e movimentações</title>
 <style>
 :root{--bg:#f3f6fa;--card:#fff;--text:#172334;--muted:#64748b;--primary:#1769aa;--primary2:#082f52;--green:#16834b;--red:#c83d3d;--yellow:#b7791f;--border:#dce5ed;--shadow:0 8px 26px rgba(15,42,66,.08)}
 *{box-sizing:border-box}
@@ -60,7 +60,7 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 .empty{text-align:center;color:var(--muted);padding:25px}.small{font-size:12px;color:var(--muted)}
 .stock-ok{color:var(--green);font-weight:800}.stock-low{color:var(--red);font-weight:800}
 .lot-card{padding:11px;background:#f7f9fb;border-radius:8px;margin-bottom:8px}.lot-card strong{display:block}
-#loginScreen{display:none!important}
+#loginScreen{position:fixed;inset:0;background:#f5f7fb;display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .login-box{background:#fff;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12);padding:28px;max-width:460px;width:100%}
 .login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}
 #userBar{position:fixed;right:18px;top:78px;z-index:1000;background:#fff;padding:6px 10px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.12);font-size:12px}
@@ -93,7 +93,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <div id="loginScreen">
   <div class="login-box">
-    <h2>🔐 Controle de BAGS</h2>
+    <h2>🔐 Controle de estoque e movimentações</h2>
     <p>Entre para acessar o estoque compartilhado.</p>
     <form id="loginForm">
       <input id="loginEmail" type="email" placeholder="E-mail" required>
@@ -107,7 +107,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <header>
   <div class="header">
     <div>
-      <h1>📦 Rastreabilidade de BAGS</h1>
+      <h1>📦 Controle de estoque e movimentações</h1>
       <div class="sub">Estoque • Entradas • Consumos • Lotes • Rastreabilidade</div>
     </div>
     <div id="clock" class="small" style="color:#fff"></div>
@@ -115,8 +115,9 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </header>
 
 <div id="userBar" style="display:none">
-  <strong id="userEmail">Modo offline</strong>
+  Usuário: <strong id="userEmail"></strong>
   <button id="installAppButton" class="btn primary" type="button" onclick="installApp()">Instalar app</button>
+  <button class="btn light" type="button" onclick="logout()">Sair</button>
 </div>
 
 <div class="container">
@@ -303,14 +304,14 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </tbody></table></div>
 </section>
 
-<footer>Controle de BAGS — Flotamil com registro, baixa e impressão direta automática</footer>
+<footer>Controle de estoque e movimentações — Flotamil com registro, baixa e impressão direta automática</footer>
 </div>
 
 <script src="./offline-assets/tesseract.min.js"></script>
 <script>
 'use strict';
 
-const STORAGE_KEY='controle_bags_offline_v1';
+const STORAGE_KEY='controle_bags_offline_layout_online_v1';
 
 const CONFIG = {
   Farinheira:{type:'Big Bag 1.300 kg',code:'1437'},
@@ -321,6 +322,7 @@ let currentUser = {id:'offline',email:'Dados salvos neste aparelho'};
 let db = {movements:[],productLots:[]};
 let docks = {records:[]};
 let deferredInstallPrompt = null;
+let tesseractLoadPromise = null;
 let localNextId=Date.now();
 
 const $ = id => document.getElementById(id);
@@ -330,6 +332,11 @@ function setReaderStatus(mode,message,state=''){
   if(!el)return;
   el.className=`reader-status ${state}`.trim();
   el.textContent=message;
+}
+
+function loadTesseractOnDemand(){
+  if(window.Tesseract)return Promise.resolve(window.Tesseract);
+  return Promise.reject(new Error('Leitor de etiquetas indisponível. Atualize a página e tente novamente.'));
 }
 
 function extractBagLabel(text){
@@ -361,12 +368,10 @@ function applyBagLabel(mode,{code,lot}){
 async function readBagLabel(event,mode){
   const input=event.target,file=input.files?.[0];
   if(!file)return;
-  if(!window.Tesseract){
-    setReaderStatus(mode,'Não foi possível carregar o leitor. Verifique a internet e tente novamente.','error');
-    input.value='';return;
-  }
-  setReaderStatus(mode,'Lendo a etiqueta… mantenha esta tela aberta.','busy');
+  setReaderStatus(mode,'Preparando o leitor de etiquetas…','busy');
   try{
+    await loadTesseractOnDemand();
+    setReaderStatus(mode,'Lendo a etiqueta… mantenha esta tela aberta.','busy');
     const result=await Tesseract.recognize(file,'por+eng',{rotateAuto:true,workerPath:'./offline-assets/worker.min.js',corePath:'./offline-assets/tesseract-core',langPath:'./offline-assets/lang'});
     const data=extractBagLabel(result?.data?.text);
     const sector=applyBagLabel(mode,data);
@@ -402,15 +407,12 @@ function showApp(){
   $('userEmail').textContent=currentUser?.email || '';
 }
 
-function saveLocal(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,db,docks,saved_at:new Date().toISOString()}));
-}
-
+function saveLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,db,docks,saved_at:new Date().toISOString()}));}
 function loadLocal(){
   try{
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
-    if(saved?.db){db={movements:saved.db.movements||[],productLots:saved.db.productLots||[]};}
-    if(saved?.docks){docks={records:saved.docks.records||[]};}
+    if(saved?.db)db={movements:saved.db.movements||[],productLots:saved.db.productLots||[]};
+    if(saved?.docks)docks={records:saved.docks.records||[]};
     const ids=[...db.movements,...db.productLots,...docks.records].map(x=>Number(x.id)||0);
     localNextId=Math.max(Date.now(),...ids)+1;
   }catch(error){console.warn('Dados locais inválidos:',error);}
@@ -750,18 +752,22 @@ function exportProductLotCSV(){
 
 function updateAll(){
   updateDashboard();
-  renderStock();
-  syncConsumption();
-  renderReport();
-  renderTrace();
-  renderDockHistory();
-  renderProductLotHistory();
-  renderUnifiedAnalysis();
-  renderLossHistory();
-  renderFlotamilBalance();
-  renderFIFO();
+  const active=document.querySelector('.page.active')?.id||'dashboard';
+  if(active!=='dashboard')renderPage(active);
+}
 
- renderDockCards();
+function renderPage(page){
+  switch(page){
+    case 'analiseSetor':renderUnifiedAnalysis();break;
+    case 'docas':renderDockCards();renderDockHistory();break;
+    case 'estoque':renderStock();break;
+    case 'consumo':syncConsumption();break;
+    case 'loteProduto':renderProductLotHistory();break;
+    case 'rastreio':renderTrace();break;
+    case 'fifo':renderFIFO();break;
+    case 'perdas':renderLossHistory();renderFlotamilBalance();break;
+    case 'relatorios':renderReport();break;
+  }
 }
 
 function friendlyError(err){
@@ -903,7 +909,7 @@ $('nav').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
   b.classList.add('active');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   $(b.dataset.page).classList.add('active');
-  updateAll();
+  renderPage(b.dataset.page);
 }));
 
 $('entryForm').addEventListener('submit',async e=>{
