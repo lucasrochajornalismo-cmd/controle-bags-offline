@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.15-pwa-mobile">
+<meta name="app-version" content="2026.08.16-offline">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Controle de estoque e movimentações">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>Controle de estoque e movimentações</title>
+<title>Controle de estoque e movimentações — Offline</title>
 <style>
 :root{--bg:#f3f6fa;--card:#fff;--text:#172334;--muted:#64748b;--primary:#1769aa;--primary2:#082f52;--green:#16834b;--red:#c83d3d;--yellow:#b7791f;--border:#dce5ed;--shadow:0 8px 26px rgba(15,42,66,.08)}
 *{box-sizing:border-box}
@@ -60,33 +61,25 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 .empty{text-align:center;color:var(--muted);padding:25px}.small{font-size:12px;color:var(--muted)}
 .stock-ok{color:var(--green);font-weight:800}.stock-low{color:var(--red);font-weight:800}
 .lot-card{padding:11px;background:#f7f9fb;border-radius:8px;margin-bottom:8px}.lot-card strong{display:block}
-#loginScreen{position:fixed;inset:0;background:#f5f7fb;display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+#loginScreen{display:none!important}
 .login-box{background:#fff;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12);padding:28px;max-width:460px;width:100%}
 .login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}
-#userBar{position:fixed;right:18px;top:78px;z-index:1000;background:#fff;padding:6px 10px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.12);font-size:12px}
-#userBar button{margin-left:8px}
+.header-account{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:0 0 auto}
+#userBar{display:none;align-items:center;gap:7px;max-width:210px;background:rgba(255,255,255,.15);color:#fff;padding:5px 6px 5px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;box-shadow:0 3px 12px rgba(0,0,0,.12);font-size:12px;white-space:nowrap}
+#userBar strong{max-width:105px;overflow:hidden;text-overflow:ellipsis}
+#userBar button{margin:0;padding:6px 10px;border-radius:99px;font-size:11px}
+#installApp{display:none;background:#fff;color:var(--primary2);padding:7px 12px;font-size:11px;box-shadow:0 3px 12px rgba(0,0,0,.12)}
 #loginMsg{min-height:18px;margin-bottom:0}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 @media(max-width:900px){.cards,.dashboard-cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.cards{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.container{padding:0 9px}}
+@media(max-width:560px){header{padding:14px 12px}.header{align-items:flex-start;gap:8px}h1{font-size:21px}.sub{font-size:11px}.header-account{gap:5px}#clock{font-size:10px!important}#userBar{max-width:140px;padding-left:8px;gap:5px}#userBar strong{max-width:70px}#userBar button{padding:5px 8px}}
 @media(max-width:560px){.sent-fields{grid-template-columns:1fr}}
 .fifo-first{border:2px solid var(--green);background:#edf9f2;border-radius:12px;padding:16px;margin-bottom:14px}.fifo-row{display:grid;grid-template-columns:70px 1fr 120px 120px 120px;gap:10px;align-items:center;padding:12px;border-bottom:1px solid var(--border)}.fifo-priority{font-size:22px;font-weight:900}.fifo-tag{display:inline-block;padding:5px 8px;border-radius:99px;background:#dff5e9;color:#11683d;font-size:11px;font-weight:800}.fifo-next{background:#f7f9fb;border-radius:10px;margin-bottom:8px}.fifo-muted{color:var(--muted);font-size:12px}@media(max-width:800px){.fifo-row{grid-template-columns:55px 1fr 1fr}.fifo-row>*:nth-child(n+4){grid-column:auto}}
 .hint{font-size:11px;color:#657482;margin-top:4px}.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.compare-card{border:1px solid var(--border);border-radius:12px;padding:16px;background:#f8fafc}.compare-card.today-card{border:2px solid var(--primary)}.compare-title{font-weight:800;font-size:16px;margin-bottom:12px}.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px}.metric span{display:block;font-size:11px;color:var(--muted)}.metric strong{display:block;font-size:20px;margin-top:4px}@media(max-width:700px){.compare-grid{grid-template-columns:1fr}.metric-row{grid-template-columns:1fr 1fr}}
 .flotamil-box{grid-column:1/-1;display:none;background:#eef8f2;border:1px solid #bfdfca;border-radius:14px;padding:16px}.pallet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px}.total-kg{margin-top:14px;background:linear-gradient(135deg,#11683d,#16834b);color:#fff;border-radius:13px;padding:16px}.total-kg .label{color:#dff5e9}.total-kg .value{font-size:34px}
 .send-check{display:flex;align-items:center;gap:10px;margin-top:16px;padding:13px;background:#fff;border:1px solid #bfdfca;border-radius:10px;font-weight:800}.send-check input{width:20px;height:20px;accent-color:var(--green)}.sent-fields{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .label-reader{grid-column:1/-1;border:1px dashed #8bb8d8;background:#f2f8fd;border-radius:12px;padding:13px}.label-reader .actions{margin-top:0}.reader-status{margin-top:8px;font-size:12px;color:var(--muted)}.reader-status.busy{color:var(--primary);font-weight:700}.reader-status.ok{color:var(--green);font-weight:700}.reader-status.error{color:var(--red);font-weight:700}
-</style>
-<style>
-/* Área de usuário compacta para GitHub Pages */
-.user-area, .user-info, .account-area, .top-user-area {
-  max-width: 180px !important;
-  padding: 4px 8px !important;
-  gap: 6px !important;
-  font-size: 12px !important;
-}
-.user-area .email, .user-info .email, .account-area .email {
-  display: none !important;
-}
 </style>
 </head>
 <body>
@@ -108,17 +101,18 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
   <div class="header">
     <div>
       <h1>📦 Controle de estoque e movimentações</h1>
-      <div class="sub">Estoque • Entradas • Consumos • Lotes • Rastreabilidade</div>
+      <div class="sub">PROJETO PILOTO • Estoque • Entradas • Consumos • Lotes • Rastreabilidade</div>
     </div>
-    <div id="clock" class="small" style="color:#fff"></div>
+    <div class="header-account">
+      <div id="clock" class="small" style="color:#fff"></div>
+      <button id="installApp" class="btn" type="button">⬇ Instalar aplicativo</button>
+      <div id="userBar">
+        <span aria-hidden="true">💾</span>
+        <strong id="userName">Modo offline</strong>
+      </div>
+    </div>
   </div>
 </header>
-
-<div id="userBar" style="display:none">
-  Usuário: <strong id="userEmail"></strong>
-  <button id="installAppButton" class="btn primary" type="button" onclick="installApp()">Instalar app</button>
-  <button class="btn light" type="button" onclick="logout()">Sair</button>
-</div>
 
 <div class="container">
 <nav id="nav">
@@ -307,23 +301,20 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <footer>Controle de estoque e movimentações — Flotamil com registro, baixa e impressão direta automática</footer>
 </div>
 
-<script src="./offline-assets/tesseract.min.js"></script>
 <script>
 'use strict';
 
-const STORAGE_KEY='controle_bags_offline_layout_online_v1';
+const STORAGE_KEY = 'controle_estoque_movimentacoes_offline_v1';
 
 const CONFIG = {
   Farinheira:{type:'Big Bag 1.300 kg',code:'1437'},
   Colorífico:{type:'Big Bag 1.250 kg',code:'1436'}
 };
 
-let currentUser = {id:'offline',email:'Dados salvos neste aparelho'};
 let db = {movements:[],productLots:[]};
 let docks = {records:[]};
-let deferredInstallPrompt = null;
 let tesseractLoadPromise = null;
-let localNextId=Date.now();
+let nextLocalId = 1;
 
 const $ = id => document.getElementById(id);
 
@@ -336,7 +327,16 @@ function setReaderStatus(mode,message,state=''){
 
 function loadTesseractOnDemand(){
   if(window.Tesseract)return Promise.resolve(window.Tesseract);
-  return Promise.reject(new Error('Leitor de etiquetas indisponível. Atualize a página e tente novamente.'));
+  if(tesseractLoadPromise)return tesseractLoadPromise;
+  tesseractLoadPromise=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+    script.async=true;
+    script.onload=()=>window.Tesseract?resolve(window.Tesseract):reject(new Error('Leitor de etiquetas indisponível.'));
+    script.onerror=()=>reject(new Error('Não foi possível baixar o leitor de etiquetas.'));
+    document.head.appendChild(script);
+  }).catch(error=>{tesseractLoadPromise=null;throw error;});
+  return tesseractLoadPromise;
 }
 
 function extractBagLabel(text){
@@ -372,7 +372,7 @@ async function readBagLabel(event,mode){
   try{
     await loadTesseractOnDemand();
     setReaderStatus(mode,'Lendo a etiqueta… mantenha esta tela aberta.','busy');
-    const result=await Tesseract.recognize(file,'por+eng',{rotateAuto:true,workerPath:'./offline-assets/worker.min.js',corePath:'./offline-assets/tesseract-core',langPath:'./offline-assets/lang'});
+    const result=await Tesseract.recognize(file,'por+eng',{rotateAuto:true});
     const data=extractBagLabel(result?.data?.text);
     const sector=applyBagLabel(mode,data);
     setReaderStatus(mode,`Leitura concluída: código ${data.code} · ${sector} · lote ${data.lot}. Confira os campos antes de salvar.`,'ok');
@@ -394,54 +394,46 @@ function setToday(id){ const el=$(id); if(el) el.value=today(); }
 function fmt(d){ if(!d)return ''; const [y,m,day]=String(d).slice(0,10).split('-'); return day+'/'+m+'/'+y; }
 function esc(s){ return String(s ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 
-function showLogin(message='',error=false){
-  $('loginScreen').style.display='flex';
-  $('userBar').style.display='none';
-  $('loginMsg').style.color=error?'#b91c1c':'#b45309';
-  $('loginMsg').textContent=message;
-}
-
 function showApp(){
   $('loginScreen').style.display='none';
-  $('userBar').style.display='block';
-  $('userEmail').textContent=currentUser?.email || '';
+  $('userBar').style.display='flex';
+  $('userName').textContent='Modo offline';
 }
 
-function saveLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,db,docks,saved_at:new Date().toISOString()}));}
+function saveLocal(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({db,docks,nextLocalId}));
+}
+
 function loadLocal(){
   try{
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
-    if(saved?.db)db={movements:saved.db.movements||[],productLots:saved.db.productLots||[]};
-    if(saved?.docks)docks={records:saved.docks.records||[]};
+    if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db=saved.db;
+    if(saved?.docks&&Array.isArray(saved.docks.records)) docks=saved.docks;
     const ids=[...db.movements,...db.productLots,...docks.records].map(x=>Number(x.id)||0);
-    localNextId=Math.max(Date.now(),...ids)+1;
+    nextLocalId=Math.max(Number(saved?.nextLocalId)||1,...ids)+1;
   }catch(error){console.warn('Dados locais inválidos:',error);}
   updateAll();
-}
-
-async function loadCloud(){
-  loadLocal();
   return true;
 }
 
 async function addMovement(m){
-  db.movements.push({...m,id:localNextId++,created_by:'offline',created_at:new Date().toISOString()});
+  db.movements.push({...m,id:nextLocalId++,created_at:new Date().toISOString()});
   saveLocal();updateAll();
 }
 
 async function addMovements(list){
   if(!list.length) return;
-  db.movements.push(...list.map(m=>({...m,id:localNextId++,created_by:'offline',created_at:new Date().toISOString()})));
+  db.movements.push(...list.map(m=>({...m,id:nextLocalId++,created_at:new Date().toISOString()})));
   saveLocal();updateAll();
 }
 
 async function addDock(m){
-  docks.records.push({...m,id:localNextId++,created_by:'offline',created_at:new Date().toISOString()});
+  docks.records.push({...m,id:nextLocalId++,created_at:new Date().toISOString()});
   saveLocal();updateAll();
 }
 
 async function addProductLot(x){
-  db.productLots.push({...x,id:localNextId++,created_by:'offline',created_at:new Date().toISOString()});
+  db.productLots.push({...x,id:nextLocalId++,created_at:new Date().toISOString()});
   saveLocal();updateAll();
 }
 
@@ -772,11 +764,7 @@ function renderPage(page){
 
 function friendlyError(err){
   const msg=err?.message||String(err||'Erro desconhecido');
-  if(/movements_sector_check/i.test(msg)) return 'O setor Farinha para o Flotamil ainda não foi liberado no Supabase. Execute a alteração da restrição movements_sector_check no SQL Editor e atualize esta página.';
-  if(/schema cache/i.test(msg)) return 'O banco ainda não reconheceu a estrutura usada pelo aplicativo. Atualize a página e confirme se o SQL foi executado no projeto correto.';
-  if(/Failed to fetch/i.test(msg)) return 'Não foi possível conectar ao Supabase. Verifique a internet, a URL do projeto e se o projeto está ativo.';
-  if(/JWT issued at future/i.test(msg)) return 'O relógio do dispositivo está adiantado em relação ao servidor. Ajuste data, hora e fuso horário automaticamente e tente novamente.';
-  if(/JWT expired|Invalid JWT|JWT/i.test(msg)) return 'A sessão de acesso expirou ou ficou inválida. Entre novamente no aplicativo.';
+  if(/quota|storage/i.test(msg)) return 'Não foi possível salvar no aparelho. Exporte um backup e libere espaço no navegador.';
   return msg;
 }
 
@@ -887,11 +875,11 @@ async function restoreBackup(ev){
     if(!Array.isArray(x.movements)||!Array.isArray(x.productLots||[])||!Array.isArray(x.docks||[])) throw new Error('Estrutura do backup inválida.');
     if(!confirm('Restaurar este backup substituirá os lançamentos salvos neste aparelho. Um backup automático dos dados atuais será baixado antes da restauração. Continuar?'))return;
     downloadBackup('backup_antes_da_restauracao');
-
-    db={movements:x.movements||[],productLots:x.productLots||[]};
-    docks={records:x.docks||[]};
-    const ids=[...db.movements,...db.productLots,...docks.records].map(v=>Number(v.id)||0);
-    localNextId=Math.max(Date.now(),...ids)+1;saveLocal();updateAll();
+    nextLocalId=1;
+    db.movements=x.movements.map(m=>({...m,id:nextLocalId++}));
+    db.productLots=(x.productLots||[]).map(m=>({...m,id:nextLocalId++}));
+    docks.records=(x.docks||[]).map(m=>({...m,id:nextLocalId++}));
+    saveLocal();updateAll();
     alert('Backup restaurado com sucesso.');
   }catch(e){alert('Erro ao restaurar backup: '+friendlyError(e));}
   finally{ev.target.value='';}
@@ -900,7 +888,7 @@ async function restoreBackup(ev){
 async function clearAll(){
   if(!confirm('Apagar todos os lançamentos? O estoque ficará zerado até que novas entradas sejam registradas.'))return;
   try{
-    db={movements:[],productLots:[]};docks={records:[]};saveLocal();updateAll();alert('Lançamentos apagados.');
+    db={movements:[],productLots:[]};docks={records:[]};nextLocalId=1;saveLocal();updateAll();alert('Lançamentos apagados.');
   }catch(e){alert('Erro ao apagar: '+friendlyError(e));}
 }
 
@@ -1007,24 +995,6 @@ $('productLotForm').addEventListener('submit',async e=>{
   }catch(err){alert('Erro ao registrar lote: '+friendlyError(err));}
 });
 
-$('loginForm').addEventListener('submit',e=>e.preventDefault());
-function logout(){alert('Esta é a versão offline. Os dados permanecem salvos somente neste aparelho.');}
-
-window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();deferredInstallPrompt=event;
-  const button=$('installAppButton');if(button)button.style.display='inline-block';
-});
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;const button=$('installAppButton');if(button)button.style.display='none';
-});
-async function installApp(){
-  if(deferredInstallPrompt){
-    deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;return;
-  }
-  const isiPhone=/iphone|ipad|ipod/i.test(navigator.userAgent);
-  alert(isiPhone?'No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.':'No menu do navegador, escolha Instalar aplicativo ou Adicionar à tela inicial.');
-}
-
 async function boot(){
   setToday('dDate');
   setToday('cDate');
@@ -1035,16 +1005,35 @@ async function boot(){
   syncDockType();
   syncLossType();
   syncEntryType();
-  updateAll();
-  if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true){$('installAppButton').style.display='none';}
-
-  showApp();loadLocal();
+  showApp();
+  loadLocal();
 }
 
 $('clock').textContent=new Date().toLocaleString('pt-BR');
 setInterval(()=>$('clock').textContent=new Date().toLocaleString('pt-BR'),1000);
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(error=>console.warn('Service worker:',error)));}
 boot();
+
+let deferredInstallPrompt=null;
+const installButton=$('installApp');
+window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();
+  deferredInstallPrompt=event;
+  installButton.style.display='inline-block';
+});
+installButton.addEventListener('click',async()=>{
+  if(!deferredInstallPrompt)return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt=null;
+  installButton.style.display='none';
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  installButton.style.display='none';
+});
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(err=>console.warn('Serviço offline não registrado:',err)));
+}
 </script>
 </body>
 </html>
