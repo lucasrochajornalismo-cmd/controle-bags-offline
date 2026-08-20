@@ -153,7 +153,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <section id="estoque" class="page">
 <div class="panel"><h2>➕ Entrada de BAGS no estoque</h2>
 <div class="info">Registre aqui as entradas de novos Big Bags. A entrada altera automaticamente o saldo do estoque e fica vinculada ao lote informado.</div>
-<div id="entryDockComparison" class="dock-compare pending">Informe a data e o setor para comparar Entrada e Docas.</div>
+<div id="entryDockComparison" class="dock-compare pending">Informe a data e o setor para comparar a Entrada com as Docas do dia anterior.</div>
 <form id="entryForm"><div class="form-grid">
 <div class="label-reader"><div class="actions"><label class="btn primary">📷 Ler etiqueta<input type="file" accept="image/*" capture="environment" hidden onchange="readBagLabel(event,'entry')"></label></div><div id="entryReaderStatus" class="reader-status">Fotografe a etiqueta para preencher código, setor e lote.</div></div>
 <div class="field"><label>Data *</label><input type="date" id="eDate" required></div>
@@ -193,7 +193,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </div>
 <div class="panel"><h2>🚚 Docas — lançamento manual diário</h2>
 <div class="info">O estoque das docas é um controle separado do estoque principal. O lançamento é manual e diário e <strong>não altera</strong> o saldo do Estoque. O sistema mantém o histórico de todos os lançamentos realizados.</div>
-<div id="dockEntryComparison" class="dock-compare pending">Informe a data e o setor para comparar Docas e Entrada.</div>
+<div id="dockEntryComparison" class="dock-compare pending">Informe a data e o setor para comparar as Docas com a Entrada do dia seguinte.</div>
 <form id="dockForm"><div class="form-grid">
 <div class="field"><label>Data *</label><input type="date" id="dDate" required></div>
 <div class="field"><label>Setor *</label><select id="dSector" onchange="syncDockType()" required><option>Farinheira</option><option>Colorífico</option></select></div>
@@ -472,32 +472,40 @@ function latestDock(date,sector){
     .sort((a,b)=>Number(b.id)-Number(a.id))[0]||null;
 }
 
+function addDays(date,amount){
+  if(!date)return '';
+  const [y,m,d]=String(date).slice(0,10).split('-').map(Number);
+  const value=new Date(y,m-1,d+amount);
+  return `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;
+}
+
 function entryTotalForDay(date,sector,excludeId=null){
   return db.movements.filter(m=>m.kind==='ENTRADA'&&m.date===date&&m.sector===sector&&m.id!==excludeId)
     .reduce((sum,m)=>sum+Number(m.qty||0),0);
 }
 
 function dockEntryComparison(date,sector,extraEntry=0){
-  const dock=latestDock(date,sector);
+  const dockDate=addDays(date,-1);
+  const dock=latestDock(dockDate,sector);
   const entries=entryTotalForDay(date,sector)+Number(extraEntry||0);
-  if(!date||!sector)return {status:'pending',entries,dockQty:null,diff:null,message:'Informe a data e o setor para realizar a conferência.'};
-  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(date)}.`};
+  if(!date||!sector)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:'Informe a data e o setor para realizar a conferência.'};
+  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(dockDate)} (dia anterior à Entrada).`};
   const dockQty=Number(dock.qty||0),diff=entries-dockQty;
-  if(diff===0)return {status:'ok',entries,dockQty,diff,message:'Conferência correta: Entrada e Docas estão iguais.'};
-  if(diff<0)return {status:'less',entries,dockQty,diff,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da contagem das Docas. Algo pode estar errado, mas essa situação pode acontecer e deve ser conferida.`};
-  return {status:'more',entries,dockQty,diff,message:`A Entrada está ${diff} BAG(s) acima da contagem das Docas. Verifique e informe o motivo da entrada a mais.`};
+  if(diff===0)return {status:'ok',entries,dockQty,diff,entryDate:date,dockDate,message:'Conferência correta: a Entrada está igual às Docas do dia anterior.'};
+  if(diff<0)return {status:'less',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da contagem das Docas do dia anterior. Algo pode estar errado, mas essa situação pode acontecer e deve ser conferida.`};
+  return {status:'more',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${diff} BAG(s) acima da contagem das Docas do dia anterior. Verifique e informe o motivo da entrada a mais.`};
 }
 
 function renderDockEntryComparison(targetId,date,sector,extraEntry=0){
   const el=$(targetId);if(!el)return;
   const c=dockEntryComparison(date,sector,extraEntry);
   el.className=`dock-compare ${c.status}`;
-  el.innerHTML=`<strong>${esc(c.message)}</strong><div class="compare-values"><span>Entrada do dia: <b>${c.entries} BAG(s)</b></span><span>Docas: <b>${c.dockQty===null?'não informado':c.dockQty+' BAG(s)'}</b></span>${c.diff===null?'':`<span>Divergência: <b>${c.diff>0?'+':''}${c.diff} BAG(s)</b></span>`}</div>`;
+  el.innerHTML=`<strong>${esc(c.message)}</strong><div class="compare-values"><span>Entrada · ${c.entryDate?fmt(c.entryDate):'—'}: <b>${c.entries} BAG(s)</b></span><span>Docas · ${c.dockDate?fmt(c.dockDate):'—'}: <b>${c.dockQty===null?'não informado':c.dockQty+' BAG(s)'}</b></span>${c.diff===null?'':`<span>Divergência: <b>${c.diff>0?'+':''}${c.diff} BAG(s)</b></span>`}</div>`;
 }
 
 function refreshFormComparisons(){
   renderDockEntryComparison('entryDockComparison',$('eDate')?.value,$('eSector')?.value,Number($('eQty')?.value||0));
-  renderDockEntryComparison('dockEntryComparison',$('dDate')?.value,$('dSector')?.value);
+  renderDockEntryComparison('dockEntryComparison',addDays($('dDate')?.value,1),$('dSector')?.value);
 }
 
 function lots(sec){
@@ -952,12 +960,12 @@ $('entryForm').addEventListener('submit',async e=>{
     const comparison=dockEntryComparison(date,sec,qty);
     let note=$('eNote').value.trim();
     if(comparison.status==='less'){
-      const proceed=confirm(`${comparison.message}\n\nDocas: ${comparison.dockQty} BAG(s)\nEntrada total após este registro: ${comparison.entries} BAG(s)\nDiferença: ${Math.abs(comparison.diff)} BAG(s) a menos.\n\nDeseja registrar mesmo assim?`);
+      const proceed=confirm(`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s)\nEntrada de ${fmt(comparison.entryDate)} após este registro: ${comparison.entries} BAG(s)\nDiferença: ${Math.abs(comparison.diff)} BAG(s) a menos.\n\nDeseja registrar mesmo assim?`);
       if(!proceed)return;
       note=`Divergência Docas × Entrada: ${Math.abs(comparison.diff)} BAG(s) a menos na Entrada — conferência pendente${note?' | '+note:''}`;
     }
     if(comparison.status==='more'){
-      const reason=prompt(`${comparison.message}\n\nDocas: ${comparison.dockQty} BAG(s)\nEntrada total após este registro: ${comparison.entries} BAG(s)\nDiferença: ${comparison.diff} BAG(s) a mais.\n\nInforme o motivo da entrada a mais:`,'');
+      const reason=prompt(`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s)\nEntrada de ${fmt(comparison.entryDate)} após este registro: ${comparison.entries} BAG(s)\nDiferença: ${comparison.diff} BAG(s) a mais.\n\nInforme o motivo da entrada a mais:`,'');
       if(reason===null)return;
       if(!reason.trim())return alert('Para registrar uma Entrada superior às Docas, informe o motivo da divergência.');
       note=`Divergência Docas × Entrada: ${comparison.diff} BAG(s) a mais — Motivo: ${reason.trim()}${note?' | '+note:''}`;
@@ -979,9 +987,9 @@ $('dockForm').addEventListener('submit',async e=>{
     const m={date:$('dDate').value,sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,qty:Number($('dQty').value),responsible:$('dResponsible').value.trim(),note:$('dNote').value.trim()};
     if(!m.date||!Number.isInteger(m.qty)||m.qty<0)return alert('Informe a data e uma quantidade inteira válida.');
     await addDock(m);
-    const comparison=dockEntryComparison(m.date,sec);
+    const comparison=dockEntryComparison(addDays(m.date,1),sec);
     e.target.reset();setToday('dDate');syncDockType();
-    alert(`Lançamento das docas registrado com sucesso.\n\n${comparison.message}\nEntrada do dia: ${comparison.entries} BAG(s)\nDocas: ${comparison.dockQty} BAG(s).`);
+    alert(`Lançamento das docas registrado com sucesso.\n\n${comparison.message}\nEntrada de ${fmt(comparison.entryDate)}: ${comparison.entries} BAG(s)\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s).`);
   }catch(err){alert('Erro ao salvar nas docas: '+friendlyError(err));}
 });
 
