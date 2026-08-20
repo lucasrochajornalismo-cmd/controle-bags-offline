@@ -51,6 +51,7 @@ textarea{min-height:75px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top
 .fixed{background:#eef5fb;border:1px solid #cddfed;border-radius:8px;padding:10px;font-weight:700}
 .alert{padding:12px;border-radius:8px;background:#fff4d6;color:#77500c;margin-bottom:14px;font-size:13px}
 .info{padding:12px;border-radius:8px;background:#eaf3fb;color:#174d78;margin-bottom:14px;font-size:13px}
+.dock-compare{padding:14px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border);font-size:13px}.dock-compare.ok{background:#e8f7ee;color:#11683d;border-color:#b9dfc8}.dock-compare.less{background:#fff4d6;color:#77500c;border-color:#ead18a}.dock-compare.more{background:#fde8e8;color:#922f2f;border-color:#efb9b9}.dock-compare.pending{background:#eef3f7;color:#536575}.dock-compare strong{font-size:15px}.dock-compare .compare-values{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.toolbar>*{flex:1;min-width:145px}
 .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
@@ -152,6 +153,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <section id="estoque" class="page">
 <div class="panel"><h2>➕ Entrada de BAGS no estoque</h2>
 <div class="info">Registre aqui as entradas de novos Big Bags. A entrada altera automaticamente o saldo do estoque e fica vinculada ao lote informado.</div>
+<div id="entryDockComparison" class="dock-compare pending">Informe a data e o setor para comparar Entrada e Docas.</div>
 <form id="entryForm"><div class="form-grid">
 <div class="label-reader"><div class="actions"><label class="btn primary">📷 Ler etiqueta<input type="file" accept="image/*" capture="environment" hidden onchange="readBagLabel(event,'entry')"></label></div><div id="entryReaderStatus" class="reader-status">Fotografe a etiqueta para preencher código, setor e lote.</div></div>
 <div class="field"><label>Data *</label><input type="date" id="eDate" required></div>
@@ -191,6 +193,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </div>
 <div class="panel"><h2>🚚 Docas — lançamento manual diário</h2>
 <div class="info">O estoque das docas é um controle separado do estoque principal. O lançamento é manual e diário e <strong>não altera</strong> o saldo do Estoque. O sistema mantém o histórico de todos os lançamentos realizados.</div>
+<div id="dockEntryComparison" class="dock-compare pending">Informe a data e o setor para comparar Docas e Entrada.</div>
 <form id="dockForm"><div class="form-grid">
 <div class="field"><label>Data *</label><input type="date" id="dDate" required></div>
 <div class="field"><label>Setor *</label><select id="dSector" onchange="syncDockType()" required><option>Farinheira</option><option>Colorífico</option></select></div>
@@ -462,6 +465,39 @@ function totalStock(sec){
     if(m.sector===sec) q += m.kind==='ENTRADA' ? Number(m.qty) : -Number(m.qty);
   }
   return q;
+}
+
+function latestDock(date,sector){
+  return docks.records.filter(x=>x.date===date&&x.sector===sector)
+    .sort((a,b)=>Number(b.id)-Number(a.id))[0]||null;
+}
+
+function entryTotalForDay(date,sector,excludeId=null){
+  return db.movements.filter(m=>m.kind==='ENTRADA'&&m.date===date&&m.sector===sector&&m.id!==excludeId)
+    .reduce((sum,m)=>sum+Number(m.qty||0),0);
+}
+
+function dockEntryComparison(date,sector,extraEntry=0){
+  const dock=latestDock(date,sector);
+  const entries=entryTotalForDay(date,sector)+Number(extraEntry||0);
+  if(!date||!sector)return {status:'pending',entries,dockQty:null,diff:null,message:'Informe a data e o setor para realizar a conferência.'};
+  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(date)}.`};
+  const dockQty=Number(dock.qty||0),diff=entries-dockQty;
+  if(diff===0)return {status:'ok',entries,dockQty,diff,message:'Conferência correta: Entrada e Docas estão iguais.'};
+  if(diff<0)return {status:'less',entries,dockQty,diff,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da contagem das Docas. Algo pode estar errado, mas essa situação pode acontecer e deve ser conferida.`};
+  return {status:'more',entries,dockQty,diff,message:`A Entrada está ${diff} BAG(s) acima da contagem das Docas. Verifique e informe o motivo da entrada a mais.`};
+}
+
+function renderDockEntryComparison(targetId,date,sector,extraEntry=0){
+  const el=$(targetId);if(!el)return;
+  const c=dockEntryComparison(date,sector,extraEntry);
+  el.className=`dock-compare ${c.status}`;
+  el.innerHTML=`<strong>${esc(c.message)}</strong><div class="compare-values"><span>Entrada do dia: <b>${c.entries} BAG(s)</b></span><span>Docas: <b>${c.dockQty===null?'não informado':c.dockQty+' BAG(s)'}</b></span>${c.diff===null?'':`<span>Divergência: <b>${c.diff>0?'+':''}${c.diff} BAG(s)</b></span>`}</div>`;
+}
+
+function refreshFormComparisons(){
+  renderDockEntryComparison('entryDockComparison',$('eDate')?.value,$('eSector')?.value,Number($('eQty')?.value||0));
+  renderDockEntryComparison('dockEntryComparison',$('dDate')?.value,$('dSector')?.value);
 }
 
 function lots(sec){
@@ -751,8 +787,8 @@ function updateAll(){
 function renderPage(page){
   switch(page){
     case 'analiseSetor':renderUnifiedAnalysis();break;
-    case 'docas':renderDockCards();renderDockHistory();break;
-    case 'estoque':renderStock();break;
+    case 'docas':renderDockCards();renderDockHistory();refreshFormComparisons();break;
+    case 'estoque':renderStock();refreshFormComparisons();break;
     case 'consumo':syncConsumption();break;
     case 'loteProduto':renderProductLotHistory();break;
     case 'rastreio':renderTrace();break;
@@ -892,6 +928,9 @@ async function clearAll(){
   }catch(e){alert('Erro ao apagar: '+friendlyError(e));}
 }
 
+['eDate','eSector','eQty','dDate','dSector','dQty'].forEach(id=>$(id)?.addEventListener('input',refreshFormComparisons));
+['eSector','dSector'].forEach(id=>$(id)?.addEventListener('change',refreshFormComparisons));
+
 $('nav').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
   $('nav').querySelectorAll('button').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
@@ -909,12 +948,27 @@ $('entryForm').addEventListener('submit',async e=>{
     if(!CONFIG[sec]||!$('eDate').value||!lot||!Number.isInteger(qty)||qty<1){
       return alert('Informe a data, lote e uma quantidade inteira maior que zero.');
     }
-    const m={date:$('eDate').value,kind:'ENTRADA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot,qty,responsible:$('eResponsible').value.trim(),note:$('eNote').value.trim()};
+    const date=$('eDate').value;
+    const comparison=dockEntryComparison(date,sec,qty);
+    let note=$('eNote').value.trim();
+    if(comparison.status==='less'){
+      const proceed=confirm(`${comparison.message}\n\nDocas: ${comparison.dockQty} BAG(s)\nEntrada total após este registro: ${comparison.entries} BAG(s)\nDiferença: ${Math.abs(comparison.diff)} BAG(s) a menos.\n\nDeseja registrar mesmo assim?`);
+      if(!proceed)return;
+      note=`Divergência Docas × Entrada: ${Math.abs(comparison.diff)} BAG(s) a menos na Entrada — conferência pendente${note?' | '+note:''}`;
+    }
+    if(comparison.status==='more'){
+      const reason=prompt(`${comparison.message}\n\nDocas: ${comparison.dockQty} BAG(s)\nEntrada total após este registro: ${comparison.entries} BAG(s)\nDiferença: ${comparison.diff} BAG(s) a mais.\n\nInforme o motivo da entrada a mais:`,'');
+      if(reason===null)return;
+      if(!reason.trim())return alert('Para registrar uma Entrada superior às Docas, informe o motivo da divergência.');
+      note=`Divergência Docas × Entrada: ${comparison.diff} BAG(s) a mais — Motivo: ${reason.trim()}${note?' | '+note:''}`;
+    }
+    const m={date,kind:'ENTRADA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot,qty,responsible:$('eResponsible').value.trim(),note};
     await addMovement(m);
     e.target.reset();
     setToday('eDate');
     syncEntryType();
-    alert('Entrada registrada com sucesso.');
+    const result=dockEntryComparison(date,sec);
+    alert(`Entrada registrada com sucesso.\n\n${result.message}`);
   }catch(err){alert('Erro ao registrar entrada: '+friendlyError(err));}
 });
 
@@ -924,7 +978,10 @@ $('dockForm').addEventListener('submit',async e=>{
     const sec=$('dSector').value;
     const m={date:$('dDate').value,sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,qty:Number($('dQty').value),responsible:$('dResponsible').value.trim(),note:$('dNote').value.trim()};
     if(!m.date||!Number.isInteger(m.qty)||m.qty<0)return alert('Informe a data e uma quantidade inteira válida.');
-    await addDock(m);e.target.reset();setToday('dDate');syncDockType();alert('Lançamento das docas registrado com sucesso.');
+    await addDock(m);
+    const comparison=dockEntryComparison(m.date,sec);
+    e.target.reset();setToday('dDate');syncDockType();
+    alert(`Lançamento das docas registrado com sucesso.\n\n${comparison.message}\nEntrada do dia: ${comparison.entries} BAG(s)\nDocas: ${comparison.dockQty} BAG(s).`);
   }catch(err){alert('Erro ao salvar nas docas: '+friendlyError(err));}
 });
 
