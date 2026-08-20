@@ -62,9 +62,9 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 .empty{text-align:center;color:var(--muted);padding:25px}.small{font-size:12px;color:var(--muted)}
 .stock-ok{color:var(--green);font-weight:800}.stock-low{color:var(--red);font-weight:800}
 .lot-card{padding:11px;background:#f7f9fb;border-radius:8px;margin-bottom:8px}.lot-card strong{display:block}
-#loginScreen{display:none!important}
+#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#eef4f9,#dce9f3);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .login-box{background:#fff;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12);padding:28px;max-width:460px;width:100%}
-.login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}
+.login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}.login-box .login-note{background:#eef5fb;border:1px solid #cddfed;border-radius:9px;padding:10px;font-size:12px;color:#34536d}.login-box .password-row{position:relative}.login-box .password-row input{padding-right:72px}.login-box .show-password{position:absolute;right:8px;top:13px;border:0;background:transparent;color:var(--primary);cursor:pointer;font-weight:700;padding:8px}
 .header-account{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:0 0 auto}
 #userBar{display:none;align-items:center;gap:7px;max-width:210px;background:rgba(255,255,255,.15);color:#fff;padding:5px 6px 5px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;box-shadow:0 3px 12px rgba(0,0,0,.12);font-size:12px;white-space:nowrap}
 #userBar strong{max-width:105px;overflow:hidden;text-overflow:ellipsis}
@@ -88,12 +88,14 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div id="loginScreen">
   <div class="login-box">
     <h2>🔐 Controle de estoque e movimentações</h2>
-    <p>Entre para acessar o estoque compartilhado.</p>
+    <p id="loginTitle">Entre para acessar o aplicativo offline.</p>
     <form id="loginForm">
-      <input id="loginEmail" type="email" placeholder="E-mail" required>
-      <input id="loginPassword" type="password" placeholder="Senha" required>
+      <input id="loginUser" autocomplete="username" placeholder="Usuário" minlength="3" required>
+      <div class="password-row"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Senha" minlength="6" required><button class="show-password" type="button" onclick="toggleLocalPassword()">Mostrar</button></div>
+      <div id="confirmPasswordField" class="password-row" style="display:none"><input id="loginPasswordConfirm" type="password" autocomplete="new-password" placeholder="Confirme a senha" minlength="6"><button class="show-password" type="button" onclick="toggleLocalPassword()">Mostrar</button></div>
       <button id="loginButton" class="btn primary" style="width:100%;margin-top:10px" type="submit">Entrar</button>
     </form>
+    <p id="loginNote" class="login-note">O acesso funciona somente neste aparelho e não utiliza internet.</p>
     <p id="loginMsg" class="small"></p>
   </div>
 </div>
@@ -108,8 +110,9 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
       <div id="clock" class="small" style="color:#fff"></div>
       <button id="installApp" class="btn" type="button">⬇ Instalar aplicativo</button>
       <div id="userBar">
-        <span aria-hidden="true">💾</span>
+        <span aria-hidden="true">👤</span>
         <strong id="userName">Modo offline</strong>
+        <button class="btn light" type="button" onclick="logoutLocal()">Sair</button>
       </div>
     </div>
   </div>
@@ -308,6 +311,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 'use strict';
 
 const STORAGE_KEY = 'controle_estoque_movimentacoes_offline_v1';
+const AUTH_KEY = 'controle_estoque_offline_auth_v1';
+const SESSION_KEY = 'controle_estoque_offline_session_v1';
 
 const CONFIG = {
   Farinheira:{type:'Big Bag 1.300 kg',code:'1437'},
@@ -318,6 +323,8 @@ let db = {movements:[],productLots:[]};
 let docks = {records:[]};
 let tesseractLoadPromise = null;
 let nextLocalId = 1;
+let loginFailures = 0;
+let loginBlockedUntil = 0;
 
 const $ = id => document.getElementById(id);
 
@@ -397,10 +404,47 @@ function setToday(id){ const el=$(id); if(el) el.value=today(); }
 function fmt(d){ if(!d)return ''; const [y,m,day]=String(d).slice(0,10).split('-'); return day+'/'+m+'/'+y; }
 function esc(s){ return String(s ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 
-function showApp(){
+function getLocalAuth(){
+  try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{return null;}
+}
+
+function bytesToHex(bytes){return [...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+function hexToBytes(hex){return new Uint8Array(String(hex).match(/.{1,2}/g)?.map(x=>parseInt(x,16))||[]);}
+
+async function derivePassword(password,saltHex){
+  const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:hexToBytes(saltHex),iterations:150000,hash:'SHA-256'},material,256);
+  return bytesToHex(bits);
+}
+
+function configureLoginScreen(){
+  const hasAccount=!!getLocalAuth();
+  $('loginScreen').style.display='flex';
+  $('userBar').style.display='none';
+  $('loginTitle').textContent=hasAccount?'Entre para acessar o aplicativo offline.':'Primeiro acesso: crie o usuário e a senha deste aparelho.';
+  $('confirmPasswordField').style.display=hasAccount?'none':'block';
+  $('loginPasswordConfirm').required=!hasAccount;
+  $('loginButton').textContent=hasAccount?'Entrar':'Criar acesso';
+  $('loginNote').textContent=hasAccount?'O acesso funciona somente neste aparelho e não utiliza internet.':'Guarde sua senha. Ela não pode ser recuperada pela internet, pois esta versão funciona localmente.';
+  $('loginMsg').textContent='';
+}
+
+function showApp(username){
   $('loginScreen').style.display='none';
   $('userBar').style.display='flex';
-  $('userName').textContent='Modo offline';
+  $('userName').textContent=username||'Modo offline';
+}
+
+function logoutLocal(){
+  sessionStorage.removeItem(SESSION_KEY);
+  $('loginForm').reset();
+  configureLoginScreen();
+}
+
+function toggleLocalPassword(){
+  const show=$('loginPassword').type==='password';
+  $('loginPassword').type=show?'text':'password';
+  $('loginPasswordConfirm').type=show?'text':'password';
 }
 
 function saveLocal(){
@@ -1070,9 +1114,63 @@ async function boot(){
   syncDockType();
   syncLossType();
   syncEntryType();
-  showApp();
-  loadLocal();
+  const auth=getLocalAuth();
+  const session=sessionStorage.getItem(SESSION_KEY);
+  if(auth&&session===auth.hash){
+    loadLocal();
+    showApp(auth.username);
+  }else{
+    sessionStorage.removeItem(SESSION_KEY);
+    configureLoginScreen();
+  }
 }
+
+$('loginForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const now=Date.now();
+  if(now<loginBlockedUntil){
+    const seconds=Math.ceil((loginBlockedUntil-now)/1000);
+    $('loginMsg').textContent=`Aguarde ${seconds} segundo(s) antes de tentar novamente.`;
+    return;
+  }
+  const username=$('loginUser').value.trim();
+  const password=$('loginPassword').value;
+  const auth=getLocalAuth();
+  $('loginButton').disabled=true;
+  $('loginMsg').textContent=auth?'Verificando acesso…':'Criando acesso local…';
+  try{
+    if(!auth){
+      const confirmation=$('loginPasswordConfirm').value;
+      if(username.length<3)return void($('loginMsg').textContent='O usuário deve ter pelo menos 3 caracteres.');
+      if(password.length<6)return void($('loginMsg').textContent='A senha deve ter pelo menos 6 caracteres.');
+      if(password!==confirmation)return void($('loginMsg').textContent='As senhas não são iguais.');
+      const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16)));
+      const hash=await derivePassword(password,salt);
+      localStorage.setItem(AUTH_KEY,JSON.stringify({username,salt,hash,createdAt:new Date().toISOString()}));
+      sessionStorage.setItem(SESSION_KEY,hash);
+      loadLocal();
+      showApp(username);
+      event.target.reset();
+      alert('Usuário e senha cadastrados com sucesso neste aparelho.');
+    }else{
+      const hash=await derivePassword(password,auth.salt);
+      if(username!==auth.username||hash!==auth.hash){
+        loginFailures++;
+        if(loginFailures>=5){loginBlockedUntil=Date.now()+30000;loginFailures=0;}
+        $('loginMsg').textContent='Usuário ou senha incorretos.';
+        return;
+      }
+      loginFailures=0;
+      sessionStorage.setItem(SESSION_KEY,auth.hash);
+      loadLocal();
+      showApp(auth.username);
+      event.target.reset();
+    }
+  }catch(error){
+    $('loginMsg').textContent='Não foi possível validar o acesso neste navegador.';
+    console.error(error);
+  }finally{$('loginButton').disabled=false;}
+});
 
 $('clock').textContent=new Date().toLocaleString('pt-BR');
 setInterval(()=>$('clock').textContent=new Date().toLocaleString('pt-BR'),1000);
