@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.21-auditoria-excel">
+<meta name="app-version" content="2026.08.21-auditoria-legivel">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -81,7 +81,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 .flotamil-box{grid-column:1/-1;display:none;background:#eef8f2;border:1px solid #bfdfca;border-radius:14px;padding:16px}.pallet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px}.total-kg{margin-top:14px;background:linear-gradient(135deg,#11683d,#16834b);color:#fff;border-radius:13px;padding:16px}.total-kg .label{color:#dff5e9}.total-kg .value{font-size:34px}
 .send-check{display:flex;align-items:center;gap:10px;margin-top:16px;padding:13px;background:#fff;border:1px solid #bfdfca;border-radius:10px;font-weight:800}.send-check input{width:20px;height:20px;accent-color:var(--green)}.sent-fields{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .label-reader{grid-column:1/-1;border:1px dashed #8bb8d8;background:#f2f8fd;border-radius:12px;padding:13px}.label-reader .actions{margin-top:0}.reader-status{margin-top:8px;font-size:12px;color:var(--muted)}.reader-status.busy{color:var(--primary);font-weight:700}.reader-status.ok{color:var(--green);font-weight:700}.reader-status.error{color:var(--red);font-weight:700}
-.audit-status{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:800}.audit-active{background:#dff5e9;color:#11683d}.audit-cancelled{background:#fde5e5;color:#a52d2d}.audit-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px;max-width:380px;white-space:pre-wrap;font-size:11px}.btn.warning{background:#d99000;color:#fff}
+.audit-status{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:800}.audit-active{background:#dff5e9;color:#11683d}.audit-cancelled{background:#fde5e5;color:#a52d2d}.btn.warning{background:#d99000;color:#fff}
+.audit-list{display:grid;gap:14px;margin-top:16px}.audit-card{border:1px solid var(--border);border-radius:13px;background:#fff;overflow:hidden;box-shadow:0 4px 15px rgba(15,42,66,.05)}.audit-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 16px;background:#f4f8fb;border-bottom:1px solid var(--border)}.audit-card-title{font-size:16px;font-weight:800;color:var(--primary2)}.audit-card-time{font-size:12px;color:var(--muted);margin-top:4px}.audit-action{padding:6px 10px;border-radius:99px;background:#eaf3fb;color:#174d78;font-size:11px;font-weight:900;white-space:nowrap}.audit-action.cancelado{background:#fde5e5;color:#a52d2d}.audit-action.editado{background:#fff4d6;color:#77500c}.audit-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px;background:#fff}.audit-summary div{padding:9px 11px;border-radius:8px;background:#f8fafc}.audit-summary span,.audit-field span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:800;margin-bottom:4px}.audit-summary strong{display:block;overflow-wrap:anywhere}.audit-reason{margin:0 16px 14px;padding:11px 13px;border-left:4px solid var(--primary);background:#eef5fb;border-radius:7px;overflow-wrap:anywhere}.audit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}.audit-value{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.audit-value h3{margin:0;padding:10px 12px;font-size:13px;background:#eef3f7}.audit-value.new h3{background:#e8f7ee;color:#11683d}.audit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.audit-field{padding:9px 12px;border-bottom:1px solid #edf1f4;overflow-wrap:anywhere;min-width:0}.audit-field.full{grid-column:1/-1}.audit-empty{padding:18px;color:var(--muted);font-style:italic;text-align:center}.audit-field strong{font-size:13px;font-weight:700}.audit-changed{background:#fff9e8}.audit-changed strong{color:#7a5200}@media(max-width:800px){.audit-summary{grid-template-columns:1fr}.audit-compare{grid-template-columns:1fr}.audit-card-head{flex-direction:column}.audit-fields{grid-template-columns:1fr}.audit-field.full{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -300,7 +301,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div class="panel"><h2>🛡️ Trilha de auditoria</h2>
 <div class="info">Toda edição, substituição e cancelamento registra valor anterior, valor novo, usuário, data e hora e justificativa. Os registros não podem ser apagados por esta tela.</div>
 <div class="toolbar"><select id="auditEntity" onchange="renderAudit()"><option value="">Todos os registros</option><option value="MOVIMENTAÇÃO">Movimentações</option><option value="DOCAS">Docas</option><option value="SISTEMA">Sistema</option></select><button class="btn primary" type="button" onclick="renderAudit()">Atualizar</button><button class="btn light" type="button" onclick="exportAuditCSV()">Exportar auditoria</button></div>
-<div class="table-wrap"><table><thead><tr><th>Data e hora</th><th>Usuário</th><th>Registro</th><th>Ação</th><th>Valor anterior</th><th>Valor novo</th><th>Justificativa</th></tr></thead><tbody id="auditBody"></tbody></table></div>
+<div id="auditBody" class="audit-list"></div>
 </div></section>
 
 <section id="backup" class="page">
@@ -969,9 +970,39 @@ function exportDockCSV(){
   a.href=URL.createObjectURL(b);a.download=`historico_docas_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
+const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',cancel_reason:'Motivo do cancelamento',created_by:'Criado por',updated_by:'Alterado por',cancelled_by:'Cancelado por'};
+const AUDIT_FIELDS=['date','kind','sector','code','type','lot','qty','responsible','note','status','fifo_status','fifo_reason','fifo_supervisor','cancel_reason','created_by','updated_by','cancelled_by'];
+function auditDisplayValue(key,value){
+  if(value===null||value===undefined||value==='')return 'Não informado';
+  if(key==='date'&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return fmt(value);
+  if(key==='qty')return Number(value).toLocaleString('pt-BR',{maximumFractionDigits:2});
+  if(key==='status')return String(value).toUpperCase();
+  return String(value);
+}
+function auditValuePanel(value,title,type,comparison=null){
+  if(!value)return `<div class="audit-value ${type}"><h3>${esc(title)}</h3><div class="audit-empty">Não se aplica — este registro foi criado agora.</div></div>`;
+  const available=AUDIT_FIELDS.filter(key=>value[key]!==undefined&&value[key]!==null&&value[key]!==''&&AUDIT_LABELS[key]);
+  if(!available.length)return `<div class="audit-value ${type}"><h3>${esc(title)}</h3><div class="audit-empty">Nenhuma informação operacional disponível.</div></div>`;
+  return `<div class="audit-value ${type}"><h3>${esc(title)}</h3><div class="audit-fields">${available.map(key=>{
+    const changed=comparison&&String(comparison[key]??'')!==String(value[key]??'');
+    const full=key==='note'||key==='fifo_reason'||key==='cancel_reason';
+    return `<div class="audit-field${full?' full':''}${changed?' audit-changed':''}"><span>${esc(AUDIT_LABELS[key])}</span><strong>${esc(auditDisplayValue(key,value[key]))}</strong></div>`;
+  }).join('')}</div></div>`;
+}
 function renderAudit(){
-  const entity=$('auditEntity')?.value||'';const rows=[...(db.auditLog||[])].filter(x=>!entity||x.entity===entity).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)));
-  const body=$('auditBody');if(!body)return;body.innerHTML=rows.length?rows.map(x=>`<tr><td>${new Date(x.timestamp).toLocaleString('pt-BR')}</td><td>${esc(x.user)}</td><td>${esc(x.entity)} #${esc(x.entityId)}</td><td><strong>${esc(x.action)}</strong></td><td><div class="audit-box">${esc(JSON.stringify(x.before,null,2)||'—')}</div></td><td><div class="audit-box">${esc(JSON.stringify(x.after,null,2)||'—')}</div></td><td>${esc(x.justification)}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">Nenhum evento de auditoria registrado.</td></tr>';
+  const entity=$('auditEntity')?.value||'';
+  const rows=[...(db.auditLog||[])].filter(x=>!entity||x.entity===entity).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)));
+  const body=$('auditBody');if(!body)return;
+  body.innerHTML=rows.length?rows.map(x=>{
+    const actionClass=String(x.action||'').toLowerCase();
+    const recordTitle=`${x.entity==='MOVIMENTAÇÃO'?'Movimentação':x.entity==='DOCAS'?'Contagem das Docas':'Evento do sistema'} #${x.entityId}`;
+    return `<article class="audit-card">
+      <div class="audit-card-head"><div><div class="audit-card-title">${esc(recordTitle)}</div><div class="audit-card-time">${new Date(x.timestamp).toLocaleString('pt-BR')}</div></div><span class="audit-action ${esc(actionClass)}">${esc(x.action)}</span></div>
+      <div class="audit-summary"><div><span>Usuário responsável</span><strong>${esc(x.user||'Não informado')}</strong></div><div><span>Tipo de registro</span><strong>${esc(x.entity)}</strong></div><div><span>Número do registro</span><strong>#${esc(x.entityId)}</strong></div></div>
+      <div class="audit-reason"><strong>Justificativa:</strong> ${esc(x.justification||'Não informada')}</div>
+      <div class="audit-compare">${auditValuePanel(x.before,'Valor anterior','old',x.after)}${auditValuePanel(x.after,'Valor novo','new',x.before)}</div>
+    </article>`;
+  }).join(''):'<div class="empty">Nenhum evento de auditoria registrado para este filtro.</div>';
 }
 function exportAuditCSV(){
  const rows=[['Data e hora','Usuário','Registro','ID','Ação','Valor anterior','Valor novo','Justificativa']];(db.auditLog||[]).forEach(x=>rows.push([x.timestamp,x.user,x.entity,x.entityId,x.action,JSON.stringify(x.before||''),JSON.stringify(x.after||''),x.justification]));downloadCSVRows(rows,`auditoria_bags_${today()}.csv`);
