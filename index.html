@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.21-auditoria-legivel">
+<meta name="app-version" content="2026.08.21-online-excel-dinamico">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Controle de estoque e movimentações">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Controle de estoque e movimentações — Offline</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Controle de estoque e movimentações</title>
 <style>
 :root{--bg:#f3f6fa;--card:#fff;--text:#172334;--muted:#64748b;--primary:#1769aa;--primary2:#082f52;--green:#16834b;--red:#c83d3d;--yellow:#b7791f;--border:#dce5ed;--shadow:0 8px 26px rgba(15,42,66,.08)}
 *{box-sizing:border-box}
@@ -62,14 +61,13 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 .empty{text-align:center;color:var(--muted);padding:25px}.small{font-size:12px;color:var(--muted)}
 .stock-ok{color:var(--green);font-weight:800}.stock-low{color:var(--red);font-weight:800}
 .lot-card{padding:11px;background:#f7f9fb;border-radius:8px;margin-bottom:8px}.lot-card strong{display:block}
-#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#eef4f9,#dce9f3);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+#loginScreen{position:fixed;inset:0;background:#f5f7fb;display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .login-box{background:#fff;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12);padding:28px;max-width:460px;width:100%}
-.login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}.login-box .login-note{background:#eef5fb;border:1px solid #cddfed;border-radius:9px;padding:10px;font-size:12px;color:#34536d}.login-box .password-row{position:relative}.login-box .password-row input{padding-right:72px}.login-box .show-password{position:absolute;right:8px;top:13px;border:0;background:transparent;color:var(--primary);cursor:pointer;font-weight:700;padding:8px}
+.login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}
 .header-account{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:0 0 auto}
 #userBar{display:none;align-items:center;gap:7px;max-width:210px;background:rgba(255,255,255,.15);color:#fff;padding:5px 6px 5px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;box-shadow:0 3px 12px rgba(0,0,0,.12);font-size:12px;white-space:nowrap}
 #userBar strong{max-width:105px;overflow:hidden;text-overflow:ellipsis}
 #userBar button{margin:0;padding:6px 10px;border-radius:99px;font-size:11px}
-#installApp{display:none;background:#fff;color:var(--primary2);padding:7px 12px;font-size:11px;box-shadow:0 3px 12px rgba(0,0,0,.12)}
 #loginMsg{min-height:18px;margin-bottom:0}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 @media(max-width:900px){.cards,.dashboard-cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr 1fr}}
@@ -82,7 +80,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 .send-check{display:flex;align-items:center;gap:10px;margin-top:16px;padding:13px;background:#fff;border:1px solid #bfdfca;border-radius:10px;font-weight:800}.send-check input{width:20px;height:20px;accent-color:var(--green)}.sent-fields{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .label-reader{grid-column:1/-1;border:1px dashed #8bb8d8;background:#f2f8fd;border-radius:12px;padding:13px}.label-reader .actions{margin-top:0}.reader-status{margin-top:8px;font-size:12px;color:var(--muted)}.reader-status.busy{color:var(--primary);font-weight:700}.reader-status.ok{color:var(--green);font-weight:700}.reader-status.error{color:var(--red);font-weight:700}
 .audit-status{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:800}.audit-active{background:#dff5e9;color:#11683d}.audit-cancelled{background:#fde5e5;color:#a52d2d}.btn.warning{background:#d99000;color:#fff}
-.audit-list{display:grid;gap:14px;margin-top:16px}.audit-card{border:1px solid var(--border);border-radius:13px;background:#fff;overflow:hidden;box-shadow:0 4px 15px rgba(15,42,66,.05)}.audit-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 16px;background:#f4f8fb;border-bottom:1px solid var(--border)}.audit-card-title{font-size:16px;font-weight:800;color:var(--primary2)}.audit-card-time{font-size:12px;color:var(--muted);margin-top:4px}.audit-action{padding:6px 10px;border-radius:99px;background:#eaf3fb;color:#174d78;font-size:11px;font-weight:900;white-space:nowrap}.audit-action.cancelado{background:#fde5e5;color:#a52d2d}.audit-action.editado{background:#fff4d6;color:#77500c}.audit-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px;background:#fff}.audit-summary div{padding:9px 11px;border-radius:8px;background:#f8fafc}.audit-summary span,.audit-field span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:800;margin-bottom:4px}.audit-summary strong{display:block;overflow-wrap:anywhere}.audit-reason{margin:0 16px 14px;padding:11px 13px;border-left:4px solid var(--primary);background:#eef5fb;border-radius:7px;overflow-wrap:anywhere}.audit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}.audit-value{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.audit-value h3{margin:0;padding:10px 12px;font-size:13px;background:#eef3f7}.audit-value.new h3{background:#e8f7ee;color:#11683d}.audit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.audit-field{padding:9px 12px;border-bottom:1px solid #edf1f4;overflow-wrap:anywhere;min-width:0}.audit-field.full{grid-column:1/-1}.audit-empty{padding:18px;color:var(--muted);font-style:italic;text-align:center}.audit-field strong{font-size:13px;font-weight:700}.audit-changed{background:#fff9e8}.audit-changed strong{color:#7a5200}@media(max-width:800px){.audit-summary{grid-template-columns:1fr}.audit-compare{grid-template-columns:1fr}.audit-card-head{flex-direction:column}.audit-fields{grid-template-columns:1fr}.audit-field.full{grid-column:auto}}
+.audit-list{display:grid;gap:14px;margin-top:16px}.audit-card{border:1px solid var(--border);border-radius:13px;background:#fff;overflow:hidden;box-shadow:0 4px 15px rgba(15,42,66,.05)}.audit-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 16px;background:#f4f8fb;border-bottom:1px solid var(--border)}.audit-card-title{font-size:16px;font-weight:800;color:var(--primary2)}.audit-card-time{font-size:12px;color:var(--muted);margin-top:4px}.audit-action{padding:6px 10px;border-radius:99px;background:#eaf3fb;color:#174d78;font-size:11px;font-weight:900;white-space:nowrap}.audit-action.cancelado{background:#fde5e5;color:#a52d2d}.audit-action.editado{background:#fff4d6;color:#77500c}.audit-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px}.audit-summary div{padding:9px 11px;border-radius:8px;background:#f8fafc}.audit-summary span,.audit-field span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:800;margin-bottom:4px}.audit-summary strong{display:block;overflow-wrap:anywhere}.audit-reason{margin:0 16px 14px;padding:11px 13px;border-left:4px solid var(--primary);background:#eef5fb;border-radius:7px;overflow-wrap:anywhere}.audit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}.audit-value{border:1px solid var(--border);border-radius:10px;overflow:hidden}.audit-value h3{margin:0;padding:10px 12px;font-size:13px;background:#eef3f7}.audit-value.new h3{background:#e8f7ee;color:#11683d}.audit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.audit-field{padding:9px 12px;border-bottom:1px solid #edf1f4;overflow-wrap:anywhere;min-width:0}.audit-field.full{grid-column:1/-1}.audit-empty{padding:18px;color:var(--muted);font-style:italic;text-align:center}.audit-field strong{font-size:13px}.audit-changed{background:#fff9e8}.audit-changed strong{color:#7a5200}@media(max-width:800px){.audit-summary,.audit-fields{grid-template-columns:1fr}.audit-compare{grid-template-columns:1fr}.audit-card-head{flex-direction:column}.audit-field.full{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -90,14 +88,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div id="loginScreen">
   <div class="login-box">
     <h2>🔐 Controle de estoque e movimentações</h2>
-    <p id="loginTitle">Entre para acessar o aplicativo offline.</p>
+    <p>Entre para acessar o estoque compartilhado.</p>
     <form id="loginForm">
-      <input id="loginUser" autocomplete="username" placeholder="Usuário" minlength="3" required>
-      <div class="password-row"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Senha" minlength="6" required><button class="show-password" type="button" onclick="toggleLocalPassword()">Mostrar</button></div>
-      <div id="confirmPasswordField" class="password-row" style="display:none"><input id="loginPasswordConfirm" type="password" autocomplete="new-password" placeholder="Confirme a senha" minlength="6"><button class="show-password" type="button" onclick="toggleLocalPassword()">Mostrar</button></div>
+      <input id="loginEmail" type="email" placeholder="E-mail" required>
+      <input id="loginPassword" type="password" placeholder="Senha" required>
       <button id="loginButton" class="btn primary" style="width:100%;margin-top:10px" type="submit">Entrar</button>
     </form>
-    <p id="loginNote" class="login-note">O acesso funciona somente neste aparelho e não utiliza internet.</p>
     <p id="loginMsg" class="small"></p>
   </div>
 </div>
@@ -106,15 +102,15 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
   <div class="header">
     <div>
       <h1>📦 Controle de estoque e movimentações</h1>
-      <div class="sub">PROJETO PILOTO • Estoque • Entradas • Consumos • Lotes • Rastreabilidade</div>
+      <div class="sub">Estoque • Entradas • Consumos • Lotes • Rastreabilidade</div>
     </div>
     <div class="header-account">
       <div id="clock" class="small" style="color:#fff"></div>
-      <button id="installApp" class="btn" type="button">⬇ Instalar aplicativo</button>
       <div id="userBar">
         <span aria-hidden="true">👤</span>
-        <strong id="userName">Modo offline</strong>
-        <button class="btn light" type="button" onclick="logoutLocal()">Sair</button>
+        <strong id="userName">Lucas Rocha</strong>
+        <button id="installAppButton" class="btn primary" type="button" onclick="installApp()" style="display:none">Instalar</button>
+        <button class="btn light" type="button" onclick="logout()">Sair</button>
       </div>
     </div>
   </div>
@@ -291,18 +287,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="relatorios" class="page">
 <div class="panel"><h2>📋 Histórico de movimentações</h2>
-<div class="info">Se um lançamento estiver incorreto, use <strong>Editar</strong> ou <strong>Cancelar</strong>. O registro cancelado permanece disponível para auditoria, mas deixa de afetar o estoque, o FIFO e as comparações.</div>
+<div class="info">Use <strong>Editar</strong> ou <strong>Cancelar</strong>. Registros cancelados permanecem na auditoria, mas deixam de afetar estoque, FIFO e comparações.</div>
 <div class="toolbar"><input type="date" id="rStart"><input type="date" id="rEnd"><select id="rSector"><option value="">Todos os setores</option><option>Farinheira</option><option>Colorífico</option></select><select id="rKind"><option value="">Todos</option><option value="ENTRADA">Entradas</option><option value="CONSUMO">Consumos</option><option value="PERDA">Perdas</option></select><button class="btn primary" type="button" onclick="renderReport()">Filtrar</button><button class="btn light" type="button" onclick="exportCSV()">Exportar CSV</button><button class="btn success" type="button" onclick="exportExcelComplete()">📊 Exportar Excel completo</button></div>
 <div class="table-wrap"><table><thead><tr><th>Data</th><th>Movimento</th><th>Setor</th><th>Código</th><th>Tipo</th><th>Lote</th><th>Qtd.</th><th>Responsável</th><th>Obs.</th><th>Status</th><th>Ações</th></tr></thead><tbody id="reportBody"></tbody></table></div>
 </div>
 </section>
 
-<section id="auditoria" class="page">
-<div class="panel"><h2>🛡️ Trilha de auditoria</h2>
-<div class="info">Toda edição, substituição e cancelamento registra valor anterior, valor novo, usuário, data e hora e justificativa. Os registros não podem ser apagados por esta tela.</div>
-<div class="toolbar"><select id="auditEntity" onchange="renderAudit()"><option value="">Todos os registros</option><option value="MOVIMENTAÇÃO">Movimentações</option><option value="DOCAS">Docas</option><option value="SISTEMA">Sistema</option></select><button class="btn primary" type="button" onclick="renderAudit()">Atualizar</button><button class="btn light" type="button" onclick="exportAuditCSV()">Exportar auditoria</button></div>
-<div id="auditBody" class="audit-list"></div>
-</div></section>
+<section id="auditoria" class="page"><div class="panel"><h2>🛡️ Trilha de auditoria compartilhada</h2><div class="info">Edições, substituições e cancelamentos mostram valor anterior, valor novo, usuário, data, hora e justificativa.</div><div class="toolbar"><select id="auditEntity" onchange="renderAudit()"><option value="">Todos</option><option value="movements">Movimentações</option><option value="dock_records">Docas</option></select><button class="btn primary" type="button" onclick="renderAudit()">Atualizar</button><button class="btn light" type="button" onclick="exportAuditCSV()">Exportar auditoria</button></div><div id="auditBody" class="audit-list"></div></div></section>
 
 <section id="backup" class="page">
 <div class="panel"><h2>💾 Backup e restauração</h2><p class="small">Os registros ficam salvos no banco compartilhado. Faça backup antes de trocar de aparelho ou realizar alterações importantes.</p>
@@ -317,24 +308,24 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <footer>Controle de estoque e movimentações — Flotamil com registro, baixa e impressão direta automática</footer>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 'use strict';
 
-const STORAGE_KEY = 'controle_estoque_movimentacoes_offline_v1';
-const AUTH_KEY = 'controle_estoque_offline_auth_v1';
-const SESSION_KEY = 'controle_estoque_offline_session_v1';
+const SUPABASE_URL = 'https://wxlrroqvdglhewrjboxd.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_P_AFrkXHICBOM0uGIljOTw_Awew8M59';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 const CONFIG = {
   Farinheira:{type:'Big Bag 1.300 kg',code:'1437'},
   Colorífico:{type:'Big Bag 1.250 kg',code:'1436'}
 };
 
+let currentUser = null;
 let db = {movements:[],productLots:[],auditLog:[]};
 let docks = {records:[]};
+let deferredInstallPrompt = null;
 let tesseractLoadPromise = null;
-let nextLocalId = 1;
-let loginFailures = 0;
-let loginBlockedUntil = 0;
 
 const $ = id => document.getElementById(id);
 
@@ -414,111 +405,82 @@ function setToday(id){ const el=$(id); if(el) el.value=today(); }
 function fmt(d){ if(!d)return ''; const [y,m,day]=String(d).slice(0,10).split('-'); return day+'/'+m+'/'+y; }
 function esc(s){ return String(s ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 
-function getLocalAuth(){
-  try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{return null;}
-}
-
-function bytesToHex(bytes){return [...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('');}
-function hexToBytes(hex){return new Uint8Array(String(hex).match(/.{1,2}/g)?.map(x=>parseInt(x,16))||[]);}
-
-async function derivePassword(password,saltHex){
-  const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
-  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:hexToBytes(saltHex),iterations:150000,hash:'SHA-256'},material,256);
-  return bytesToHex(bits);
-}
-
-function configureLoginScreen(){
-  const hasAccount=!!getLocalAuth();
+function showLogin(message='',error=false){
   $('loginScreen').style.display='flex';
   $('userBar').style.display='none';
-  $('loginTitle').textContent=hasAccount?'Entre para acessar o aplicativo offline.':'Primeiro acesso: crie o usuário e a senha deste aparelho.';
-  $('confirmPasswordField').style.display=hasAccount?'none':'block';
-  $('loginPasswordConfirm').required=!hasAccount;
-  $('loginButton').textContent=hasAccount?'Entrar':'Criar acesso';
-  $('loginNote').textContent=hasAccount?'O acesso funciona somente neste aparelho e não utiliza internet.':'Guarde sua senha. Ela não pode ser recuperada pela internet, pois esta versão funciona localmente.';
-  $('loginMsg').textContent='';
+  $('loginMsg').style.color=error?'#b91c1c':'#b45309';
+  $('loginMsg').textContent=message;
 }
 
-function showApp(username){
+function showApp(){
   $('loginScreen').style.display='none';
   $('userBar').style.display='flex';
-  $('userName').textContent=username||'Modo offline';
+  $('userName').textContent='Lucas Rocha';
 }
 
-function logoutLocal(){
-  sessionStorage.removeItem(SESSION_KEY);
-  $('loginForm').reset();
-  configureLoginScreen();
-}
+async function loadCloud(){
+  if(!currentUser) return false;
 
-function toggleLocalPassword(){
-  const show=$('loginPassword').type==='password';
-  $('loginPassword').type=show?'text':'password';
-  $('loginPasswordConfirm').type=show?'text':'password';
-}
+  const [m,l,d,a] = await Promise.all([
+    sb.from('movements').select('*').order('date',{ascending:true}).order('id',{ascending:true}),
+    sb.from('product_lots').select('*').order('date',{ascending:true}).order('id',{ascending:true}),
+    sb.from('dock_records').select('*').order('date',{ascending:true}).order('id',{ascending:true}),
+    sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(1000)
+  ]);
 
-function currentUser(){return getLocalAuth()?.username||$('userName')?.textContent||'Usuário local';}
-function activeMovements(){return db.movements.filter(x=>x.status!=='cancelado');}
-function activeDocks(){return docks.records.filter(x=>x.status!=='cancelado');}
-function auditSnapshot(value){
-  if(!value)return null;
-  const copy={...value};delete copy.audit;return copy;
-}
-function recordAudit(entity,entityId,action,beforeValue,afterValue,justification){
-  db.auditLog.push({id:nextLocalId++,entity,entityId,action,before:auditSnapshot(beforeValue),after:auditSnapshot(afterValue),user:currentUser(),timestamp:new Date().toISOString(),justification:String(justification||'').trim()});
-}
-function saveLocal(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({db,docks,nextLocalId}));
-}
+  if(m.error) throw m.error;
+  if(l.error) throw l.error;
+  if(d.error) throw d.error;
+  if(a.error) throw a.error;
 
-function loadLocal(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
-    if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db={...saved.db,auditLog:Array.isArray(saved.db.auditLog)?saved.db.auditLog:[]};
-    if(saved?.docks&&Array.isArray(saved.docks.records)) docks=saved.docks;
-    db.movements=db.movements.map(x=>({...x,status:x.status||'ativo'}));
-    docks.records=docks.records.map(x=>({...x,status:x.status||'ativo'}));
-    const ids=[...db.movements,...db.productLots,...docks.records,...db.auditLog].map(x=>Number(x.id)||0);
-    nextLocalId=Math.max(Number(saved?.nextLocalId)||1,...ids)+1;
-  }catch(error){console.warn('Dados locais inválidos:',error);}
+  db={movements:m.data||[],productLots:l.data||[],auditLog:a.data||[]};
+  docks={records:d.data||[]};
   updateAll();
   return true;
 }
 
+function activeMovements(){return db.movements.filter(x=>x.status!=='cancelado');}
+function activeDocks(){return docks.records.filter(x=>x.status!=='cancelado');}
+
 async function addMovement(m){
-  const item={...m,id:nextLocalId++,status:'ativo',created_at:new Date().toISOString(),created_by:currentUser()};
-  db.movements.push(item);recordAudit('MOVIMENTAÇÃO',item.id,'CRIADO',null,item,'Registro criado');
-  saveLocal();updateAll();
+  const {data,error}=await sb.from('movements').insert({...m,created_by:currentUser.id}).select().single();
+  if(error) throw error;
+  db.movements.push(data);
+  await reloadAudit();updateAll();
 }
 
 async function addMovements(list){
   if(!list.length) return;
-  for(const m of list){const item={...m,id:nextLocalId++,status:'ativo',created_at:new Date().toISOString(),created_by:currentUser()};db.movements.push(item);recordAudit('MOVIMENTAÇÃO',item.id,'CRIADO',null,item,'Registro criado');}
-  saveLocal();updateAll();
+  const payload=list.map(m=>({...m,created_by:currentUser.id}));
+  const {data,error}=await sb.from('movements').insert(payload).select();
+  if(error) throw error;
+  db.movements.push(...(data||[]));
+  await reloadAudit();updateAll();
 }
 
 async function addDock(m){
-  const item={...m,id:nextLocalId++,status:'ativo',created_at:new Date().toISOString(),created_by:currentUser()};
-  docks.records.push(item);recordAudit('DOCAS',item.id,'CRIADO',null,item,'Contagem criada');
-  saveLocal();updateAll();
+  const {data,error}=await sb.from('dock_records').insert({...m,created_by:currentUser.id}).select().single();
+  if(error) throw error;
+  docks.records.push(data);
+  await reloadAudit();updateAll();
 }
 
 async function addProductLot(x){
-  db.productLots.push({...x,id:nextLocalId++,created_at:new Date().toISOString()});
-  saveLocal();updateAll();
+  const {data,error}=await sb.from('product_lots').insert({...x,created_by:currentUser.id}).select().single();
+  if(error) throw error;
+  db.productLots.push(data);
+  updateAll();
 }
 
-async function removeMovement(id,justification){
-  const item=db.movements.find(x=>x.id===id);if(!item)return;
-  const before={...item};item.status='cancelado';item.cancelled_at=new Date().toISOString();item.cancelled_by=currentUser();item.cancel_reason=justification;
-  recordAudit('MOVIMENTAÇÃO',id,'CANCELADO',before,item,justification);saveLocal();updateAll();
+async function removeMovement(id,reason){
+  const patch={status:'cancelado',cancel_reason:reason,cancelled_at:new Date().toISOString(),cancelled_by:currentUser.id,change_reason:reason};
+  const {data,error}=await sb.from('movements').update(patch).eq('id',id).select().single();if(error)throw error;db.movements=db.movements.map(x=>x.id===id?data:x);await reloadAudit();updateAll();
 }
-
-async function removeDock(id,justification){
-  const item=docks.records.find(x=>x.id===id);if(!item)return;
-  const before={...item};item.status='cancelado';item.cancelled_at=new Date().toISOString();item.cancelled_by=currentUser();item.cancel_reason=justification;
-  recordAudit('DOCAS',id,'CANCELADO',before,item,justification);saveLocal();updateAll();
+async function removeDock(id,reason){
+  const patch={status:'cancelado',cancel_reason:reason,cancelled_at:new Date().toISOString(),cancelled_by:currentUser.id,change_reason:reason};
+  const {data,error}=await sb.from('dock_records').update(patch).eq('id',id).select().single();if(error)throw error;docks.records=docks.records.map(x=>x.id===id?data:x);await reloadAudit();updateAll();
 }
+async function reloadAudit(){const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(1000);if(error)throw error;db.auditLog=data||[];if($('auditBody'))renderAudit();}
 
 function movementStock(sec,lot){
   let q=0;
@@ -537,11 +499,6 @@ function totalStock(sec){
   return q;
 }
 
-function latestDock(date,sector){
-  return activeDocks().filter(x=>x.date===date&&x.sector===sector)
-    .sort((a,b)=>Number(b.id)-Number(a.id))[0]||null;
-}
-
 function addDays(date,amount){
   if(!date)return '';
   const [y,m,d]=String(date).slice(0,10).split('-').map(Number);
@@ -549,26 +506,31 @@ function addDays(date,amount){
   return `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;
 }
 
-function entryTotalForDay(date,sector,excludeId=null){
-  return activeMovements().filter(m=>m.kind==='ENTRADA'&&m.date===date&&m.sector===sector&&m.id!==excludeId)
+function latestDock(date,sector){
+  return activeDocks().filter(x=>String(x.date).slice(0,10)===date&&x.sector===sector)
+    .sort((a,b)=>Number(b.id)-Number(a.id))[0]||null;
+}
+
+function entryTotalForDay(date,sector){
+  return activeMovements().filter(m=>m.kind==='ENTRADA'&&String(m.date).slice(0,10)===date&&m.sector===sector)
     .reduce((sum,m)=>sum+Number(m.qty||0),0);
 }
 
-function dockEntryComparison(date,sector,extraEntry=0){
-  const dockDate=addDays(date,-1);
+function dockEntryComparison(entryDate,sector,extraEntry=0){
+  const dockDate=addDays(entryDate,-1);
   const dock=latestDock(dockDate,sector);
-  const entries=entryTotalForDay(date,sector)+Number(extraEntry||0);
-  if(!date||!sector)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:'Informe a data e o setor para realizar a conferência.'};
-  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(dockDate)} (dia anterior à Entrada).`};
+  const entries=entryTotalForDay(entryDate,sector)+Number(extraEntry||0);
+  if(!entryDate||!sector)return {status:'pending',entries,dockQty:null,diff:null,entryDate,dockDate,message:'Informe a data e o setor para realizar a conferência.'};
+  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,entryDate,dockDate,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(dockDate)} (dia anterior à Entrada).`};
   const dockQty=Number(dock.qty||0),diff=entries-dockQty;
-  if(diff===0)return {status:'ok',entries,dockQty,diff,entryDate:date,dockDate,message:'Conferência correta: a Entrada está igual às Docas do dia anterior.'};
-  if(diff<0)return {status:'less',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da contagem das Docas do dia anterior. Algo pode estar errado, mas essa situação pode acontecer e deve ser conferida.`};
-  return {status:'more',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${diff} BAG(s) acima da contagem das Docas do dia anterior. Verifique e informe o motivo da entrada a mais.`};
+  if(diff===0)return {status:'ok',entries,dockQty,diff,entryDate,dockDate,message:'Conferência correta: a Entrada está igual às Docas do dia anterior.'};
+  if(diff<0)return {status:'less',entries,dockQty,diff,entryDate,dockDate,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da contagem das Docas do dia anterior. Algo pode estar errado, mas essa situação pode acontecer e deve ser conferida.`};
+  return {status:'more',entries,dockQty,diff,entryDate,dockDate,message:`A Entrada está ${diff} BAG(s) acima da contagem das Docas do dia anterior. Verifique e informe o motivo da entrada a mais.`};
 }
 
-function renderDockEntryComparison(targetId,date,sector,extraEntry=0){
+function renderDockEntryComparison(targetId,entryDate,sector,extraEntry=0){
   const el=$(targetId);if(!el)return;
-  const c=dockEntryComparison(date,sector,extraEntry);
+  const c=dockEntryComparison(entryDate,sector,extraEntry);
   el.className=`dock-compare ${c.status}`;
   el.innerHTML=`<strong>${esc(c.message)}</strong><div class="compare-values"><span>Entrada · ${c.entryDate?fmt(c.entryDate):'—'}: <b>${c.entries} BAG(s)</b></span><span>Docas · ${c.dockDate?fmt(c.dockDate):'—'}: <b>${c.dockQty===null?'não informado':c.dockQty+' BAG(s)'}</b></span>${c.diff===null?'':`<span>Divergência: <b>${c.diff>0?'+':''}${c.diff} BAG(s)</b></span>`}</div>`;
 }
@@ -811,11 +773,7 @@ function renderFIFO(){
   $('fifoResult').innerHTML=html;
 }
 
-function renderReport(){
-  const st=$('rStart').value,en=$('rEnd').value,s=$('rSector').value,k=$('rKind').value;
-  const a=db.movements.filter(m=>(!st||m.date>=st)&&(!en||m.date<=en)&&(!s||m.sector===s)&&(!k||m.kind===k)).sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
-  $('reportBody').innerHTML=a.length?a.map(m=>`<tr><td>${fmt(m.date)}</td><td><span class="badge ${m.kind==='ENTRADA'?'in':'out'}">${esc(m.kind)}</span></td><td>${esc(m.sector)}</td><td>${esc(m.code)}</td><td>${esc(m.type)}</td><td>${esc(m.lot)}</td><td>${m.qty}</td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td><td><span class="audit-status ${m.status==='cancelado'?'audit-cancelled':'audit-active'}">${m.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${m.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editMovement(${m.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteMovement(${m.id})">Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="11" class="empty">Nenhum registro para os filtros.</td></tr>';
-}
+function renderReport(){const st=$('rStart').value,en=$('rEnd').value,s=$('rSector').value,k=$('rKind').value;const a=db.movements.filter(m=>(!st||m.date>=st)&&(!en||m.date<=en)&&(!s||m.sector===s)&&(!k||m.kind===k)).sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));$('reportBody').innerHTML=a.length?a.map(m=>`<tr><td>${fmt(m.date)}</td><td><span class="badge ${m.kind==='ENTRADA'?'in':'out'}">${esc(m.kind)}</span></td><td>${esc(m.sector)}</td><td>${esc(m.code)}</td><td>${esc(m.type)}</td><td>${esc(m.lot)}</td><td>${m.qty}</td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td><td><span class="audit-status ${m.status==='cancelado'?'audit-cancelled':'audit-active'}">${m.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${m.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" onclick="editMovement(${m.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" onclick="deleteMovement(${m.id})">Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="11" class="empty">Nenhum registro.</td></tr>';}
 
 function renderProductLotHistory(){
   const st=$('phStart').value,en=$('phEnd').value,s=$('phSector').value,q=($('phLot').value||'').trim().toLowerCase();
@@ -873,7 +831,11 @@ function renderPage(page){
 
 function friendlyError(err){
   const msg=err?.message||String(err||'Erro desconhecido');
-  if(/quota|storage/i.test(msg)) return 'Não foi possível salvar no aparelho. Exporte um backup e libere espaço no navegador.';
+  if(/movements_sector_check/i.test(msg)) return 'O setor Farinha para o Flotamil ainda não foi liberado no Supabase. Execute a alteração da restrição movements_sector_check no SQL Editor e atualize esta página.';
+  if(/schema cache/i.test(msg)) return 'O banco ainda não reconheceu a estrutura usada pelo aplicativo. Atualize a página e confirme se o SQL foi executado no projeto correto.';
+  if(/Failed to fetch/i.test(msg)) return 'Não foi possível conectar ao Supabase. Verifique a internet, a URL do projeto e se o projeto está ativo.';
+  if(/JWT issued at future/i.test(msg)) return 'O relógio do dispositivo está adiantado em relação ao servidor. Ajuste data, hora e fuso horário automaticamente e tente novamente.';
+  if(/JWT expired|Invalid JWT|JWT/i.test(msg)) return 'A sessão de acesso expirou ou ficou inválida. Entre novamente no aplicativo.';
   return msg;
 }
 
@@ -885,7 +847,7 @@ async function editMovement(id){
   const qty=Number(qtyRaw);
   const responsible=prompt('Responsável:',m.responsible||''); if(responsible===null)return;
   const note=prompt('Observação:',m.note||''); if(note===null)return;
-  const editReason=prompt('Justificativa da alteração (obrigatória):','');if(editReason===null)return;if(!editReason.trim())return alert('Informe a justificativa da alteração para manter a trilha de auditoria.');
+  const editReason=prompt('Justificativa da alteração (obrigatória):','');if(editReason===null)return;if(!editReason.trim())return alert('Informe a justificativa.');
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!lot.trim()||!Number.isInteger(qty)||qty<1){
     return alert('Data, lote e quantidade são obrigatórios. A quantidade deve ser um número inteiro maior que zero.');
   }
@@ -902,11 +864,11 @@ async function editMovement(id){
     if(base+qty<0)return alert('A edição deixaria o saldo do lote negativo.');
   }
   try{
-    const before={...m};
-    const patch={date,lot:lot.trim(),qty,responsible:responsible.trim(),note:note.trim(),updated_at:new Date().toISOString(),updated_by:currentUser()};
-    db.movements=db.movements.map(x=>x.id===id?{...x,...patch}:x);
-    recordAudit('MOVIMENTAÇÃO',id,'EDITADO',before,db.movements.find(x=>x.id===id),editReason.trim());
-    saveLocal();updateAll();
+    const patch={date,lot:lot.trim(),qty,responsible:responsible.trim(),note:note.trim(),change_reason:editReason.trim(),updated_at:new Date().toISOString(),updated_by:currentUser.id};
+    const {data,error}=await sb.from('movements').update(patch).eq('id',id).select().single();
+    if(error)throw error;
+    db.movements=db.movements.map(x=>x.id===id?data:x);
+    await reloadAudit();updateAll();
     alert('Movimentação editada com sucesso. O estoque e o FIFO foram recalculados.');
   }catch(e){alert('Erro ao editar movimentação: '+friendlyError(e));}
 }
@@ -918,14 +880,15 @@ async function editDock(id){
   const qty=Number(qtyRaw);
   const responsible=prompt('Responsável:',m.responsible||''); if(responsible===null)return;
   const note=prompt('Observação:',m.note||''); if(note===null)return;
-  const editReason=prompt('Justificativa da alteração nas Docas (obrigatória):','');if(editReason===null)return;if(!editReason.trim())return alert('Informe a justificativa da alteração.');
+  const editReason=prompt('Justificativa da alteração nas Docas (obrigatória):','');if(editReason===null)return;if(!editReason.trim())return alert('Informe a justificativa.');
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isInteger(qty)||qty<0)return alert('Informe uma data válida e uma quantidade inteira igual ou maior que zero.');
   try{
-    const duplicate=activeDocks().find(x=>x.id!==id&&x.date===date&&x.sector===m.sector);if(duplicate)return alert('Já existe outra contagem ativa para este dia e setor. Cancele ou substitua o registro existente antes de concluir.');
-    const before={...m};const patch={date,qty,responsible:responsible.trim(),note:note.trim(),updated_at:new Date().toISOString(),updated_by:currentUser()};
-    docks.records=docks.records.map(x=>x.id===id?{...x,...patch}:x);
-    recordAudit('DOCAS',id,'EDITADO',before,docks.records.find(x=>x.id===id),editReason.trim());
-    saveLocal();updateAll();
+    const duplicate=activeDocks().find(x=>x.id!==id&&String(x.date).slice(0,10)===date&&x.sector===m.sector);if(duplicate)return alert('Já existe outra contagem ativa para este dia e setor.');
+    const patch={date,qty,responsible:responsible.trim(),note:note.trim(),change_reason:editReason.trim(),updated_at:new Date().toISOString(),updated_by:currentUser.id};
+    const {data,error}=await sb.from('dock_records').update(patch).eq('id',id).select().single();
+    if(error)throw error;
+    docks.records=docks.records.map(x=>x.id===id?data:x);
+    await reloadAudit();updateAll();
     alert('Lançamento das docas editado com sucesso.');
   }catch(e){alert('Erro ao editar lançamento: '+friendlyError(e));}
 }
@@ -941,17 +904,15 @@ async function deleteMovement(id){
       return alert('Não é possível cancelar esta entrada porque existem consumos vinculados a ela e o saldo do lote ficaria negativo.');
     }
   }
-  if(!confirm(`Cancelar esta movimentação?\n\n${fmt(m.date)} — ${m.sector} — ${m.lot} — ${m.qty} BAG(s)\n\nEla permanecerá na auditoria e deixará de afetar os cálculos.`))return;
-  const reason=prompt('Justificativa do cancelamento (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa do cancelamento.');
-  try{await removeMovement(id,reason.trim());alert('Movimentação cancelada com sucesso.');}
+  if(!confirm(`Cancelar esta movimentação? Ela permanecerá na auditoria e deixará de afetar os cálculos.`))return;const reason=prompt('Justificativa do cancelamento:','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa.');
+  try{await removeMovement(id,reason.trim());alert('Movimentação cancelada.');}
   catch(e){alert('Erro ao apagar: '+friendlyError(e));}
 }
 
 async function deleteDock(id){
   const m=docks.records.find(x=>x.id===id); if(!m)return;
-  if(!confirm(`Cancelar este lançamento das docas?\n\n${fmt(m.date)} — ${m.sector} — ${m.qty} BAG(s)`))return;
-  const reason=prompt('Justificativa do cancelamento (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa do cancelamento.');
-  try{await removeDock(id,reason.trim());alert('Lançamento das docas cancelado com sucesso.');}
+  if(!confirm(`Cancelar este lançamento das Docas?`))return;const reason=prompt('Justificativa do cancelamento:','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa.');
+  try{await removeDock(id,reason.trim());alert('Contagem cancelada.');}
   catch(e){alert('Erro ao apagar: '+friendlyError(e));}
 }
 
@@ -970,58 +931,86 @@ function exportDockCSV(){
   a.href=URL.createObjectURL(b);a.download=`historico_docas_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
-const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',cancel_reason:'Motivo do cancelamento',created_by:'Criado por',updated_by:'Alterado por',cancelled_by:'Cancelado por'};
-const AUDIT_FIELDS=['date','kind','sector','code','type','lot','qty','responsible','note','status','fifo_status','fifo_reason','fifo_supervisor','cancel_reason','created_by','updated_by','cancelled_by'];
-function auditDisplayValue(key,value){
-  if(value===null||value===undefined||value==='')return 'Não informado';
-  if(key==='date'&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return fmt(value);
-  if(key==='qty')return Number(value).toLocaleString('pt-BR',{maximumFractionDigits:2});
-  if(key==='status')return String(value).toUpperCase();
-  return String(value);
+const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',cancel_reason:'Motivo do cancelamento'};const AUDIT_FIELDS=Object.keys(AUDIT_LABELS);function auditDisplayValue(k,v){if(v===null||v===undefined||v==='')return 'Não informado';if(k==='date')return fmt(v);if(k==='qty')return Number(v).toLocaleString('pt-BR');if(k==='status')return String(v).toUpperCase();return String(v);}function auditValuePanel(v,title,type,other=null){if(!v)return `<div class="audit-value ${type}"><h3>${title}</h3><div class="audit-empty">Não se aplica — registro criado.</div></div>`;const keys=AUDIT_FIELDS.filter(k=>v[k]!==undefined&&v[k]!==null&&v[k]!==''),fields=keys.map(k=>{const changed=other&&String(other[k]??'')!==String(v[k]??''),full=['note','fifo_reason','cancel_reason'].includes(k);return `<div class="audit-field${full?' full':''}${changed?' audit-changed':''}"><span>${esc(AUDIT_LABELS[k])}</span><strong>${esc(auditDisplayValue(k,v[k]))}</strong></div>`}).join('');return `<div class="audit-value ${type}"><h3>${title}</h3><div class="audit-fields">${fields}</div></div>`;}function renderAudit(){const entity=$('auditEntity')?.value||'',rows=(db.auditLog||[]).filter(x=>!entity||x.record_type===entity),body=$('auditBody');if(!body)return;body.innerHTML=rows.length?rows.map(x=>`<article class="audit-card"><div class="audit-card-head"><div><div class="audit-card-title">${x.record_type==='movements'?'Movimentação':'Contagem das Docas'} #${x.record_id}</div><div class="audit-card-time">${new Date(x.created_at).toLocaleString('pt-BR')}</div></div><span class="audit-action ${String(x.action).toLowerCase()}">${esc(x.action)}</span></div><div class="audit-summary"><div><span>Usuário</span><strong>${esc(x.user_email||'Não informado')}</strong></div><div><span>Registro</span><strong>${esc(x.record_type)}</strong></div><div><span>ID</span><strong>#${x.record_id}</strong></div></div><div class="audit-reason"><strong>Justificativa:</strong> ${esc(x.justification||'Não informada')}</div><div class="audit-compare">${auditValuePanel(x.before_value,'Valor anterior','old',x.after_value)}${auditValuePanel(x.after_value,'Valor novo','new',x.before_value)}</div></article>`).join(''):'<div class="empty">Nenhum evento de auditoria.</div>';}function downloadCSVRows(rows,name){const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}function exportAuditCSV(){const rows=[['Data e hora','Usuário','Registro','ID','Ação','Valor anterior','Valor novo','Justificativa']];db.auditLog.forEach(x=>rows.push([x.created_at,x.user_email,x.record_type,x.record_id,x.action,JSON.stringify(x.before_value||''),JSON.stringify(x.after_value||''),x.justification]));downloadCSVRows(rows,`auditoria_online_${today()}.csv`);}let jsZipPromise=null;
+function loadJSZip(){
+  if(window.JSZip)return Promise.resolve(window.JSZip);
+  if(jsZipPromise)return jsZipPromise;
+  jsZipPromise=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+    script.onload=()=>window.JSZip?resolve(window.JSZip):reject(new Error('Biblioteca de Excel indisponível.'));
+    script.onerror=()=>reject(new Error('Não foi possível preparar a planilha. Verifique a internet.'));
+    document.head.appendChild(script);
+  }).catch(error=>{jsZipPromise=null;throw error;});
+  return jsZipPromise;
 }
-function auditValuePanel(value,title,type,comparison=null){
-  if(!value)return `<div class="audit-value ${type}"><h3>${esc(title)}</h3><div class="audit-empty">Não se aplica — este registro foi criado agora.</div></div>`;
-  const available=AUDIT_FIELDS.filter(key=>value[key]!==undefined&&value[key]!==null&&value[key]!==''&&AUDIT_LABELS[key]);
-  if(!available.length)return `<div class="audit-value ${type}"><h3>${esc(title)}</h3><div class="audit-empty">Nenhuma informação operacional disponível.</div></div>`;
-  return `<div class="audit-value ${type}"><h3>${esc(title)}</h3><div class="audit-fields">${available.map(key=>{
-    const changed=comparison&&String(comparison[key]??'')!==String(value[key]??'');
-    const full=key==='note'||key==='fifo_reason'||key==='cancel_reason';
-    return `<div class="audit-field${full?' full':''}${changed?' audit-changed':''}"><span>${esc(AUDIT_LABELS[key])}</span><strong>${esc(auditDisplayValue(key,value[key]))}</strong></div>`;
-  }).join('')}</div></div>`;
+function excelDateSerial(value){
+  const [y,m,d]=String(value||'').slice(0,10).split('-').map(Number);
+  if(!y||!m||!d)return null;
+  return Math.floor(Date.UTC(y,m-1,d)/86400000)+25569;
 }
-function renderAudit(){
-  const entity=$('auditEntity')?.value||'';
-  const rows=[...(db.auditLog||[])].filter(x=>!entity||x.entity===entity).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)));
-  const body=$('auditBody');if(!body)return;
-  body.innerHTML=rows.length?rows.map(x=>{
-    const actionClass=String(x.action||'').toLowerCase();
-    const recordTitle=`${x.entity==='MOVIMENTAÇÃO'?'Movimentação':x.entity==='DOCAS'?'Contagem das Docas':'Evento do sistema'} #${x.entityId}`;
-    return `<article class="audit-card">
-      <div class="audit-card-head"><div><div class="audit-card-title">${esc(recordTitle)}</div><div class="audit-card-time">${new Date(x.timestamp).toLocaleString('pt-BR')}</div></div><span class="audit-action ${esc(actionClass)}">${esc(x.action)}</span></div>
-      <div class="audit-summary"><div><span>Usuário responsável</span><strong>${esc(x.user||'Não informado')}</strong></div><div><span>Tipo de registro</span><strong>${esc(x.entity)}</strong></div><div><span>Número do registro</span><strong>#${esc(x.entityId)}</strong></div></div>
-      <div class="audit-reason"><strong>Justificativa:</strong> ${esc(x.justification||'Não informada')}</div>
-      <div class="audit-compare">${auditValuePanel(x.before,'Valor anterior','old',x.after)}${auditValuePanel(x.after,'Valor novo','new',x.before)}</div>
-    </article>`;
-  }).join(''):'<div class="empty">Nenhum evento de auditoria registrado para este filtro.</div>';
+function xmlElements(parent,name){return [...parent.getElementsByTagNameNS('*',name)];}
+function sheetCell(doc,rowNumber,column){
+  const ns=doc.documentElement.namespaceURI;
+  const address=column+rowNumber;
+  const row=xmlElements(doc,'row').find(x=>x.getAttribute('r')===String(rowNumber));
+  if(!row)throw new Error('Linha '+rowNumber+' não encontrada no modelo Excel.');
+  let cell=xmlElements(row,'c').find(x=>x.getAttribute('r')===address);
+  if(!cell){cell=doc.createElementNS(ns,'c');cell.setAttribute('r',address);row.appendChild(cell);}
+  return cell;
 }
-function exportAuditCSV(){
- const rows=[['Data e hora','Usuário','Registro','ID','Ação','Valor anterior','Valor novo','Justificativa']];(db.auditLog||[]).forEach(x=>rows.push([x.timestamp,x.user,x.entity,x.entityId,x.action,JSON.stringify(x.before||''),JSON.stringify(x.after||''),x.justification]));downloadCSVRows(rows,`auditoria_bags_${today()}.csv`);
+function writeSheetCell(doc,row,column,value,type='text'){
+  const cell=sheetCell(doc,row,column),ns=doc.documentElement.namespaceURI;
+  while(cell.firstChild)cell.removeChild(cell.firstChild);
+  if(value===null||value===undefined||value===''){cell.removeAttribute('t');return;}
+  if(type==='number'||type==='date'){
+    cell.removeAttribute('t');const v=doc.createElementNS(ns,'v');v.textContent=type==='date'?excelDateSerial(value):Number(value);cell.appendChild(v);return;
+  }
+  cell.setAttribute('t','inlineStr');const is=doc.createElementNS(ns,'is'),t=doc.createElementNS(ns,'t');t.setAttribute('xml:space','preserve');t.textContent=String(value);is.appendChild(t);cell.appendChild(is);
 }
-function downloadCSVRows(rows,filename){const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-let sheetJsPromise=null;
-function loadSheetJs(){if(window.XLSX)return Promise.resolve(window.XLSX);if(sheetJsPromise)return sheetJsPromise;sheetJsPromise=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';s.onload=()=>window.XLSX?resolve(window.XLSX):reject(new Error('Biblioteca do Excel indisponível.'));s.onerror=()=>reject(new Error('Conecte-se à internet uma vez para preparar a exportação em Excel.'));document.head.appendChild(s);}).catch(e=>{sheetJsPromise=null;throw e;});return sheetJsPromise;}
+function clearFormulaCache(doc){
+  for(const cell of xmlElements(doc,'c')){
+    if(xmlElements(cell,'f').length){for(const v of xmlElements(cell,'v'))v.remove();}
+  }
+}
+function movementTurn(m){return String(m.shift||String(m.note||'').match(/Turno:\s*([^—|]+)/i)?.[1]||'').trim();}
 async function exportExcelComplete(){
- try{await loadSheetJs();const wb=XLSX.utils.book_new();
-  const movements=[['Data','Movimento','Setor','Código','Tipo','Lote','Quantidade','Responsável','Observação','Status','Criado por','Criado em','Motivo do cancelamento']];db.movements.forEach(m=>movements.push([m.date,m.kind,m.sector,m.code,m.type,m.lot,m.qty,m.responsible,m.note,m.status||'ativo',m.created_by||'',m.created_at||'',m.cancel_reason||'']));
-  const dockRows=[['Data','Setor','Código','Tipo','Quantidade','Responsável','Observação','Status','Criado por','Criado em','Motivo do cancelamento']];docks.records.forEach(m=>dockRows.push([m.date,m.sector,m.code,m.type,m.qty,m.responsible,m.note,m.status||'ativo',m.created_by||'',m.created_at||'',m.cancel_reason||'']));
-  const stockRows=[['Setor','Código','Tipo','Lote','Primeira entrada','Recebido','Consumido','Perdas','Saldo','Prioridade FIFO']];for(const sec of ['Farinheira','Colorífico'])fifoLots(sec).forEach((x,i)=>stockRows.push([sec,CONFIG[sec].code,CONFIG[sec].type,x.lot,x.firstDate,x.received,x.consumed,x.lost,x.qty,i+1]));
-  const auditRows=[['Data e hora','Usuário','Registro','ID','Ação','Valor anterior','Valor novo','Justificativa']];(db.auditLog||[]).forEach(x=>auditRows.push([x.timestamp,x.user,x.entity,x.entityId,x.action,JSON.stringify(x.before||''),JSON.stringify(x.after||''),x.justification]));
-  const panel=[['CONTROLE DE ESTOQUE E MOVIMENTAÇÕES'],['Indicador','Farinheira','Colorífico','Total'],['Saldo em BAGS',totalStock('Farinheira'),totalStock('Colorífico'),totalStock('Farinheira')+totalStock('Colorífico')],['Não conformidades FIFO',activeMovements().filter(m=>m.fifo_status==='DESVIO AUTORIZADO'||String(m.note).includes('não seguiu FIFO')).length,'',''],['Gerado em',new Date().toLocaleString('pt-BR'),'','']];
-  for(const [name,data,widths] of [['Painel',panel,[30,18,18,18]],['Movimentações',movements,[13,14,24,10,23,20,12,18,50,14,18,22,35]],['Docas',dockRows,[13,24,10,23,12,18,45,14,18,22,35]],['Estoque e FIFO',stockRows,[24,10,23,20,15,12,12,12,12,16]],['Auditoria',auditRows,[22,18,18,10,18,55,55,45]]]){const ws=XLSX.utils.aoa_to_sheet(data);ws['!cols']=widths.map(w=>({wch:w}));ws['!autofilter']={ref:ws['!ref']};XLSX.utils.book_append_sheet(wb,ws,name);}
-  XLSX.writeFile(wb,`Controle_Estoque_FIFO_${today()}.xlsx`);
- }catch(e){alert('Não foi possível gerar o Excel: '+friendlyError(e));}
+  try{
+    await loadJSZip();
+    const response=await fetch('./Controle_de_Estoque_FIFO_Bags.xlsx',{cache:'no-store'});
+    if(!response.ok)throw new Error('O modelo Controle_de_Estoque_FIFO_Bags.xlsx não foi encontrado no GitHub. Envie o arquivo para a mesma pasta do index.html.');
+    const zip=await JSZip.loadAsync(await response.arrayBuffer());
+    const parser=new DOMParser(),serializer=new XMLSerializer();
+    const movementPath='xl/worksheets/sheet2.xml',stockPath='xl/worksheets/sheet3.xml';
+    const movementDoc=parser.parseFromString(await zip.file(movementPath).async('string'),'application/xml');
+    const stockDoc=parser.parseFromString(await zip.file(stockPath).async('string'),'application/xml');
+    if(movementDoc.querySelector('parsererror')||stockDoc.querySelector('parsererror'))throw new Error('O modelo Excel está inválido.');
+    for(let row=5;row<=504;row++)for(const col of ['A','B','C','D','E','F','G','H','I','J'])writeSheetCell(movementDoc,row,col,'');
+    const movements=activeMovements().slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))||Number(a.id)-Number(b.id));
+    if(movements.length>500)throw new Error('Existem mais de 500 movimentações. Exporte por período ou amplie o modelo Excel.');
+    movements.forEach((m,index)=>{
+      const row=5+index,values=[m.date,m.kind,m.sector,m.code,m.type,m.lot,Number(m.qty),m.responsible||'',m.note||'',movementTurn(m)];
+      ['A','B','C','D','E','F','G','H','I','J'].forEach((col,i)=>writeSheetCell(movementDoc,row,col,values[i],i===0?'date':i===6?'number':'text'));
+    });
+    clearFormulaCache(movementDoc);
+    const lotMap=new Map();
+    for(const m of movements){if(!m.lot)continue;const key=m.sector+'|'+m.lot;if(!lotMap.has(key))lotMap.set(key,{sector:m.sector,code:m.code,type:m.type,lot:m.lot});}
+    const lots=[...lotMap.values()].sort((a,b)=>String(a.sector).localeCompare(String(b.sector))||String(a.lot).localeCompare(String(b.lot)));
+    if(lots.length>100)throw new Error('Existem mais de 100 combinações de setor e lote. Amplie o modelo Excel.');
+    for(let row=5;row<=104;row++)for(const col of ['A','B','C','D'])writeSheetCell(stockDoc,row,col,'');
+    lots.forEach((x,index)=>{const row=5+index;writeSheetCell(stockDoc,row,'A',x.sector);writeSheetCell(stockDoc,row,'B',x.code);writeSheetCell(stockDoc,row,'C',x.type);writeSheetCell(stockDoc,row,'D',x.lot);});
+    clearFormulaCache(stockDoc);
+    zip.file(movementPath,serializer.serializeToString(movementDoc));zip.file(stockPath,serializer.serializeToString(stockDoc));
+    for(const sheetName of ['xl/worksheets/sheet1.xml','xl/worksheets/sheet4.xml']){
+      const doc=parser.parseFromString(await zip.file(sheetName).async('string'),'application/xml');clearFormulaCache(doc);zip.file(sheetName,serializer.serializeToString(doc));
+    }
+    const workbookPath='xl/workbook.xml',workbookDoc=parser.parseFromString(await zip.file(workbookPath).async('string'),'application/xml');
+    const calc=xmlElements(workbookDoc,'calcPr')[0];if(calc){calc.setAttribute('calcMode','auto');calc.setAttribute('fullCalcOnLoad','1');calc.setAttribute('forceFullCalc','1');}
+    zip.file(workbookPath,serializer.serializeToString(workbookDoc));
+    const blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',compression:'DEFLATE'});
+    const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='Controle_Estoque_FIFO_'+today()+'.xlsx';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1500);
+  }catch(error){alert('Não foi possível gerar o Excel completo: '+friendlyError(error));}
 }
-
 function exportCSV(){
   const rows=[['Data','Movimento','Setor','Código','Tipo de BAG','Lote','Quantidade','Responsável','Observação']];
   db.movements.forEach(m=>rows.push([m.date,m.kind,m.sector,m.code,m.type,m.lot,m.qty,m.responsible,m.note]));
@@ -1042,26 +1031,12 @@ async function restoreBackup(ev){
   try{
     const x=JSON.parse(await f.text());
     if(!Array.isArray(x.movements)||!Array.isArray(x.productLots||[])||!Array.isArray(x.docks||[])) throw new Error('Estrutura do backup inválida.');
-    if(!confirm('Restaurar este backup substituirá os lançamentos salvos neste aparelho. Um backup automático dos dados atuais será baixado antes da restauração. Continuar?'))return;
-    downloadBackup('backup_antes_da_restauracao');
-    nextLocalId=1;
-    db.movements=x.movements.map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
-    db.productLots=(x.productLots||[]).map(m=>({...m,id:nextLocalId++}));
-    docks.records=(x.docks||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
-    db.auditLog=(x.auditLog||[]).map(a=>({...a,id:nextLocalId++}));
-    recordAudit('SISTEMA',0,'BACKUP RESTAURADO',null,{registros:db.movements.length,docas:docks.records.length},'Restauração confirmada pelo usuário');
-    saveLocal();updateAll();
-    alert('Backup restaurado com sucesso.');
+    alert('O arquivo é válido, mas a restauração automática foi bloqueada nesta versão para não apagar a trilha de auditoria compartilhada. A restauração deve ser realizada por um administrador do banco, preservando os registros existentes.');
   }catch(e){alert('Erro ao restaurar backup: '+friendlyError(e));}
   finally{ev.target.value='';}
 }
 
-async function clearAll(){
-  if(!confirm('Cancelar todos os lançamentos ativos? Eles permanecerão disponíveis na trilha de auditoria.'))return;
-  const reason=prompt('Justificativa do cancelamento em massa (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa.');
-  try{for(const m of activeMovements()){const before={...m};m.status='cancelado';m.cancel_reason=reason.trim();m.cancelled_at=new Date().toISOString();m.cancelled_by=currentUser();recordAudit('MOVIMENTAÇÃO',m.id,'CANCELADO',before,m,reason.trim());}for(const d of activeDocks()){const before={...d};d.status='cancelado';d.cancel_reason=reason.trim();d.cancelled_at=new Date().toISOString();d.cancelled_by=currentUser();recordAudit('DOCAS',d.id,'CANCELADO',before,d,reason.trim());}saveLocal();updateAll();alert('Lançamentos ativos cancelados.');
-  }catch(e){alert('Erro ao cancelar: '+friendlyError(e));}
-}
+async function clearAll(){if(!confirm('Cancelar todos os lançamentos ativos? Eles permanecerão na auditoria.'))return;const reason=prompt('Justificativa do cancelamento em massa:','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa.');try{const now=new Date().toISOString();let r=await sb.from('movements').update({status:'cancelado',cancel_reason:reason.trim(),cancelled_at:now,cancelled_by:currentUser.id,change_reason:reason.trim()}).eq('status','ativo');if(r.error)throw r.error;r=await sb.from('dock_records').update({status:'cancelado',cancel_reason:reason.trim(),cancelled_at:now,cancelled_by:currentUser.id,change_reason:reason.trim()}).eq('status','ativo');if(r.error)throw r.error;await loadCloud();alert('Lançamentos ativos cancelados.');}catch(e){alert('Erro ao cancelar: '+friendlyError(e));}}
 
 ['eDate','eSector','eQty','dDate','dSector','dQty'].forEach(id=>$(id)?.addEventListener('input',refreshFormComparisons));
 ['eSector','dSector'].forEach(id=>$(id)?.addEventListener('change',refreshFormComparisons));
@@ -1083,14 +1058,11 @@ $('entryForm').addEventListener('submit',async e=>{
     if(!CONFIG[sec]||!$('eDate').value||!lot||!Number.isInteger(qty)||qty<1){
       return alert('Informe a data, lote e uma quantidade inteira maior que zero.');
     }
+    await loadCloud();
     const date=$('eDate').value;
     const comparison=dockEntryComparison(date,sec,qty);
     let note=$('eNote').value.trim();
-    if(comparison.dockQty===null){
-      const reason=prompt(`${comparison.message}\n\nNão existe contagem anterior para conferência. Informe a justificativa para registrar a Entrada:`,'');
-      if(reason===null)return;if(!reason.trim())return alert('A justificativa é obrigatória quando não existe contagem anterior nas Docas.');
-      note=`Entrada sem contagem anterior nas Docas — Justificativa: ${reason.trim()}${note?' | '+note:''}`;
-    }
+    if(comparison.dockQty===null){const reason=prompt(`${comparison.message}\n\nInforme a justificativa para registrar a Entrada sem contagem anterior:`,'');if(reason===null)return;if(!reason.trim())return alert('A justificativa é obrigatória.');note=`Entrada sem contagem anterior nas Docas — Justificativa: ${reason.trim()}${note?' | '+note:''}`;}
     if(comparison.status==='less'){
       const proceed=confirm(`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s)\nEntrada de ${fmt(comparison.entryDate)} após este registro: ${comparison.entries} BAG(s)\nDiferença: ${Math.abs(comparison.diff)} BAG(s) a menos.\n\nDeseja registrar mesmo assim?`);
       if(!proceed)return;
@@ -1099,7 +1071,7 @@ $('entryForm').addEventListener('submit',async e=>{
     if(comparison.status==='more'){
       const reason=prompt(`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s)\nEntrada de ${fmt(comparison.entryDate)} após este registro: ${comparison.entries} BAG(s)\nDiferença: ${comparison.diff} BAG(s) a mais.\n\nInforme o motivo da entrada a mais:`,'');
       if(reason===null)return;
-      if(!reason.trim())return alert('Para registrar uma Entrada superior às Docas, informe o motivo da divergência.');
+      if(!reason.trim())return alert('Para registrar uma Entrada superior às Docas do dia anterior, informe o motivo da divergência.');
       note=`Divergência Docas × Entrada: ${comparison.diff} BAG(s) a mais — Motivo: ${reason.trim()}${note?' | '+note:''}`;
     }
     const m={date,kind:'ENTRADA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot,qty,responsible:$('eResponsible').value.trim(),note};
@@ -1118,13 +1090,9 @@ $('dockForm').addEventListener('submit',async e=>{
     const sec=$('dSector').value;
     const m={date:$('dDate').value,sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,qty:Number($('dQty').value),responsible:$('dResponsible').value.trim(),note:$('dNote').value.trim()};
     if(!m.date||!Number.isInteger(m.qty)||m.qty<0)return alert('Informe a data e uma quantidade inteira válida.');
-    const existing=activeDocks().find(x=>x.date===m.date&&x.sector===sec);
-    if(existing){
-      if(!confirm(`Já existe uma contagem de ${existing.qty} BAG(s) para ${sec} em ${fmt(m.date)}. Deseja substituí-la pela nova contagem de ${m.qty} BAG(s)?`))return;
-      const reason=prompt('Justificativa da substituição da contagem (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa da substituição.');
-      await removeDock(existing.id,`Substituída por nova contagem — ${reason.trim()}`);
-    }
-    await addDock(m);
+    await loadCloud();
+    const existing=activeDocks().find(x=>String(x.date).slice(0,10)===m.date&&x.sector===sec);if(existing){if(!confirm(`Já existe uma contagem de ${existing.qty} BAG(s). Deseja substituí-la por ${m.qty} BAG(s)?`))return;const reason=prompt('Justificativa da substituição:','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa.');await removeDock(existing.id,`Substituída por nova contagem — ${reason.trim()}`);}
+    await addDock(m);await reloadAudit();
     const comparison=dockEntryComparison(addDays(m.date,1),sec);
     e.target.reset();setToday('dDate');syncDockType();
     alert(`Lançamento das docas registrado com sucesso.\n\n${comparison.message}\nEntrada de ${fmt(comparison.entryDate)}: ${comparison.entries} BAG(s)\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s).`);
@@ -1144,13 +1112,7 @@ $('consumptionForm').addEventListener('submit',async e=>{
     if(manualLot){
       const item=fifoLots(s).find(x=>String(x.lot).toLowerCase()===manualLot.toLowerCase());
       if(!item)return alert(`O lote ${manualLot} não foi encontrado ou não possui saldo disponível em ${s}.`);
-      if(q>item.qty)return alert(`Saldo insuficiente no lote ${item.lot}. Saldo disponível: ${item.qty} BAG(s).`);
-      const first=fifoLots(s)[0];
-      if(first&&first.lot!==item.lot){
-        const reason=prompt(`O lote prioritário pelo FIFO é ${first.lot}, mas foi informado ${item.lot}. Informe o motivo do desvio:`,'');if(reason===null)return;if(!reason.trim())return alert('Informe o motivo do desvio do FIFO.');
-        const supervisor=prompt('Informe o nome do supervisor que autorizou o desvio:','');if(supervisor===null)return;if(!supervisor.trim())return alert('A autorização do supervisor é obrigatória para utilizar outro lote.');
-        movements=[{date:$('cDate').value,kind:'CONSUMO',sector:s,type:CONFIG[s].type,code:CONFIG[s].code,lot:item.lot,qty:q,responsible:$('cResponsible').value.trim(),fifo_status:'DESVIO AUTORIZADO',fifo_reason:reason.trim(),fifo_supervisor:supervisor.trim(),note:`Desvio manual do FIFO — Motivo: ${reason.trim()} — Autorizado por: ${supervisor.trim()} — ${noteBase}`}];
-      }else{movements=[{date:$('cDate').value,kind:'CONSUMO',sector:s,type:CONFIG[s].type,code:CONFIG[s].code,lot:item.lot,qty:q,responsible:$('cResponsible').value.trim(),fifo_status:'CONFORME',note:`Lote prioritário informado manualmente — FIFO seguido — ${noteBase}`}];}
+      if(q>item.qty)return alert(`Saldo insuficiente no lote ${item.lot}. Saldo disponível: ${item.qty} BAG(s).`);const first=fifoLots(s)[0];if(first&&first.lot!==item.lot){const reason=prompt(`O lote prioritário é ${first.lot}. Informe o motivo do desvio:`,'');if(reason===null)return;if(!reason.trim())return alert('Informe o motivo.');const supervisor=prompt('Supervisor que autorizou:','');if(supervisor===null)return;if(!supervisor.trim())return alert('Informe o supervisor.');movements=[{date:$('cDate').value,kind:'CONSUMO',sector:s,type:CONFIG[s].type,code:CONFIG[s].code,lot:item.lot,qty:q,responsible:$('cResponsible').value.trim(),fifo_status:'DESVIO AUTORIZADO',fifo_reason:reason.trim(),fifo_supervisor:supervisor.trim(),note:`Desvio manual do FIFO — operador não seguiu FIFO — Motivo: ${reason.trim()} — Autorizado por: ${supervisor.trim()} — ${noteBase}`}];}else{movements=[{date:$('cDate').value,kind:'CONSUMO',sector:s,type:CONFIG[s].type,code:CONFIG[s].code,lot:item.lot,qty:q,responsible:$('cResponsible').value.trim(),fifo_status:'CONFORME',note:`Lote prioritário informado manualmente — FIFO seguido — ${noteBase}`}];}
     }else{
       const queue=fifoLots(s);
       const total=queue.reduce((a,x)=>a+x.qty,0);
@@ -1203,6 +1165,78 @@ $('productLotForm').addEventListener('submit',async e=>{
   }catch(err){alert('Erro ao registrar lote: '+friendlyError(err));}
 });
 
+$('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=$('loginEmail').value.trim(),password=$('loginPassword').value;
+  const btn=$('loginButton');
+  if(!email||!password){showLogin('Informe o e-mail e a senha.',true);return;}
+
+  btn.disabled=true;btn.textContent='Entrando...';showLogin('Entrando...');
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email,password});
+    if(error) throw error;
+    if(!data?.user) throw new Error('Login não retornou um usuário.');
+    currentUser=data.user;
+    showApp();
+    $('loginMsg').textContent='';
+    await safeLoadCloud();
+  }catch(err){
+    console.error(err);
+    showLogin('Erro ao entrar: '+friendlyError(err),true);
+  }finally{
+    btn.disabled=false;btn.textContent='Entrar';
+  }
+});
+
+async function logout(){
+  try{await sb.auth.signOut({scope:'local'});}
+  catch(e){alert('Erro ao sair: '+friendlyError(e));}
+}
+
+window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();deferredInstallPrompt=event;
+  const button=$('installAppButton');if(button)button.style.display='inline-block';
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;const button=$('installAppButton');if(button)button.style.display='none';
+});
+async function installApp(){
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;return;
+  }
+  const isiPhone=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  alert(isiPhone?'No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.':'No menu do navegador, escolha Instalar aplicativo ou Adicionar à tela inicial.');
+}
+
+let loadingCloud=false;
+let lastLoadedUserId=null;
+
+async function safeLoadCloud(){
+  if(!currentUser||loadingCloud)return;
+  loadingCloud=true;
+  try{
+    await loadCloud();
+    lastLoadedUserId=currentUser.id;
+  }finally{
+    loadingCloud=false;
+  }
+}
+
+sb.auth.onAuthStateChange(async(event,session)=>{
+  if(event==='SIGNED_OUT' || !session){
+    currentUser=null;
+    lastLoadedUserId=null;
+    showLogin('');
+    return;
+  }
+  currentUser=session.user;
+  showApp();
+  if(event==='SIGNED_IN' || event==='INITIAL_SESSION' || lastLoadedUserId!==currentUser.id){
+    try{await safeLoadCloud();}
+    catch(e){console.error(e);showLogin('Erro ao carregar o banco: '+friendlyError(e),true);}
+  }
+});
+
 async function boot(){
   setToday('dDate');
   setToday('cDate');
@@ -1213,89 +1247,29 @@ async function boot(){
   syncDockType();
   syncLossType();
   syncEntryType();
-  const auth=getLocalAuth();
-  const session=sessionStorage.getItem(SESSION_KEY);
-  if(auth&&session===auth.hash){
-    loadLocal();
-    showApp(auth.username);
-  }else{
-    sessionStorage.removeItem(SESSION_KEY);
-    configureLoginScreen();
+  updateAll();
+  if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true){$('installAppButton').style.display='none';}
+
+  try{
+    const {data,error}=await sb.auth.getSession();
+    if(error)throw error;
+    if(data.session){
+      currentUser=data.session.user;
+      showApp();
+      if(lastLoadedUserId!==currentUser.id) await safeLoadCloud();
+    }else{
+      showLogin('');
+    }
+  }catch(e){
+    console.error(e);
+    showLogin('Não foi possível conectar ao Supabase: '+friendlyError(e),true);
   }
 }
-
-$('loginForm').addEventListener('submit',async event=>{
-  event.preventDefault();
-  const now=Date.now();
-  if(now<loginBlockedUntil){
-    const seconds=Math.ceil((loginBlockedUntil-now)/1000);
-    $('loginMsg').textContent=`Aguarde ${seconds} segundo(s) antes de tentar novamente.`;
-    return;
-  }
-  const username=$('loginUser').value.trim();
-  const password=$('loginPassword').value;
-  const auth=getLocalAuth();
-  $('loginButton').disabled=true;
-  $('loginMsg').textContent=auth?'Verificando acesso…':'Criando acesso local…';
-  try{
-    if(!auth){
-      const confirmation=$('loginPasswordConfirm').value;
-      if(username.length<3)return void($('loginMsg').textContent='O usuário deve ter pelo menos 3 caracteres.');
-      if(password.length<6)return void($('loginMsg').textContent='A senha deve ter pelo menos 6 caracteres.');
-      if(password!==confirmation)return void($('loginMsg').textContent='As senhas não são iguais.');
-      const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16)));
-      const hash=await derivePassword(password,salt);
-      localStorage.setItem(AUTH_KEY,JSON.stringify({username,salt,hash,createdAt:new Date().toISOString()}));
-      sessionStorage.setItem(SESSION_KEY,hash);
-      loadLocal();
-      showApp(username);
-      event.target.reset();
-      alert('Usuário e senha cadastrados com sucesso neste aparelho.');
-    }else{
-      const hash=await derivePassword(password,auth.salt);
-      if(username!==auth.username||hash!==auth.hash){
-        loginFailures++;
-        if(loginFailures>=5){loginBlockedUntil=Date.now()+30000;loginFailures=0;}
-        $('loginMsg').textContent='Usuário ou senha incorretos.';
-        return;
-      }
-      loginFailures=0;
-      sessionStorage.setItem(SESSION_KEY,auth.hash);
-      loadLocal();
-      showApp(auth.username);
-      event.target.reset();
-    }
-  }catch(error){
-    $('loginMsg').textContent='Não foi possível validar o acesso neste navegador.';
-    console.error(error);
-  }finally{$('loginButton').disabled=false;}
-});
 
 $('clock').textContent=new Date().toLocaleString('pt-BR');
 setInterval(()=>$('clock').textContent=new Date().toLocaleString('pt-BR'),1000);
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(error=>console.warn('Service worker:',error)));}
 boot();
-
-let deferredInstallPrompt=null;
-const installButton=$('installApp');
-window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();
-  deferredInstallPrompt=event;
-  installButton.style.display='inline-block';
-});
-installButton.addEventListener('click',async()=>{
-  if(!deferredInstallPrompt)return;
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt=null;
-  installButton.style.display='none';
-});
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
-  installButton.style.display='none';
-});
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(err=>console.warn('Serviço offline não registrado:',err)));
-}
 </script>
 </body>
 </html>
