@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.21-offline-fifo-setores-separados">
+<meta name="app-version" content="2026.08.22-offline-auditoria-integridade">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -82,6 +82,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 .send-check{display:flex;align-items:center;gap:10px;margin-top:16px;padding:13px;background:#fff;border:1px solid #bfdfca;border-radius:10px;font-weight:800}.send-check input{width:20px;height:20px;accent-color:var(--green)}.sent-fields{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .label-reader{grid-column:1/-1;border:1px dashed #8bb8d8;background:#f2f8fd;border-radius:12px;padding:13px}.label-reader .actions{margin-top:0}.reader-status{margin-top:8px;font-size:12px;color:var(--muted)}.reader-status.busy{color:var(--primary);font-weight:700}.reader-status.ok{color:var(--green);font-weight:700}.reader-status.error{color:var(--red);font-weight:700}
 .audit-status{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:800}.audit-active{background:#dff5e9;color:#11683d}.audit-cancelled{background:#fde5e5;color:#a52d2d}.btn.warning{background:#d99000;color:#fff}
+.required-missing{border-color:var(--red)!important;background:#fff5f5!important;box-shadow:0 0 0 3px rgba(200,61,61,.12)!important}.field-error{color:var(--red);font-size:11px;font-weight:700;margin-top:2px}
+.status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}.status-card{padding:15px;border-radius:13px;border:1px solid var(--border);background:#fff}.status-card strong{display:block;font-size:24px;margin-top:5px}.status-card.warning{background:#fff8e7;border-color:#e7ca78;color:#77500c}.status-card.danger{background:#fff0f0;border-color:#e9b0b0;color:#922f2f}.status-card.ok{background:#edf9f2;border-color:#b9dfc8;color:#11683d}@media(max-width:700px){.status-grid{grid-template-columns:1fr}}
+.app-toast-wrap{position:fixed;right:18px;top:92px;z-index:12000;display:grid;gap:9px;max-width:min(390px,calc(100vw - 24px))}.app-toast{background:#fff;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:11px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:13px 16px;white-space:pre-line}.app-toast.success{border-left-color:var(--green)}.app-toast.error{border-left-color:var(--red)}.app-toast.warning{border-left-color:#d99000}
+.app-modal{border:0;border-radius:16px;padding:0;width:min(620px,calc(100vw - 24px));box-shadow:0 24px 70px rgba(0,0,0,.3)}.app-modal::backdrop{background:rgba(8,30,48,.58)}.modal-head{padding:18px 20px;background:linear-gradient(120deg,var(--primary2),var(--primary));color:#fff}.modal-head h2{margin:0;font-size:20px}.modal-body{padding:20px;white-space:pre-line}.modal-fields{display:grid;gap:12px;margin-top:15px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;padding:0 20px 20px}.backup-current{color:var(--green);font-weight:800}.backup-old{color:var(--red);font-weight:800}
 .audit-list{display:grid;gap:14px;margin-top:16px}.audit-card{border:1px solid var(--border);border-radius:13px;background:#fff;overflow:hidden;box-shadow:0 4px 15px rgba(15,42,66,.05)}.audit-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 16px;background:#f4f8fb;border-bottom:1px solid var(--border)}.audit-card-title{font-size:16px;font-weight:800;color:var(--primary2)}.audit-card-time{font-size:12px;color:var(--muted);margin-top:4px}.audit-action{padding:6px 10px;border-radius:99px;background:#eaf3fb;color:#174d78;font-size:11px;font-weight:900;white-space:nowrap}.audit-action.cancelado{background:#fde5e5;color:#a52d2d}.audit-action.editado{background:#fff4d6;color:#77500c}.audit-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px;background:#fff}.audit-summary div{padding:9px 11px;border-radius:8px;background:#f8fafc}.audit-summary span,.audit-field span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:800;margin-bottom:4px}.audit-summary strong{display:block;overflow-wrap:anywhere}.audit-reason{margin:0 16px 14px;padding:11px 13px;border-left:4px solid var(--primary);background:#eef5fb;border-radius:7px;overflow-wrap:anywhere}.audit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}.audit-value{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.audit-value h3{margin:0;padding:10px 12px;font-size:13px;background:#eef3f7}.audit-value.new h3{background:#e8f7ee;color:#11683d}.audit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.audit-field{padding:9px 12px;border-bottom:1px solid #edf1f4;overflow-wrap:anywhere;min-width:0}.audit-field.full{grid-column:1/-1}.audit-empty{padding:18px;color:var(--muted);font-style:italic;text-align:center}.audit-field strong{font-size:13px;font-weight:700}.audit-changed{background:#fff9e8}.audit-changed strong{color:#7a5200}@media(max-width:800px){.audit-summary{grid-template-columns:1fr}.audit-compare{grid-template-columns:1fr}.audit-card-head{flex-direction:column}.audit-fields{grid-template-columns:1fr}.audit-field.full{grid-column:auto}}
 </style>
 </head>
@@ -137,11 +141,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </nav>
 
 <section id="dashboard" class="page active">
+<div id="dashboardOperationalStatus" class="status-grid"></div>
 <div class="cards dashboard-cards">
-<div class="card stock"><div class="label">Estoque · Farinheira · 1437</div><div id="kFar" class="value green">0</div></div>
+<div class="card stock"><div class="label">Estoque · Farinheira · 1437</div><div id="kFar" class="value green">0 BAGS</div></div>
 <div class="card entry"><div class="label">Entradas ontem · Farinheira</div><div id="kEntryPrevFar" class="value blue">0</div></div>
 <div class="card consumed"><div class="label">Consumidos ontem · Farinheira</div><div id="kConsPrevFar" class="value red">0</div></div>
-<div class="card stock"><div class="label">Estoque · Colorífico · 1436</div><div id="kCol" class="value yellow">0</div></div>
+<div class="card stock"><div class="label">Estoque · Colorífico · 1436</div><div id="kCol" class="value yellow">0 BAGS</div></div>
 <div class="card entry"><div class="label">Entradas ontem · Colorífico</div><div id="kEntryPrevCol" class="value blue">0</div></div>
 <div class="card consumed"><div class="label">Consumidos ontem · Colorífico</div><div id="kConsPrevCol" class="value red">0</div></div>
 </div>
@@ -237,7 +242,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="loteProduto" class="page">
 <div class="panel"><h2>🏷️ Lote do Produto — preenchimento</h2>
-<div class="info">Use esta aba para registrar o <strong>lote do produto produzido</strong>, separado do lote do Big Bag. Os registros ficam salvos no banco compartilhado e podem ser consultados no histórico.</div>
+<div class="info">Use esta aba para registrar o <strong>lote do produto produzido</strong>, separado do lote do Big Bag. Os registros ficam salvos neste aparelho, entram na auditoria e podem ser consultados no histórico.</div>
 <form id="productLotForm"><div class="form-grid">
 <div class="field"><label>Data *</label><input type="date" id="pDate" required></div>
 <div class="field"><label>Setor *</label><select id="pSector" required><option>Farinheira</option><option>Colorífico</option></select></div>
@@ -249,7 +254,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </div>
 <div class="panel"><h2>📋 Histórico de lotes do produto</h2>
 <div class="toolbar"><input type="date" id="phStart"><input type="date" id="phEnd"><select id="phSector"><option value="">Todos os setores</option><option>Farinheira</option><option>Colorífico</option></select><input id="phLot" placeholder="Pesquisar lote do produto..."><button class="btn primary" type="button" onclick="renderProductLotHistory()">Filtrar</button><button class="btn light" type="button" onclick="exportProductLotCSV()">Exportar CSV</button></div>
-<div class="table-wrap"><table><thead><tr><th>Data</th><th>Setor</th><th>Lote do produto</th><th>Ordem de produção</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="productLotBody"></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Data</th><th>Setor</th><th>Lote do produto</th><th>Ordem de produção</th><th>Responsável</th><th>Observação</th><th>Status</th><th>Ações</th></tr></thead><tbody id="productLotBody"></tbody></table></div>
 </div>
 </section>
 
@@ -300,22 +305,24 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <section id="auditoria" class="page">
 <div class="panel"><h2>🛡️ Trilha de auditoria</h2>
 <div class="info">Toda edição, substituição e cancelamento registra valor anterior, valor novo, usuário, data e hora e justificativa. Os registros não podem ser apagados por esta tela.</div>
-<div class="toolbar"><select id="auditEntity" onchange="renderAudit()"><option value="">Todos os registros</option><option value="MOVIMENTAÇÃO">Movimentações</option><option value="DOCAS">Docas</option><option value="SISTEMA">Sistema</option></select><button class="btn primary" type="button" onclick="renderAudit()">Atualizar</button><button class="btn light" type="button" onclick="exportAuditCSV()">Exportar auditoria</button></div>
+<div class="toolbar"><select id="auditEntity" onchange="renderAudit()"><option value="">Todos os registros</option><option value="MOVIMENTAÇÃO">Movimentações</option><option value="DOCAS">Docas</option><option value="LOTE DO PRODUTO">Lotes do Produto</option><option value="SISTEMA">Sistema</option></select><button class="btn primary" type="button" onclick="renderAudit()">Atualizar</button><button class="btn light" type="button" onclick="exportAuditCSV()">Exportar auditoria</button></div>
 <div id="auditBody" class="audit-list"></div>
 </div></section>
 
 <section id="backup" class="page">
 <div class="panel"><h2>💾 Backup e restauração</h2><p class="small">Os registros ficam salvos no banco compartilhado. Faça backup antes de trocar de aparelho ou realizar alterações importantes.</p>
-<div class="actions"><button class="btn primary" type="button" onclick="downloadBackup()">Baixar backup</button><button class="btn success" type="button" onclick="exportExcelComplete()">📊 Baixar Excel completo</button><label class="btn light">Restaurar backup<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(event)"></label><button class="btn danger" type="button" onclick="clearAll()">Cancelar lançamentos ativos</button></div>
+<div id="backupStatus" class="info">Verificando a data do último backup…</div><div class="actions"><button class="btn primary" type="button" onclick="downloadBackup()">Baixar backup</button><button class="btn success" type="button" onclick="exportExcelComplete()">📊 Baixar Excel completo</button><label class="btn light">Restaurar backup<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(event)"></label><button class="btn light" type="button" onclick="changeLocalPassword()">🔐 Trocar senha</button><button class="btn danger" type="button" onclick="resetLocalAccess()">Redefinir acesso</button><button class="btn danger" type="button" onclick="clearAll()">Cancelar lançamentos ativos</button></div>
 </div>
-<div class="panel"><h2>Cadastro fixo</h2><table><thead><tr><th>Setor</th><th>Tipo</th><th>Código</th><th>Estoque inicial</th></tr></thead><tbody>
-<tr><td>Farinheira</td><td>Big Bag 1.300 kg</td><td>1437</td><td>47</td></tr>
-<tr><td>Colorífico</td><td>Big Bag 1.250 kg</td><td>1436</td><td>14</td></tr>
+<div class="panel"><h2>Parâmetros fixos</h2><table><thead><tr><th>Setor</th><th>Tipo</th><th>Código</th><th>Cálculo do estoque</th></tr></thead><tbody>
+<tr><td>Farinheira</td><td>Big Bag 1.300 kg</td><td>1437</td><td>Calculado pelas movimentações</td></tr>
+<tr><td>Colorífico</td><td>Big Bag 1.250 kg</td><td>1436</td><td>Calculado pelas movimentações</td></tr>
 </tbody></table></div>
 </section>
 
 <footer>Controle de estoque e movimentações — Flotamil com registro, baixa e impressão direta automática</footer>
 </div>
+<div id="appToastWrap" class="app-toast-wrap" aria-live="polite"></div>
+<dialog id="appModal" class="app-modal"><form method="dialog" id="appModalForm"><div class="modal-head"><h2 id="appModalTitle">Confirmação</h2></div><div class="modal-body"><div id="appModalMessage"></div><div id="appModalFields" class="modal-fields"></div></div><div class="modal-actions"><button id="appModalCancel" class="btn light" value="cancel">Cancelar</button><button id="appModalConfirm" class="btn primary" value="confirm">Confirmar</button></div></form></dialog>
 
 <script>/*!
 
@@ -350,6 +357,29 @@ let loginFailures = 0;
 let loginBlockedUntil = 0;
 
 const $ = id => document.getElementById(id);
+
+function showNotice(message,type='info',duration=5200){
+  const wrap=$('appToastWrap');if(!wrap)return;
+  const toast=document.createElement('div');toast.className=`app-toast ${type}`;toast.textContent=String(message||'');wrap.appendChild(toast);
+  setTimeout(()=>toast.remove(),duration);
+}
+function appDialog({title='Confirmação',message='',fields=[],confirmText='Confirmar',danger=false}){
+  return new Promise(resolve=>{
+    const dialog=$('appModal'),form=$('appModalForm'),box=$('appModalFields');
+    $('appModalTitle').textContent=title;$('appModalMessage').textContent=message;$('appModalConfirm').textContent=confirmText;$('appModalConfirm').className=`btn ${danger?'danger':'primary'}`;
+    box.innerHTML=fields.map((f,i)=>`<div class="field"><label>${esc(f.label)}${f.required?' *':''}</label>${f.type==='textarea'?`<textarea data-modal-field="${i}" placeholder="${esc(f.placeholder||'')}">${esc(f.value||'')}</textarea>`:`<input data-modal-field="${i}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" placeholder="${esc(f.placeholder||'')}">`}</div>`).join('');
+    const finish=()=>{const confirmed=dialog.returnValue==='confirm';const values=confirmed?[...box.querySelectorAll('[data-modal-field]')].map(x=>x.value):null;dialog.removeEventListener('close',finish);resolve(values===null?null:{confirmed:true,values});};
+    form.onsubmit=event=>{if(event.submitter?.value==='confirm'){const inputs=[...box.querySelectorAll('[data-modal-field]')];const missing=fields.some((f,i)=>f.required&&!inputs[i].value.trim());if(missing){event.preventDefault();showNotice('Preencha todos os campos obrigatórios.','error');inputs.forEach((x,i)=>x.classList.toggle('required-missing',!!fields[i].required&&!x.value.trim()));}}};
+    dialog.addEventListener('close',finish);dialog.showModal();
+  });
+}
+async function askConfirm(title,message,confirmText='Confirmar',danger=false){return !!(await appDialog({title,message,confirmText,danger}));}
+async function askFields(title,message,fields,confirmText='Salvar'){return appDialog({title,message,fields,confirmText});}
+function validateRequired(form){
+  let first=null;form.querySelectorAll('[required]').forEach(el=>{const hidden=el.offsetParent===null,missing=!hidden&&!String(el.value||'').trim();el.classList.toggle('required-missing',missing);if(missing&&!first)first=el;});
+  if(first){first.focus();showNotice('Preencha os campos obrigatórios destacados.','error');return false;}return true;
+}
+document.addEventListener('input',event=>{if(event.target.matches('[required]')&&String(event.target.value||'').trim())event.target.classList.remove('required-missing');});
 
 function setReaderStatus(mode,message,state=''){
   const el=$(`${mode}ReaderStatus`);
@@ -463,6 +493,17 @@ function logoutLocal(){
   $('loginForm').reset();
   configureLoginScreen();
 }
+async function verifyLocalPassword(password){const auth=getLocalAuth();return !!auth&&(await derivePassword(password,auth.salt))===auth.hash;}
+async function changeLocalPassword(){
+  const answer=await askFields('Trocar senha local','A nova senha protegerá o acesso neste aparelho. Os dados permanecerão intactos.',[{label:'Senha atual',type:'password',required:true},{label:'Nova senha (mínimo 6 caracteres)',type:'password',required:true},{label:'Confirmar nova senha',type:'password',required:true}],'Trocar senha');if(!answer)return;
+  const [current,next,confirmation]=answer.values;if(!await verifyLocalPassword(current))return showNotice('A senha atual está incorreta.','error');if(next.length<6)return showNotice('A nova senha deve ter pelo menos 6 caracteres.','error');if(next!==confirmation)return showNotice('A confirmação da nova senha não corresponde.','error');
+  const auth=getLocalAuth(),salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(next,salt);localStorage.setItem(AUTH_KEY,JSON.stringify({...auth,salt,hash,updatedAt:new Date().toISOString()}));sessionStorage.setItem(SESSION_KEY,hash);recordAudit('SISTEMA',0,'SENHA ALTERADA',null,{usuario:auth.username},'Senha local alterada pelo usuário autenticado');saveLocal();showNotice('Senha alterada com sucesso.','success');
+}
+async function resetLocalAccess(){
+  const answer=await askFields('Redefinir acesso local','Por segurança, confirme a senha atual. Um backup dos dados será baixado antes da redefinição.',[{label:'Senha atual',type:'password',required:true},{label:'Novo usuário',required:true},{label:'Nova senha (mínimo 6 caracteres)',type:'password',required:true},{label:'Confirmar nova senha',type:'password',required:true}],'Redefinir acesso');if(!answer)return;
+  const [current,username,password,confirmation]=answer.values;if(!await verifyLocalPassword(current))return showNotice('A senha atual está incorreta.','error');if(username.trim().length<3||password.length<6||password!==confirmation)return showNotice('Confira o usuário, o tamanho da senha e sua confirmação.','error');downloadBackup('backup_antes_de_redefinir_acesso');
+  const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(password,salt);localStorage.setItem(AUTH_KEY,JSON.stringify({username:username.trim(),salt,hash,updatedAt:new Date().toISOString()}));sessionStorage.setItem(SESSION_KEY,hash);recordAudit('SISTEMA',0,'ACESSO REDEFINIDO',null,{usuario:username.trim()},'Redefinição autenticada do acesso local');saveLocal();showApp(username.trim());showNotice('Acesso local redefinido com sucesso.','success');
+}
 
 function toggleLocalPassword(){
   const show=$('loginPassword').type==='password';
@@ -490,6 +531,7 @@ function loadLocal(){
     if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db={...saved.db,auditLog:Array.isArray(saved.db.auditLog)?saved.db.auditLog:[]};
     if(saved?.docks&&Array.isArray(saved.docks.records)) docks=saved.docks;
     db.movements=db.movements.map(x=>({...x,status:x.status||'ativo'}));
+    db.productLots=db.productLots.map(x=>({...x,status:x.status||'ativo'}));
     docks.records=docks.records.map(x=>({...x,status:x.status||'ativo'}));
     const ids=[...db.movements,...db.productLots,...docks.records,...db.auditLog].map(x=>Number(x.id)||0);
     nextLocalId=Math.max(Number(saved?.nextLocalId)||1,...ids)+1;
@@ -517,7 +559,8 @@ async function addDock(m){
 }
 
 async function addProductLot(x){
-  db.productLots.push({...x,id:nextLocalId++,created_at:new Date().toISOString()});
+  const item={...x,id:nextLocalId++,status:'ativo',created_at:new Date().toISOString(),created_by:currentUser()};
+  db.productLots.push(item);recordAudit('LOTE DO PRODUTO',item.id,'CRIADO',null,item,'Registro criado');
   saveLocal();updateAll();
 }
 
@@ -597,9 +640,9 @@ function lots(sec){
 
 // FIFO consolidado por lote: entradas do mesmo lote em dias diferentes
 // são somadas. A primeira entrada do lote define sua prioridade.
-function fifoLots(sec){
+function fifoLots(sec,upToDate=''){
   const map={};
-  activeMovements().filter(m=>m.sector===sec && m.lot).forEach(m=>{
+  activeMovements().filter(m=>m.sector===sec && m.lot&&(!upToDate||String(m.date).slice(0,10)<=upToDate)).forEach(m=>{
     const lot=String(m.lot).trim();
     if(!map[lot]) map[lot]={lot,firstDate:String(m.date),firstId:Number(m.id)||0,received:0,consumed:0,lost:0};
     const x=map[lot], d=String(m.date), id=Number(m.id)||0;
@@ -610,6 +653,13 @@ function fifoLots(sec){
   });
   return Object.values(map).map(x=>({...x,qty:x.received-x.consumed-x.lost})).filter(x=>x.qty>0)
     .sort((a,b)=>String(a.firstDate).localeCompare(String(b.firstDate))||a.firstId-b.firstId||a.lot.localeCompare(b.lot));
+}
+function validateChronologicalStock(sector,lot,date,qty,excludeId=null){
+  const available=activeMovements().filter(m=>m.id!==excludeId&&m.sector===sector&&String(m.lot).toLowerCase()===String(lot).toLowerCase()&&String(m.date).slice(0,10)<=date).reduce((sum,m)=>sum+(m.kind==='ENTRADA'?Number(m.qty):-Number(m.qty)),0);
+  return {available,valid:Number(qty)<=available};
+}
+function lotLedgerStaysNonnegative(sector,lot,replacement,excludeId=null){
+  const rows=activeMovements().filter(m=>m.id!==excludeId&&m.sector===sector&&String(m.lot).toLowerCase()===String(lot).toLowerCase()).map(m=>({...m}));if(replacement)rows.push(replacement);rows.sort((a,b)=>String(a.date).localeCompare(String(b.date))||Number(a.id||999999)-Number(b.id||999999));let balance=0;for(const m of rows){balance+=m.kind==='ENTRADA'?Number(m.qty):-Number(m.qty);if(balance<0)return false;}return true;
 }
 function fifoAll(){
   const out=[];
@@ -643,20 +693,23 @@ function syncConsumption(){
 
 function updateDashboard(){
   const f=totalStock('Farinheira'), c=totalStock('Colorífico');
-  $('kFar').textContent=f; $('kCol').textContent=c;
-  $('dFar').textContent=f; $('dCol').textContent=c; $('dTotal').textContent=f+c;
+  $('kFar').textContent=`${f} BAGS`; $('kCol').textContent=`${c} BAGS`;
+  $('dFar').textContent=`${f} BAGS`; $('dCol').textContent=`${c} BAGS`; $('dTotal').textContent=`${f+c} BAGS`;
+  const pending=activeMovements().filter(m=>m.kind==='ENTRADA'&&/conferência pendente|sem contagem anterior/i.test(m.note||'')).length;
+  const low=[['Farinheira',f],['Colorífico',c]].filter(([,qty])=>qty<=5);
+  $('dashboardOperationalStatus').innerHTML=`<div class="status-card ${pending?'warning':'ok'}"><span>Divergências pendentes</span><strong>${pending}</strong><small>${pending?'Revisar justificativas e conferências':'Nenhuma pendência registrada'}</small></div><div class="status-card ${f<=5?'danger':'ok'}"><span>Estoque Farinheira</span><strong>${f} BAGS</strong><small>${f<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div><div class="status-card ${c<=5?'danger':'ok'}"><span>Estoque Colorífico</span><strong>${c} BAGS</strong><small>${c<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div>`;
 
   const prev=previousDate();
   const prevQty=(sector,kind)=>activeMovements().filter(m=>m.kind===kind&&m.sector===sector&&String(m.date).slice(0,10)===prev).reduce((a,m)=>a+Number(m.qty),0);
-  $('kEntryPrevFar').textContent=prevQty('Farinheira','ENTRADA');
-  $('kEntryPrevCol').textContent=prevQty('Colorífico','ENTRADA');
-  $('kConsPrevFar').textContent=prevQty('Farinheira','CONSUMO');
-  $('kConsPrevCol').textContent=prevQty('Colorífico','CONSUMO');
+  $('kEntryPrevFar').textContent=`${prevQty('Farinheira','ENTRADA')} BAGS`;
+  $('kEntryPrevCol').textContent=`${prevQty('Colorífico','ENTRADA')} BAGS`;
+  $('kConsPrevFar').textContent=`${prevQty('Farinheira','CONSUMO')} BAGS`;
+  $('kConsPrevCol').textContent=`${prevQty('Colorífico','CONSUMO')} BAGS`;
 
   const arr=[...activeMovements()].sort((a,b)=>String(b.date+b.id).localeCompare(String(a.date+a.id))).slice(0,6);
   $('recent').innerHTML=arr.length ? arr.map(m=>`
     <div class="kpi"><div><span>${fmt(m.date)} — ${m.sector==='Farinha para o Flotamil'?(m.kind==='ENTRADA'?'Farinha registrada':'Baixa enviada'):m.kind==='ENTRADA'?'Entrada':m.kind==='PERDA'?'Perda / descarte':'Consumo'}<br>
-    <small>${esc(m.sector)} • ${esc(m.lot)} • ${esc(m.type)}</small></span><strong>${m.qty}</strong></div></div>
+    <small>${esc(m.sector)} • ${esc(m.lot)} • ${esc(m.type)}</small></span><strong>${m.qty} ${m.sector==='Farinha para o Flotamil'?'kg':'BAGS'}</strong></div></div>
   `).join('') : '<div class="empty">Nenhuma movimentação.</div>';
 
   let html='';
@@ -693,7 +746,7 @@ function monthDays(sec,month){const map={};activeMovements().filter(m=>m.sector=
 function exportMonthlyConsumption(sec,selectedMonth=''){
  const id=sec==='Farinheira'?'far':'col',month=selectedMonth||today().slice(0,7),days=monthDays(sec,month),rows=[['Data','Setor','Consumo de BAGS']];
  Object.entries(days).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([d,q])=>rows.push([d,sec,q]));
- if(rows.length===1)return alert('Nenhum consumo encontrado no mês selecionado.');
+ if(rows.length===1)return showNotice('Nenhum consumo encontrado no mês selecionado.');
  const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`consumo_${id}_${month}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 function syncLossType(){
@@ -731,12 +784,12 @@ async function registerFlotamilShipment(){
  try{
   if($('lossSector').value!=='Farinha para o Flotamil')return;
   const qty=Number($('flotamilSentKg').value),available=flotamilBalance();
-  if(!$('flotamilSent').checked)return alert('Marque a confirmação de que o produto foi enviado ao Flotamil.');
-  if(!$('lossDate').value||!Number.isInteger(qty)||qty<=0)return alert('Informe a data e a quantidade enviada em quilos inteiros.');
-  if(qty>available)return alert(`Saldo insuficiente. Disponível para envio: ${Math.max(0,available).toLocaleString('pt-BR',{maximumFractionDigits:2})} kg.`);
+  if(!$('flotamilSent').checked)return showNotice('Marque a confirmação de que o produto foi enviado ao Flotamil.');
+  if(!$('lossDate').value||!Number.isInteger(qty)||qty<=0)return showNotice('Informe a data e a quantidade enviada em quilos inteiros.');
+  if(qty>available)return showNotice(`Saldo insuficiente. Disponível para envio: ${Math.max(0,available).toLocaleString('pt-BR',{maximumFractionDigits:2})} kg.`);
   const userNote=$('lossNote').value.trim(),m={date:$('lossDate').value,kind:'CONSUMO',sector:'Farinha para o Flotamil',type:'Farinha',code:'691',lot:`ENVIO-${$('lossDate').value.replaceAll('-','')}`,qty,responsible:$('lossResponsible').value.trim(),note:`BAIXA DE ENVIO | Produto: Farinha — código 691 | Quantidade enviada: ${qty.toLocaleString('pt-BR',{maximumFractionDigits:2})} kg${userNote?' — '+userNote:''}`};
-  await addMovement(m);$('flotamilSentKg').value='';$('flotamilSent').checked=false;renderFlotamilBalance();alert(`Baixa realizada com sucesso. ${qty.toLocaleString('pt-BR',{maximumFractionDigits:2})} kg enviados. A tela de impressão será aberta agora. Saldo restante: ${Math.max(0,flotamilBalance()).toLocaleString('pt-BR',{maximumFractionDigits:2})} kg.`);printFlotamilLabel(qty);
- }catch(err){alert('Erro ao registrar a baixa: '+friendlyError(err));}
+  await addMovement(m);$('flotamilSentKg').value='';$('flotamilSent').checked=false;renderFlotamilBalance();showNotice(`Baixa realizada com sucesso. ${qty.toLocaleString('pt-BR',{maximumFractionDigits:2})} kg enviados. A tela de impressão será aberta agora. Saldo restante: ${Math.max(0,flotamilBalance()).toLocaleString('pt-BR',{maximumFractionDigits:2})} kg.`);printFlotamilLabel(qty);
+ }catch(err){showNotice('Erro ao registrar a baixa: '+friendlyError(err));}
 }
 function printFlotamilLabel(qty){
  const printedQty=Number(qty).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:2});
@@ -744,7 +797,7 @@ function printFlotamilLabel(qty){
  const frame=document.createElement('iframe');frame.setAttribute('title','Impressão Farinha para o Flotamil');frame.style.cssText='position:fixed;width:1px;height:1px;border:0;right:0;bottom:0;opacity:0;pointer-events:none';document.body.appendChild(frame);
  const doc=frame.contentWindow.document;doc.open();doc.write(printHtml);doc.close();
  frame.contentWindow.onafterprint=()=>frame.remove();
- setTimeout(()=>{try{frame.contentWindow.focus();frame.contentWindow.print();}catch(e){frame.remove();alert('Não foi possível abrir a impressão automaticamente. Verifique se o navegador permite janelas de impressão.');}setTimeout(()=>{if(frame.isConnected)frame.remove();},60000);},350);
+ setTimeout(()=>{try{frame.contentWindow.focus();frame.contentWindow.print();}catch(e){frame.remove();showNotice('Não foi possível abrir a impressão automaticamente. Verifique se o navegador permite janelas de impressão.');}setTimeout(()=>{if(frame.isConnected)frame.remove();},60000);},350);
 }
 function renderLossHistory(){
  const st=$('lossStart').value,en=$('lossEnd').value,sec=$('lossFilterSector').value,a=activeMovements().filter(m=>(m.kind==='PERDA'||m.sector==='Farinha para o Flotamil')&&(!st||m.date>=st)&&(!en||m.date<=en)&&(!sec||m.sector===sec)).sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
@@ -783,7 +836,7 @@ function renderDockHistory(){
   $('dockBody').innerHTML=a.length?a.map(m=>`<tr>
     <td>${fmt(m.date)}</td><td>${esc(m.sector)}</td><td>${esc(m.code)}</td><td>${esc(m.type)}</td>
     <td><strong>${m.qty}</strong></td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td>
-    <td><button class="btn danger" style="padding:6px 9px;font-size:11px" type="button" onclick="editDock(${m.id})">Editar</button><button class="btn danger" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteDock(${m.id})">Cancelar</button></td>
+    <td><button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editDock(${m.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteDock(${m.id})">Cancelar</button></td>
   </tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum lançamento das docas para os filtros.</td></tr>';
 }
 
@@ -834,18 +887,18 @@ function renderProductLotHistory(){
   const st=$('phStart').value,en=$('phEnd').value,s=$('phSector').value,q=($('phLot').value||'').trim().toLowerCase();
   const a=db.productLots.filter(x=>(!st||x.date>=st)&&(!en||x.date<=en)&&(!s||x.sector===s)&&(!q||String(x.lot||'').toLowerCase().includes(q)))
     .sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
-  $('productLotBody').innerHTML=a.length?a.map(x=>`<tr><td>${fmt(x.date)}</td><td>${esc(x.sector)}</td><td><strong>${esc(x.lot)}</strong></td><td>${esc(x.op)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">Nenhum lote de produto encontrado.</td></tr>';
+  $('productLotBody').innerHTML=a.length?a.map(x=>`<tr><td>${fmt(x.date)}</td><td>${esc(x.sector)}</td><td><strong>${esc(x.lot)}</strong></td><td>${esc(x.op)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td><td><span class="audit-status ${x.status==='cancelado'?'audit-cancelled':'audit-active'}">${x.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${x.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editProductLot(${x.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteProductLot(${x.id})">Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum lote de produto encontrado.</td></tr>';
 }
 
 function exportProductLotCSV(){
   const st=$('phStart').value,en=$('phEnd').value,s=$('phSector').value,q=($('phLot').value||'').trim().toLowerCase();
 
   const a=db.productLots
-    .filter(x=>(!st||x.date>=st)&&(!en||x.date<=en)&&(!s||x.sector===s)&&(!q||String(x.lot||'').toLowerCase().includes(q)))
+    .filter(x=>x.status!=='cancelado'&&(!st||x.date>=st)&&(!en||x.date<=en)&&(!s||x.sector===s)&&(!q||String(x.lot||'').toLowerCase().includes(q)))
     .sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
 
   if(!a.length){
-    return alert('Nenhum lote de produto encontrado para os filtros selecionados.');
+    return showNotice('Nenhum lote de produto encontrado para os filtros selecionados.');
   }
 
   const rows=[['Data','Setor','Lote do produto','Ordem de produção','Responsável','Observação']];
@@ -861,6 +914,19 @@ function exportProductLotCSV(){
   aLink.download=`lotes_produto_${today()}.csv`;
   aLink.click();
   setTimeout(()=>URL.revokeObjectURL(aLink.href),1000);
+}
+
+async function editProductLot(id){
+  const item=db.productLots.find(x=>x.id===id&&x.status!=='cancelado');if(!item)return;
+  const answer=await askFields('Editar lote do produto','Altere as informações necessárias. A justificativa ficará registrada na auditoria.',[
+    {label:'Data',type:'date',value:item.date,required:true},{label:'Lote do produto',value:item.lot,required:true},{label:'Ordem de produção',value:item.op},{label:'Responsável',value:item.responsible},{label:'Observação',type:'textarea',value:item.note},{label:'Justificativa da alteração',type:'textarea',required:true}
+  ],'Salvar alteração');if(!answer)return;
+  const [date,lot,op,responsible,note,reason]=answer.values,before={...item};Object.assign(item,{date,lot:lot.trim(),op:op.trim(),responsible:responsible.trim(),note:note.trim(),updated_at:new Date().toISOString(),updated_by:currentUser()});recordAudit('LOTE DO PRODUTO',id,'EDITADO',before,item,reason.trim());saveLocal();updateAll();showNotice('Lote do produto atualizado com sucesso.','success');
+}
+async function deleteProductLot(id){
+  const item=db.productLots.find(x=>x.id===id&&x.status!=='cancelado');if(!item)return;
+  const answer=await askFields('Cancelar lote do produto',`O lote ${item.lot} permanecerá na auditoria e deixará de aparecer nas exportações ativas.`,[{label:'Justificativa do cancelamento',type:'textarea',required:true}],'Cancelar registro');if(!answer)return;
+  const before={...item};Object.assign(item,{status:'cancelado',cancel_reason:answer.values[0].trim(),cancelled_at:new Date().toISOString(),cancelled_by:currentUser()});recordAudit('LOTE DO PRODUTO',id,'CANCELADO',before,item,item.cancel_reason);saveLocal();updateAll();showNotice('Lote do produto cancelado.','success');
 }
 
 function updateAll(){
@@ -881,6 +947,7 @@ function renderPage(page){
     case 'perdas':renderLossHistory();renderFlotamilBalance();break;
     case 'relatorios':renderReport();break;
     case 'auditoria':renderAudit();break;
+    case 'backup':renderBackupStatus();break;
   }
 }
 
@@ -892,80 +959,63 @@ function friendlyError(err){
 
 async function editMovement(id){
   const m=db.movements.find(x=>x.id===id); if(!m)return;
-  const date=prompt('Data (AAAA-MM-DD):',m.date); if(date===null)return;
-  const lot=prompt('Lote:',m.lot||''); if(lot===null)return;
-  const qtyRaw=prompt('Quantidade de BAGS:',String(m.qty)); if(qtyRaw===null)return;
-  const qty=Number(qtyRaw);
-  const responsible=prompt('Responsável:',m.responsible||''); if(responsible===null)return;
-  const note=prompt('Observação:',m.note||''); if(note===null)return;
-  const editReason=prompt('Justificativa da alteração (obrigatória):','');if(editReason===null)return;if(!editReason.trim())return alert('Informe a justificativa da alteração para manter a trilha de auditoria.');
+  const answer=await askFields('Editar movimentação','A alteração recalculará estoque e FIFO. Todos os campos modificados ficarão na auditoria.',[{label:'Data',type:'date',value:m.date,required:true},{label:'Lote',value:m.lot,required:true},{label:`Quantidade (${m.sector==='Farinha para o Flotamil'?'kg':'BAGS'})`,type:'number',value:m.qty,required:true},{label:'Responsável',value:m.responsible},{label:'Observação',type:'textarea',value:m.note},{label:'Justificativa da alteração',type:'textarea',required:true}],'Salvar alteração');if(!answer)return;
+  const [date,lot,qtyRaw,responsible,note,editReason]=answer.values,qty=Number(qtyRaw);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!lot.trim()||!Number.isInteger(qty)||qty<1){
-    return alert('Data, lote e quantidade são obrigatórios. A quantidade deve ser um número inteiro maior que zero.');
+    return showNotice('Data, lote e quantidade são obrigatórios. A quantidade deve ser um número inteiro maior que zero.');
   }
   // Verifica o saldo resultante do lote, desconsiderando o próprio registro durante a edição.
   if(m.kind==='CONSUMO'||m.kind==='PERDA'){
-    const base=activeMovements().filter(x=>x.id!==id && x.sector===m.sector && x.lot===lot.trim())
-      .reduce((a,x)=>a+(x.kind==='ENTRADA'?Number(x.qty):-Number(x.qty)),0);
-    if(qty>base)return alert(`Saldo insuficiente no lote ${lot.trim()}. Disponível para esta edição: ${base} BAG(s).`);
+    const check=validateChronologicalStock(m.sector,lot.trim(),date,qty,id);
+    if(!check.valid)return showNotice(`Saldo insuficiente na data ${fmt(date)}. Disponível no lote ${lot.trim()}: ${check.available} BAG(s).`,'error');
   }
-  if(m.kind==='ENTRADA'){
-    const base=activeMovements().filter(x=>x.id!==id && x.sector===m.sector && x.lot===lot.trim())
-      .reduce((a,x)=>a+(x.kind==='ENTRADA'?Number(x.qty):-Number(x.qty)),0);
-    // Uma entrada editada não pode deixar nenhum saldo do lote negativo.
-    if(base+qty<0)return alert('A edição deixaria o saldo do lote negativo.');
-  }
+  if(m.kind==='ENTRADA'&&!lotLedgerStaysNonnegative(m.sector,lot.trim(),{...m,date,lot:lot.trim(),qty},id))return showNotice('A edição deixaria o lote com saldo negativo em alguma data posterior.','error');
   try{
     const before={...m};
     const patch={date,lot:lot.trim(),qty,responsible:responsible.trim(),note:note.trim(),updated_at:new Date().toISOString(),updated_by:currentUser()};
     db.movements=db.movements.map(x=>x.id===id?{...x,...patch}:x);
     recordAudit('MOVIMENTAÇÃO',id,'EDITADO',before,db.movements.find(x=>x.id===id),editReason.trim());
     saveLocal();updateAll();
-    alert('Movimentação editada com sucesso. O estoque e o FIFO foram recalculados.');
-  }catch(e){alert('Erro ao editar movimentação: '+friendlyError(e));}
+    showNotice('Movimentação editada com sucesso. O estoque e o FIFO foram recalculados.');
+  }catch(e){showNotice('Erro ao editar movimentação: '+friendlyError(e));}
 }
 
 async function editDock(id){
   const m=docks.records.find(x=>x.id===id); if(!m)return;
-  const date=prompt('Data (AAAA-MM-DD):',m.date); if(date===null)return;
-  const qtyRaw=prompt('Quantidade nas docas:',String(m.qty)); if(qtyRaw===null)return;
-  const qty=Number(qtyRaw);
-  const responsible=prompt('Responsável:',m.responsible||''); if(responsible===null)return;
-  const note=prompt('Observação:',m.note||''); if(note===null)return;
-  const editReason=prompt('Justificativa da alteração nas Docas (obrigatória):','');if(editReason===null)return;if(!editReason.trim())return alert('Informe a justificativa da alteração.');
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isInteger(qty)||qty<0)return alert('Informe uma data válida e uma quantidade inteira igual ou maior que zero.');
+  const answer=await askFields('Editar contagem das Docas','A alteração ficará registrada na trilha de auditoria.',[{label:'Data',type:'date',value:m.date,required:true},{label:'Quantidade nas Docas (BAGS)',type:'number',value:m.qty,required:true},{label:'Responsável',value:m.responsible},{label:'Observação',type:'textarea',value:m.note},{label:'Justificativa da alteração',type:'textarea',required:true}],'Salvar alteração');if(!answer)return;
+  const [date,qtyRaw,responsible,note,editReason]=answer.values,qty=Number(qtyRaw);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isInteger(qty)||qty<0)return showNotice('Informe uma data válida e uma quantidade inteira igual ou maior que zero.');
   try{
-    const duplicate=activeDocks().find(x=>x.id!==id&&x.date===date&&x.sector===m.sector);if(duplicate)return alert('Já existe outra contagem ativa para este dia e setor. Cancele ou substitua o registro existente antes de concluir.');
+    const duplicate=activeDocks().find(x=>x.id!==id&&x.date===date&&x.sector===m.sector);if(duplicate)return showNotice('Já existe outra contagem ativa para este dia e setor. Cancele ou substitua o registro existente antes de concluir.');
     const before={...m};const patch={date,qty,responsible:responsible.trim(),note:note.trim(),updated_at:new Date().toISOString(),updated_by:currentUser()};
     docks.records=docks.records.map(x=>x.id===id?{...x,...patch}:x);
     recordAudit('DOCAS',id,'EDITADO',before,docks.records.find(x=>x.id===id),editReason.trim());
     saveLocal();updateAll();
-    alert('Lançamento das docas editado com sucesso.');
-  }catch(e){alert('Erro ao editar lançamento: '+friendlyError(e));}
+    showNotice('Lançamento das docas editado com sucesso.');
+  }catch(e){showNotice('Erro ao editar lançamento: '+friendlyError(e));}
 }
 
 async function deleteMovement(id){
   const m=db.movements.find(x=>x.id===id); if(!m)return;
   if(m.sector==='Farinha para o Flotamil'&&m.kind==='ENTRADA'&&flotamilBalance()-Number(m.qty)<0){
-    return alert('Não é possível cancelar este registro porque já existem baixas de envio vinculadas e o saldo ficaria negativo.');
+    return showNotice('Não é possível cancelar este registro porque já existem baixas de envio vinculadas e o saldo ficaria negativo.');
   }
   if(m.kind==='ENTRADA'){
     const saldoAtual=movementStock(m.sector,m.lot);
     if(saldoAtual-Number(m.qty)<0){
-      return alert('Não é possível cancelar esta entrada porque existem consumos vinculados a ela e o saldo do lote ficaria negativo.');
+      return showNotice('Não é possível cancelar esta entrada porque existem consumos vinculados a ela e o saldo do lote ficaria negativo.');
     }
   }
-  if(!confirm(`Cancelar esta movimentação?\n\n${fmt(m.date)} — ${m.sector} — ${m.lot} — ${m.qty} BAG(s)\n\nEla permanecerá na auditoria e deixará de afetar os cálculos.`))return;
-  const reason=prompt('Justificativa do cancelamento (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa do cancelamento.');
-  try{await removeMovement(id,reason.trim());alert('Movimentação cancelada com sucesso.');}
-  catch(e){alert('Erro ao apagar: '+friendlyError(e));}
+  const answer=await askFields('Cancelar movimentação',`${fmt(m.date)} — ${m.sector} — ${m.lot} — ${m.qty} ${m.sector==='Farinha para o Flotamil'?'kg':'BAGS'}\n\nO registro permanecerá na auditoria e deixará de afetar os cálculos.`,[{label:'Justificativa do cancelamento',type:'textarea',required:true}],'Cancelar movimentação');if(!answer)return;const reason=answer.values[0];
+  try{await removeMovement(id,reason.trim());showNotice('Movimentação cancelada com sucesso.');}
+  catch(e){showNotice('Erro ao apagar: '+friendlyError(e));}
 }
 
 async function deleteDock(id){
   const m=docks.records.find(x=>x.id===id); if(!m)return;
-  if(!confirm(`Cancelar este lançamento das docas?\n\n${fmt(m.date)} — ${m.sector} — ${m.qty} BAG(s)`))return;
-  const reason=prompt('Justificativa do cancelamento (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa do cancelamento.');
-  try{await removeDock(id,reason.trim());alert('Lançamento das docas cancelado com sucesso.');}
-  catch(e){alert('Erro ao apagar: '+friendlyError(e));}
+  const answer=await askFields('Cancelar lançamento das Docas',`${fmt(m.date)} — ${m.sector} — ${m.qty} BAGS`,[{label:'Justificativa do cancelamento',type:'textarea',required:true}],'Cancelar lançamento');if(!answer)return;const reason=answer.values[0];
+  try{await removeDock(id,reason.trim());showNotice('Lançamento das docas cancelado com sucesso.');}
+  catch(e){showNotice('Erro ao apagar: '+friendlyError(e));}
 }
 
 function renderDockCards(){
@@ -977,14 +1027,14 @@ function renderDockCards(){
 
 function exportDockCSV(){
   const rows=[['Data','Setor','Código','Tipo de BAG','Quantidade nas docas','Responsável','Observação']];
-  docks.records.forEach(m=>rows.push([m.date,m.sector,m.code,m.type,m.qty,m.responsible,m.note]));
+  activeDocks().forEach(m=>rows.push([m.date,m.sector,m.code,m.type,m.qty,m.responsible,m.note]));
   const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n');
   const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download=`historico_docas_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
-const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',cancel_reason:'Motivo do cancelamento',created_by:'Criado por',updated_by:'Alterado por',cancelled_by:'Cancelado por'};
-const AUDIT_FIELDS=['date','kind','sector','code','type','lot','qty','responsible','note','status','fifo_status','fifo_reason','fifo_supervisor','cancel_reason','created_by','updated_by','cancelled_by'];
+const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',op:'Ordem de produção',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',cancel_reason:'Motivo do cancelamento',created_by:'Criado por',updated_by:'Alterado por',cancelled_by:'Cancelado por'};
+const AUDIT_FIELDS=['date','kind','sector','code','type','lot','op','qty','responsible','note','status','fifo_status','fifo_reason','fifo_supervisor','cancel_reason','created_by','updated_by','cancelled_by'];
 function auditDisplayValue(key,value){
   if(value===null||value===undefined||value==='')return 'Não informado';
   if(key==='date'&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return fmt(value);
@@ -1008,7 +1058,7 @@ function renderAudit(){
   const body=$('auditBody');if(!body)return;
   body.innerHTML=rows.length?rows.map(x=>{
     const actionClass=String(x.action||'').toLowerCase();
-    const recordTitle=`${x.entity==='MOVIMENTAÇÃO'?'Movimentação':x.entity==='DOCAS'?'Contagem das Docas':'Evento do sistema'} #${x.entityId}`;
+    const recordTitle=`${x.entity==='MOVIMENTAÇÃO'?'Movimentação':x.entity==='DOCAS'?'Contagem das Docas':x.entity==='LOTE DO PRODUTO'?'Lote do Produto':'Evento do sistema'} #${x.entityId}`;
     return `<article class="audit-card">
       <div class="audit-card-head"><div><div class="audit-card-title">${esc(recordTitle)}</div><div class="audit-card-time">${new Date(x.timestamp).toLocaleString('pt-BR')}</div></div><span class="audit-action ${esc(actionClass)}">${esc(x.action)}</span></div>
       <div class="audit-summary"><div><span>Usuário responsável</span><strong>${esc(x.user||'Não informado')}</strong></div><div><span>Tipo de registro</span><strong>${esc(x.entity)}</strong></div><div><span>Número do registro</span><strong>#${esc(x.entityId)}</strong></div></div>
@@ -1088,7 +1138,7 @@ async function exportExcelComplete(){
     const blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',compression:'DEFLATE',compressionOptions:{level:6}});
     if(blob.size<50000)throw new Error('A planilha gerada ficou incompleta. Tente novamente.');
     const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='Controle_Estoque_FIFO_'+today()+'.xlsx';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),3000);
-  }catch(error){alert('Não foi possível gerar o Excel completo: '+friendlyError(error));}
+  }catch(error){showNotice('Não foi possível gerar o Excel completo: '+friendlyError(error));}
 }
 function fifoExportRows(){
   const rows=[];
@@ -1098,7 +1148,7 @@ function fifoExportRows(){
 async function exportFIFOExcel(){
   try{
     const farinheira=fifoExportRows().filter(item=>item.sector==='Farinheira'),colorifico=fifoExportRows().filter(item=>item.sector==='Colorífico');
-    if(!farinheira.length&&!colorifico.length)return alert('Não existem lotes com saldo disponível para exportar.');
+    if(!farinheira.length&&!colorifico.length)return showNotice('Não existem lotes com saldo disponível para exportar.');
     if(farinheira.length>100||colorifico.length>100)throw new Error('Existem mais de 100 lotes em um dos setores. Amplie o modelo Excel.');
     const zip=await JSZip.loadAsync(base64ToBytes(EMBEDDED_FIFO_TEMPLATE),{checkCRC32:true});
     const sheetPath='xl/worksheets/sheet1.xml';let xml=await zip.file(sheetPath).async('string');
@@ -1110,18 +1160,18 @@ async function exportFIFOExcel(){
     const workbookPath='xl/workbook.xml';let workbookXml=await zip.file(workbookPath).async('string');workbookXml=workbookXml.replace(/<(x:)?calcPr\b[^>]*\/?>(?:<\/\1calcPr>)?/g,'<$1calcPr calcId="191029" calcMode="auto" fullCalcOnLoad="1" forceFullCalc="1" />');zip.file(workbookPath,workbookXml);
     const blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',compression:'DEFLATE'});
     const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='FIFO_Ordem_de_Consumo_'+today()+'.xlsx';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),3000);
-  }catch(error){alert('Não foi possível gerar a ordem FIFO em Excel: '+friendlyError(error));}
+  }catch(error){showNotice('Não foi possível gerar a ordem FIFO em Excel: '+friendlyError(error));}
 }
 function printFIFOOrder(){
-  const rows=fifoExportRows();if(!rows.length)return alert('Não existem lotes com saldo disponível para imprimir.');
-  const popup=window.open('','_blank','width=1100,height=800');if(!popup)return alert('Permita pop-ups para abrir a impressão da ordem FIFO.');
+  const rows=fifoExportRows();if(!rows.length)return showNotice('Não existem lotes com saldo disponível para imprimir.');
+  const popup=window.open('','_blank','width=1100,height=800');if(!popup)return showNotice('Permita pop-ups para abrir a impressão da ordem FIFO.');
   const section=sector=>{const body=rows.filter(item=>item.sector===sector).map(item=>`<tr><td>${item.priority}º</td><td>${esc(item.code)}</td><td>${esc(item.type)}</td><td>${esc(item.lot)}</td><td>${fmt(item.firstDate)}</td><td>${item.received}</td><td>${item.consumed}</td><td><strong>${item.qty}</strong></td></tr>`).join('')||'<tr><td colspan="8">Nenhum lote com saldo disponível.</td></tr>';return `<h2 class="${sector==='Farinheira'?'far':'col'}">${sector.toUpperCase()} — ORDEM FIFO</h2><table><thead><tr><th>Prioridade</th><th>Código</th><th>Tipo de BAG</th><th>Lote</th><th>Primeira entrada</th><th>Recebido</th><th>Consumido</th><th>Saldo</th></tr></thead><tbody>${body}</tbody></table>`;};
   popup.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>FIFO — Ordem de consumo</title><style>@page{size:landscape;margin:10mm}body{font-family:Arial,sans-serif;color:#172334;margin:0}h1{background:#0b3d66;color:white;text-align:center;padding:14px;margin:0 0 8px;font-size:22px}h2{color:white;padding:8px;margin:14px 0 0;font-size:15px}.far{background:#166534}.col{background:#9a3412}.sub{background:#e8f1f8;padding:9px;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:11px}th{background:#1769aa;color:white;padding:7px;border:1px solid #aac1d2}td{padding:6px;border-bottom:1px solid #d9e3eb;text-align:center}tbody tr:nth-child(even){background:#f2f7fa}.foot{margin-top:10px;font-size:10px;color:#64748b}</style></head><body><h1>FIFO — ORDEM DE CONSUMO</h1><div class="sub">Utilizar primeiro os lotes mais antigos com saldo disponível. Gerado em ${new Date().toLocaleString('pt-BR')}.</div>${section('Farinheira')}${section('Colorífico')}<div class="foot">Controle de estoque e movimentações — Projeto Piloto</div></body></html>`);
   popup.document.close();popup.focus();setTimeout(()=>popup.print(),350);
 }
 function exportCSV(){
   const rows=[['Data','Movimento','Setor','Código','Tipo de BAG','Lote','Quantidade','Responsável','Observação']];
-  db.movements.forEach(m=>rows.push([m.date,m.kind,m.sector,m.code,m.type,m.lot,m.qty,m.responsible,m.note]));
+  activeMovements().forEach(m=>rows.push([m.date,m.kind,m.sector,m.code,m.type,m.lot,m.qty,m.responsible,m.note]));
   const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n');
   const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download=`relatorio_bags_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
@@ -1131,33 +1181,38 @@ function downloadBackup(prefix='backup_rastreabilidade_bags'){
   const backup={version:8,exported_at:new Date().toISOString(),movements:db.movements,productLots:db.productLots,docks:docks.records,auditLog:db.auditLog};
   const b=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download=`${prefix}_${today()}.json`;a.click();
+  localStorage.setItem('controle_estoque_ultimo_backup',new Date().toISOString());renderBackupStatus();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
+function renderBackupStatus(){
+  const el=$('backupStatus');if(!el)return;const raw=localStorage.getItem('controle_estoque_ultimo_backup');if(!raw){el.innerHTML='<span class="backup-old">⚠ Nenhum backup registrado neste aparelho.</span> Faça o primeiro backup agora.';return;}
+  const date=new Date(raw),days=Math.floor((Date.now()-date.getTime())/86400000),old=days>=7;el.innerHTML=`<span class="${old?'backup-old':'backup-current'}">${old?'⚠ Backup desatualizado':'✓ Backup em dia'}</span> — último backup em ${date.toLocaleString('pt-BR')} (${days===0?'hoje':days+' dia(s) atrás'}).`;
+}
+function remindBackup(){const raw=localStorage.getItem('controle_estoque_ultimo_backup'),old=!raw||(Date.now()-new Date(raw).getTime())>=7*86400000;if(old)setTimeout(()=>showNotice('Lembrete: seu backup está ausente ou tem 7 dias ou mais. Acesse a aba Backup para baixar uma cópia.','warning',9000),1200);}
 
 async function restoreBackup(ev){
   const f=ev.target.files?.[0]; if(!f)return;
   try{
     const x=JSON.parse(await f.text());
     if(!Array.isArray(x.movements)||!Array.isArray(x.productLots||[])||!Array.isArray(x.docks||[])) throw new Error('Estrutura do backup inválida.');
-    if(!confirm('Restaurar este backup substituirá os lançamentos salvos neste aparelho. Um backup automático dos dados atuais será baixado antes da restauração. Continuar?'))return;
+    if(!await askConfirm('Restaurar backup','A restauração substituirá os lançamentos salvos neste aparelho. Antes disso, o aplicativo baixará automaticamente uma cópia dos dados atuais.','Restaurar backup',true))return;
     downloadBackup('backup_antes_da_restauracao');
     nextLocalId=1;
     db.movements=x.movements.map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
-    db.productLots=(x.productLots||[]).map(m=>({...m,id:nextLocalId++}));
+    db.productLots=(x.productLots||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     docks.records=(x.docks||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     db.auditLog=(x.auditLog||[]).map(a=>({...a,id:nextLocalId++}));
     recordAudit('SISTEMA',0,'BACKUP RESTAURADO',null,{registros:db.movements.length,docas:docks.records.length},'Restauração confirmada pelo usuário');
     saveLocal();updateAll();
-    alert('Backup restaurado com sucesso.');
-  }catch(e){alert('Erro ao restaurar backup: '+friendlyError(e));}
+    showNotice('Backup restaurado com sucesso.');
+  }catch(e){showNotice('Erro ao restaurar backup: '+friendlyError(e));}
   finally{ev.target.value='';}
 }
 
 async function clearAll(){
-  if(!confirm('Cancelar todos os lançamentos ativos? Eles permanecerão disponíveis na trilha de auditoria.'))return;
-  const reason=prompt('Justificativa do cancelamento em massa (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa.');
-  try{for(const m of activeMovements()){const before={...m};m.status='cancelado';m.cancel_reason=reason.trim();m.cancelled_at=new Date().toISOString();m.cancelled_by=currentUser();recordAudit('MOVIMENTAÇÃO',m.id,'CANCELADO',before,m,reason.trim());}for(const d of activeDocks()){const before={...d};d.status='cancelado';d.cancel_reason=reason.trim();d.cancelled_at=new Date().toISOString();d.cancelled_by=currentUser();recordAudit('DOCAS',d.id,'CANCELADO',before,d,reason.trim());}saveLocal();updateAll();alert('Lançamentos ativos cancelados.');
-  }catch(e){alert('Erro ao cancelar: '+friendlyError(e));}
+  const answer=await askFields('Cancelar todos os lançamentos ativos','Os registros permanecerão disponíveis na trilha de auditoria e deixarão de afetar os cálculos.',[{label:'Justificativa do cancelamento em massa',type:'textarea',required:true}],'Cancelar lançamentos');if(!answer)return;const reason=answer.values[0];
+  try{for(const m of activeMovements()){const before={...m};m.status='cancelado';m.cancel_reason=reason.trim();m.cancelled_at=new Date().toISOString();m.cancelled_by=currentUser();recordAudit('MOVIMENTAÇÃO',m.id,'CANCELADO',before,m,reason.trim());}for(const d of activeDocks()){const before={...d};d.status='cancelado';d.cancel_reason=reason.trim();d.cancelled_at=new Date().toISOString();d.cancelled_by=currentUser();recordAudit('DOCAS',d.id,'CANCELADO',before,d,reason.trim());}for(const p of db.productLots.filter(x=>x.status!=='cancelado')){const before={...p};p.status='cancelado';p.cancel_reason=reason.trim();p.cancelled_at=new Date().toISOString();p.cancelled_by=currentUser();recordAudit('LOTE DO PRODUTO',p.id,'CANCELADO',before,p,reason.trim());}saveLocal();updateAll();showNotice('Lançamentos ativos cancelados.','success');
+  }catch(e){showNotice('Erro ao cancelar: '+friendlyError(e));}
 }
 
 ['eDate','eSector','eQty','dDate','dSector','dQty'].forEach(id=>$(id)?.addEventListener('input',refreshFormComparisons));
@@ -1174,29 +1229,27 @@ $('nav').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
 $('entryForm').addEventListener('submit',async e=>{
   e.preventDefault();
   try{
+    if(!validateRequired(e.target))return;
     const sec=$('eSector').value;
     const lot=$('eLot').value.trim();
     const qty=Number($('eQty').value);
     if(!CONFIG[sec]||!$('eDate').value||!lot||!Number.isInteger(qty)||qty<1){
-      return alert('Informe a data, lote e uma quantidade inteira maior que zero.');
+      return showNotice('Informe a data, lote e uma quantidade inteira maior que zero.');
     }
     const date=$('eDate').value;
     const comparison=dockEntryComparison(date,sec,qty);
     let note=$('eNote').value.trim();
     if(comparison.dockQty===null){
-      const reason=prompt(`${comparison.message}\n\nNão existe contagem anterior para conferência. Informe a justificativa para registrar a Entrada:`,'');
-      if(reason===null)return;if(!reason.trim())return alert('A justificativa é obrigatória quando não existe contagem anterior nas Docas.');
+      const answer=await askFields('Entrada sem contagem anterior',comparison.message,[{label:'Justificativa para registrar a entrada',type:'textarea',required:true}],'Continuar');if(!answer)return;const reason=answer.values[0];
       note=`Entrada sem contagem anterior nas Docas — Justificativa: ${reason.trim()}${note?' | '+note:''}`;
     }
     if(comparison.status==='less'){
-      const proceed=confirm(`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s)\nEntrada de ${fmt(comparison.entryDate)} após este registro: ${comparison.entries} BAG(s)\nDiferença: ${Math.abs(comparison.diff)} BAG(s) a menos.\n\nDeseja registrar mesmo assim?`);
+      const proceed=await askConfirm('Entrada abaixo das Docas',`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAGS\nEntrada de ${fmt(comparison.entryDate)}: ${comparison.entries} BAGS\nDiferença: ${Math.abs(comparison.diff)} BAGS a menos.\n\nDeseja registrar mesmo assim?`,'Registrar mesmo assim');
       if(!proceed)return;
       note=`Divergência Docas × Entrada: ${Math.abs(comparison.diff)} BAG(s) a menos na Entrada — conferência pendente${note?' | '+note:''}`;
     }
     if(comparison.status==='more'){
-      const reason=prompt(`${comparison.message}\n\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s)\nEntrada de ${fmt(comparison.entryDate)} após este registro: ${comparison.entries} BAG(s)\nDiferença: ${comparison.diff} BAG(s) a mais.\n\nInforme o motivo da entrada a mais:`,'');
-      if(reason===null)return;
-      if(!reason.trim())return alert('Para registrar uma Entrada superior às Docas, informe o motivo da divergência.');
+      const answer=await askFields('Entrada acima das Docas',`${comparison.message}\n\nDiferença: ${comparison.diff} BAGS a mais.`,[{label:'Motivo da entrada a mais',type:'textarea',required:true}],'Registrar entrada');if(!answer)return;const reason=answer.values[0];
       note=`Divergência Docas × Entrada: ${comparison.diff} BAG(s) a mais — Motivo: ${reason.trim()}${note?' | '+note:''}`;
     }
     const m={date,kind:'ENTRADA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot,qty,responsible:$('eResponsible').value.trim(),note};
@@ -1205,53 +1258,53 @@ $('entryForm').addEventListener('submit',async e=>{
     setToday('eDate');
     syncEntryType();
     const result=dockEntryComparison(date,sec);
-    alert(`Entrada registrada com sucesso.\n\n${result.message}`);
-  }catch(err){alert('Erro ao registrar entrada: '+friendlyError(err));}
+    showNotice(`Entrada registrada com sucesso.\n\n${result.message}`);
+  }catch(err){showNotice('Erro ao registrar entrada: '+friendlyError(err));}
 });
 
 $('dockForm').addEventListener('submit',async e=>{
   e.preventDefault();
   try{
+    if(!validateRequired(e.target))return;
     const sec=$('dSector').value;
     const m={date:$('dDate').value,sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,qty:Number($('dQty').value),responsible:$('dResponsible').value.trim(),note:$('dNote').value.trim()};
-    if(!m.date||!Number.isInteger(m.qty)||m.qty<0)return alert('Informe a data e uma quantidade inteira válida.');
+    if(!m.date||!Number.isInteger(m.qty)||m.qty<0)return showNotice('Informe a data e uma quantidade inteira válida.');
     const existing=activeDocks().find(x=>x.date===m.date&&x.sector===sec);
     if(existing){
-      if(!confirm(`Já existe uma contagem de ${existing.qty} BAG(s) para ${sec} em ${fmt(m.date)}. Deseja substituí-la pela nova contagem de ${m.qty} BAG(s)?`))return;
-      const reason=prompt('Justificativa da substituição da contagem (obrigatória):','');if(reason===null)return;if(!reason.trim())return alert('Informe a justificativa da substituição.');
+      const answer=await askFields('Substituir contagem das Docas',`Já existe uma contagem de ${existing.qty} BAGS para ${sec} em ${fmt(m.date)}. A nova contagem será ${m.qty} BAGS.`,[{label:'Justificativa da substituição',type:'textarea',required:true}],'Substituir contagem');if(!answer)return;const reason=answer.values[0];
       await removeDock(existing.id,`Substituída por nova contagem — ${reason.trim()}`);
     }
     await addDock(m);
     const comparison=dockEntryComparison(addDays(m.date,1),sec);
     e.target.reset();setToday('dDate');syncDockType();
-    alert(`Lançamento das docas registrado com sucesso.\n\n${comparison.message}\nEntrada de ${fmt(comparison.entryDate)}: ${comparison.entries} BAG(s)\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s).`);
-  }catch(err){alert('Erro ao salvar nas docas: '+friendlyError(err));}
+    showNotice(`Lançamento das docas registrado com sucesso.\n\n${comparison.message}\nEntrada de ${fmt(comparison.entryDate)}: ${comparison.entries} BAG(s)\nDocas de ${fmt(comparison.dockDate)}: ${comparison.dockQty} BAG(s).`);
+  }catch(err){showNotice('Erro ao salvar nas docas: '+friendlyError(err));}
 });
 
 $('consumptionForm').addEventListener('submit',async e=>{
   e.preventDefault();
   try{
+    if(!validateRequired(e.target))return;
     const s=$('cSector').value,q=Number($('cQty').value);
     const manualLot=($('cManualLot').value||'').trim();
-    if(!$('cDate').value||!Number.isInteger(q)||q<1)return alert('Informe a data e uma quantidade inteira maior que zero.');
+    if(!$('cDate').value||!Number.isInteger(q)||q<1)return showNotice('Informe a data e uma quantidade inteira maior que zero.');
 
     const noteBase=`Turno: ${$('cShift').value}${$('cNote').value.trim()?' — '+$('cNote').value.trim():''}`;
     let movements=[];
 
     if(manualLot){
-      const item=fifoLots(s).find(x=>String(x.lot).toLowerCase()===manualLot.toLowerCase());
-      if(!item)return alert(`O lote ${manualLot} não foi encontrado ou não possui saldo disponível em ${s}.`);
-      if(q>item.qty)return alert(`Saldo insuficiente no lote ${item.lot}. Saldo disponível: ${item.qty} BAG(s).`);
-      const first=fifoLots(s)[0];
+      const item=fifoLots(s,$('cDate').value).find(x=>String(x.lot).toLowerCase()===manualLot.toLowerCase());
+      if(!item)return showNotice(`O lote ${manualLot} não foi encontrado ou não possui saldo disponível em ${s}.`);
+      if(q>item.qty)return showNotice(`Saldo insuficiente no lote ${item.lot}. Saldo disponível: ${item.qty} BAG(s).`);
+      const first=fifoLots(s,$('cDate').value)[0];
       if(first&&first.lot!==item.lot){
-        const reason=prompt(`O lote prioritário pelo FIFO é ${first.lot}, mas foi informado ${item.lot}. Informe o motivo do desvio:`,'');if(reason===null)return;if(!reason.trim())return alert('Informe o motivo do desvio do FIFO.');
-        const supervisor=prompt('Informe o nome do supervisor que autorizou o desvio:','');if(supervisor===null)return;if(!supervisor.trim())return alert('A autorização do supervisor é obrigatória para utilizar outro lote.');
+        const answer=await askFields('Desvio da ordem FIFO',`O lote prioritário em ${fmt($('cDate').value)} é ${first.lot}, mas foi informado ${item.lot}.`,[{label:'Motivo do desvio',type:'textarea',required:true},{label:'Supervisor que autorizou',required:true}],'Autorizar consumo');if(!answer)return;const [reason,supervisor]=answer.values;
         movements=[{date:$('cDate').value,kind:'CONSUMO',sector:s,type:CONFIG[s].type,code:CONFIG[s].code,lot:item.lot,qty:q,responsible:$('cResponsible').value.trim(),fifo_status:'DESVIO AUTORIZADO',fifo_reason:reason.trim(),fifo_supervisor:supervisor.trim(),note:`Desvio manual do FIFO — operador não seguiu FIFO — Motivo: ${reason.trim()} — Autorizado por: ${supervisor.trim()} — ${noteBase}`}];
       }else{movements=[{date:$('cDate').value,kind:'CONSUMO',sector:s,type:CONFIG[s].type,code:CONFIG[s].code,lot:item.lot,qty:q,responsible:$('cResponsible').value.trim(),fifo_status:'CONFORME',note:`Lote prioritário informado manualmente — FIFO seguido — ${noteBase}`}];}
     }else{
-      const queue=fifoLots(s);
+      const queue=fifoLots(s,$('cDate').value);
       const total=queue.reduce((a,x)=>a+x.qty,0);
-      if(q>total)return alert(`Saldo insuficiente em ${s}. Disponível total seguindo FIFO: ${total} BAG(s).`);
+      if(q>total)return showNotice(`Saldo insuficiente em ${s}. Disponível total seguindo FIFO: ${total} BAG(s).`);
       let remaining=q;
       for(const x of queue){
         if(remaining<=0)break;
@@ -1264,40 +1317,42 @@ $('consumptionForm').addEventListener('submit',async e=>{
     await addMovements(movements);
     e.target.reset();setToday('cDate');syncConsumption();renderFIFO();
     const modo=manualLot?'Lote informado manualmente':'FIFO automático';
-    alert(`Consumo de ${q} BAG(s) registrado — ${modo}.\n\n${movements.map(m=>`${m.lot}: ${m.qty} BAG(s)`).join('\n')}`);
-  }catch(err){alert('Erro ao registrar consumo: '+friendlyError(err));}
+    showNotice(`Consumo de ${q} BAG(s) registrado — ${modo}.\n\n${movements.map(m=>`${m.lot}: ${m.qty} BAG(s)`).join('\n')}`);
+  }catch(err){showNotice('Erro ao registrar consumo: '+friendlyError(err));}
 });
 
 $('lossForm').addEventListener('submit',async e=>{
  e.preventDefault();
  try{
+  if(!validateRequired(e.target))return;
   const sec=$('lossSector').value,lot=$('lossLot').value.trim(),q=Number($('lossQty').value);
   if(sec==='Farinha para o Flotamil'){
    const weights=[...document.querySelectorAll('.pallet-weight')].map(x=>Number(x.value));
-   if(!weights.length||weights.some(x=>!Number.isInteger(x)||x<=0))return alert('Informe o peso de todos os paletes em quilos inteiros, sem casas decimais.');
+   if(!weights.length||weights.some(x=>!Number.isInteger(x)||x<=0))return showNotice('Informe o peso de todos os paletes em quilos inteiros, sem casas decimais.');
    const total=weights.reduce((a,b)=>a+b,0),details=weights.map((kg,i)=>`Palete ${i+1}: ${kg.toLocaleString('pt-BR',{maximumFractionDigits:2})} kg`).join(' | '),userNote=$('lossNote').value.trim();
    const m={date:$('lossDate').value,kind:'ENTRADA',sector:sec,type:'Farinha',code:'691',lot:`FLOTAMIL-${$('lossDate').value.replaceAll('-','')}`,qty:total,responsible:$('lossResponsible').value.trim(),note:`ENTRADA NO SALDO | Produto: Farinha — código 691 | ${details}${userNote?' — '+userNote:''}`};
-   if(!m.date)return alert('Informe a data.');
-   await addMovement(m);e.target.reset();setToday('lossDate');$('palletCount').value=1;syncLossType();alert(`${weights.length} palete(s) registrado(s). Foram acrescentados ${total.toLocaleString('pt-BR',{maximumFractionDigits:2})} kg ao saldo disponível para envio.`);return;
+   if(!m.date)return showNotice('Informe a data.');
+   await addMovement(m);e.target.reset();setToday('lossDate');$('palletCount').value=1;syncLossType();showNotice(`${weights.length} palete(s) registrado(s). Foram acrescentados ${total.toLocaleString('pt-BR',{maximumFractionDigits:2})} kg ao saldo disponível para envio.`);return;
   }
-  if(!CONFIG[sec]||!$('lossDate').value||!lot||!Number.isInteger(q)||q<1||!$('lossReason').value)return alert('Informe data, setor, lote, quantidade e motivo.');
-  const item=fifoLots(sec).find(x=>String(x.lot).toLowerCase()===lot.toLowerCase());
-  if(!item)return alert(`O lote ${lot} não foi encontrado ou não possui saldo disponível em ${sec}.`);
-  if(q>item.qty)return alert(`Saldo insuficiente no lote ${item.lot}. Saldo disponível: ${item.qty} BAG(s).`);
+  if(!CONFIG[sec]||!$('lossDate').value||!lot||!Number.isInteger(q)||q<1||!$('lossReason').value)return showNotice('Informe data, setor, lote, quantidade e motivo.');
+  const item=fifoLots(sec,$('lossDate').value).find(x=>String(x.lot).toLowerCase()===lot.toLowerCase());
+  if(!item)return showNotice(`O lote ${lot} não foi encontrado ou não possui saldo disponível em ${sec}.`);
+  if(q>item.qty)return showNotice(`Saldo insuficiente no lote ${item.lot}. Saldo disponível: ${item.qty} BAG(s).`);
   const reason=$('lossReason').value,userNote=$('lossNote').value.trim();
   const m={date:$('lossDate').value,kind:'PERDA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot:item.lot,qty:q,responsible:$('lossResponsible').value.trim(),note:`Motivo: ${reason}${userNote?' | '+userNote:''}`};
-  await addMovement(m);e.target.reset();setToday('lossDate');syncLossType();alert(`Perda de ${q} BAG(s) registrada no lote ${item.lot}. O estoque foi reduzido.`);
- }catch(err){alert('Erro ao registrar perda: '+friendlyError(err));}
+  await addMovement(m);e.target.reset();setToday('lossDate');syncLossType();showNotice(`Perda de ${q} BAG(s) registrada no lote ${item.lot}. O estoque foi reduzido.`);
+ }catch(err){showNotice('Erro ao registrar perda: '+friendlyError(err));}
 });
 $('lossForm').addEventListener('reset',()=>setTimeout(()=>{syncLossType();renderPalletInputs();$('flotamilSent').checked=false;$('flotamilSentKg').value='';},0));
 
 $('productLotForm').addEventListener('submit',async e=>{
   e.preventDefault();
   try{
+    if(!validateRequired(e.target))return;
     const x={date:$('pDate').value,sector:$('pSector').value,lot:$('pLot').value.trim(),op:$('pOP').value.trim(),responsible:$('pResponsible').value.trim(),note:$('pNote').value.trim()};
-    if(!x.date||!x.lot)return alert('Informe a data e o lote do produto.');
-    await addProductLot(x);e.target.reset();setToday('pDate');alert('Lote do produto registrado com sucesso.');
-  }catch(err){alert('Erro ao registrar lote: '+friendlyError(err));}
+    if(!x.date||!x.lot)return showNotice('Informe a data e o lote do produto.');
+    await addProductLot(x);e.target.reset();setToday('pDate');showNotice('Lote do produto registrado com sucesso.');
+  }catch(err){showNotice('Erro ao registrar lote: '+friendlyError(err));}
 });
 
 async function boot(){
@@ -1319,6 +1374,7 @@ async function boot(){
     sessionStorage.removeItem(SESSION_KEY);
     configureLoginScreen();
   }
+  renderBackupStatus();remindBackup();
 }
 
 $('loginForm').addEventListener('submit',async event=>{
@@ -1347,7 +1403,7 @@ $('loginForm').addEventListener('submit',async event=>{
       loadLocal();
       showApp(username);
       event.target.reset();
-      alert('Usuário e senha cadastrados com sucesso neste aparelho.');
+      showNotice('Usuário e senha cadastrados com sucesso neste aparelho.');
     }else{
       const hash=await derivePassword(password,auth.salt);
       if(username!==auth.username||hash!==auth.hash){
