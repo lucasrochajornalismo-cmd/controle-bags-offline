@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.22-offline-auditoria-integridade">
+<meta name="app-version" content="2026.08.22-offline-usuarios-autorizacao-admin">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -66,7 +66,7 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 .login-box{background:#fff;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12);padding:28px;max-width:460px;width:100%}
 .login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}.login-box .login-note{background:#eef5fb;border:1px solid #cddfed;border-radius:9px;padding:10px;font-size:12px;color:#34536d}.login-box .password-row{position:relative}.login-box .password-row input{padding-right:72px}.login-box .show-password{position:absolute;right:8px;top:13px;border:0;background:transparent;color:var(--primary);cursor:pointer;font-weight:700;padding:8px}
 .header-account{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:0 0 auto}
-#userBar{display:none;align-items:center;gap:7px;max-width:210px;background:rgba(255,255,255,.15);color:#fff;padding:5px 6px 5px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;box-shadow:0 3px 12px rgba(0,0,0,.12);font-size:12px;white-space:nowrap}
+#userBar{display:none;align-items:center;gap:7px;max-width:380px;background:rgba(255,255,255,.15);color:#fff;padding:5px 6px 5px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;box-shadow:0 3px 12px rgba(0,0,0,.12);font-size:12px;white-space:nowrap}
 #userBar strong{max-width:105px;overflow:hidden;text-overflow:ellipsis}
 #userBar button{margin:0;padding:6px 10px;border-radius:99px;font-size:11px}
 #installApp{display:none;background:#fff;color:var(--primary2);padding:7px 12px;font-size:11px;box-shadow:0 3px 12px rgba(0,0,0,.12)}
@@ -74,7 +74,7 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 @media(max-width:900px){.cards,.dashboard-cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.cards{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.container{padding:0 9px}}
-@media(max-width:560px){header{padding:14px 12px}.header{align-items:flex-start;gap:8px}h1{font-size:21px}.sub{font-size:11px}.header-account{gap:5px}#clock{font-size:10px!important}#userBar{max-width:140px;padding-left:8px;gap:5px}#userBar strong{max-width:70px}#userBar button{padding:5px 8px}}
+@media(max-width:560px){header{padding:14px 12px}.header{align-items:flex-start;gap:8px}h1{font-size:21px}.sub{font-size:11px}.header-account{gap:5px}#clock{font-size:10px!important}#userBar{max-width:245px;padding-left:8px;gap:5px;flex-wrap:wrap;justify-content:flex-end}#userBar strong{max-width:70px}#userBar button{padding:5px 8px}}
 @media(max-width:560px){.sent-fields{grid-template-columns:1fr}}
 .fifo-first{border:2px solid var(--green);background:#edf9f2;border-radius:12px;padding:16px;margin-bottom:14px}.fifo-row{display:grid;grid-template-columns:70px 1fr 120px 120px 120px;gap:10px;align-items:center;padding:12px;border-bottom:1px solid var(--border)}.fifo-priority{font-size:22px;font-weight:900}.fifo-tag{display:inline-block;padding:5px 8px;border-radius:99px;background:#dff5e9;color:#11683d;font-size:11px;font-weight:800}.fifo-next{background:#f7f9fb;border-radius:10px;margin-bottom:8px}.fifo-muted{color:var(--muted);font-size:12px}@media(max-width:800px){.fifo-row{grid-template-columns:55px 1fr 1fr}.fifo-row>*:nth-child(n+4){grid-column:auto}}
 .hint{font-size:11px;color:#657482;margin-top:4px}.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.compare-card{border:1px solid var(--border);border-radius:12px;padding:16px;background:#f8fafc}.compare-card.today-card{border:2px solid var(--primary)}.compare-title{font-weight:800;font-size:16px;margin-bottom:12px}.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px}.metric span{display:block;font-size:11px;color:var(--muted)}.metric strong{display:block;font-size:20px;margin-top:4px}@media(max-width:700px){.compare-grid{grid-template-columns:1fr}.metric-row{grid-template-columns:1fr 1fr}}
@@ -86,6 +86,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 .status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}.status-card{padding:15px;border-radius:13px;border:1px solid var(--border);background:#fff}.status-card strong{display:block;font-size:24px;margin-top:5px}.status-card.warning{background:#fff8e7;border-color:#e7ca78;color:#77500c}.status-card.danger{background:#fff0f0;border-color:#e9b0b0;color:#922f2f}.status-card.ok{background:#edf9f2;border-color:#b9dfc8;color:#11683d}@media(max-width:700px){.status-grid{grid-template-columns:1fr}}
 .app-toast-wrap{position:fixed;right:18px;top:92px;z-index:12000;display:grid;gap:9px;max-width:min(390px,calc(100vw - 24px))}.app-toast{background:#fff;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:11px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:13px 16px;white-space:pre-line}.app-toast.success{border-left-color:var(--green)}.app-toast.error{border-left-color:var(--red)}.app-toast.warning{border-left-color:#d99000}
 .app-modal{border:0;border-radius:16px;padding:0;width:min(620px,calc(100vw - 24px));box-shadow:0 24px 70px rgba(0,0,0,.3)}.app-modal::backdrop{background:rgba(8,30,48,.58)}.modal-head{padding:18px 20px;background:linear-gradient(120deg,var(--primary2),var(--primary));color:#fff}.modal-head h2{margin:0;font-size:20px}.modal-body{padding:20px;white-space:pre-line}.modal-fields{display:grid;gap:12px;margin-top:15px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;padding:0 20px 20px}.backup-current{color:var(--green);font-weight:800}.backup-old{color:var(--red);font-weight:800}
+.divergence-list{display:grid;gap:10px}.divergence-item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px;border:1px solid #ead18a;background:#fffaf0;border-radius:11px}.divergence-item strong{color:#77500c}.divergence-meta{font-size:12px;color:var(--muted);margin-top:5px}.divergence-values{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:12px}@media(max-width:650px){.divergence-item{grid-template-columns:1fr}.divergence-item .btn{width:100%}}
 .audit-list{display:grid;gap:14px;margin-top:16px}.audit-card{border:1px solid var(--border);border-radius:13px;background:#fff;overflow:hidden;box-shadow:0 4px 15px rgba(15,42,66,.05)}.audit-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 16px;background:#f4f8fb;border-bottom:1px solid var(--border)}.audit-card-title{font-size:16px;font-weight:800;color:var(--primary2)}.audit-card-time{font-size:12px;color:var(--muted);margin-top:4px}.audit-action{padding:6px 10px;border-radius:99px;background:#eaf3fb;color:#174d78;font-size:11px;font-weight:900;white-space:nowrap}.audit-action.cancelado{background:#fde5e5;color:#a52d2d}.audit-action.editado{background:#fff4d6;color:#77500c}.audit-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px;background:#fff}.audit-summary div{padding:9px 11px;border-radius:8px;background:#f8fafc}.audit-summary span,.audit-field span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:800;margin-bottom:4px}.audit-summary strong{display:block;overflow-wrap:anywhere}.audit-reason{margin:0 16px 14px;padding:11px 13px;border-left:4px solid var(--primary);background:#eef5fb;border-radius:7px;overflow-wrap:anywhere}.audit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}.audit-value{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.audit-value h3{margin:0;padding:10px 12px;font-size:13px;background:#eef3f7}.audit-value.new h3{background:#e8f7ee;color:#11683d}.audit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.audit-field{padding:9px 12px;border-bottom:1px solid #edf1f4;overflow-wrap:anywhere;min-width:0}.audit-field.full{grid-column:1/-1}.audit-empty{padding:18px;color:var(--muted);font-style:italic;text-align:center}.audit-field strong{font-size:13px;font-weight:700}.audit-changed{background:#fff9e8}.audit-changed strong{color:#7a5200}@media(max-width:800px){.audit-summary{grid-template-columns:1fr}.audit-compare{grid-template-columns:1fr}.audit-card-head{flex-direction:column}.audit-fields{grid-template-columns:1fr}.audit-field.full{grid-column:auto}}
 </style>
 </head>
@@ -117,7 +118,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
       <button id="installApp" class="btn" type="button">⬇ Instalar aplicativo</button>
       <div id="userBar">
         <span aria-hidden="true">👤</span>
-        <strong id="userName">Modo offline</strong>
+        <strong id="userName">Modo offline</strong><span id="userRole" class="small" style="color:#fff"></span>
+        <button id="addUserButton" class="btn light" type="button" onclick="createLocalUser()" style="display:none">+ Usuário</button>
         <button class="btn light" type="button" onclick="logoutLocal()">Sair</button>
       </div>
     </div>
@@ -142,6 +144,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="dashboard" class="page active">
 <div id="dashboardOperationalStatus" class="status-grid"></div>
+<div class="panel"><h2>🔍 Divergências aguardando conferência</h2><div class="info">Confira cada diferença entre Docas e Entrada. Ao concluir, registre o resultado, o responsável e a justificativa.</div><div id="dashboardDivergences" class="divergence-list"></div></div>
 <div class="cards dashboard-cards">
 <div class="card stock"><div class="label">Estoque · Farinheira · 1437</div><div id="kFar" class="value green">0 BAGS</div></div>
 <div class="card entry"><div class="label">Entradas ontem · Farinheira</div><div id="kEntryPrevFar" class="value blue">0</div></div>
@@ -296,7 +299,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="relatorios" class="page">
 <div class="panel"><h2>📋 Histórico de movimentações</h2>
-<div class="info">Se um lançamento estiver incorreto, use <strong>Editar</strong> ou <strong>Cancelar</strong>. O registro cancelado permanece disponível para auditoria, mas deixa de afetar o estoque, o FIFO e as comparações.</div>
+<div class="info">Se um lançamento estiver incorreto, use <strong>🔒 Editar</strong> ou <strong>🔒 Cancelar</strong>. O registro cancelado permanece disponível para auditoria, mas deixa de afetar o estoque, o FIFO e as comparações.</div>
 <div class="toolbar"><input type="date" id="rStart"><input type="date" id="rEnd"><select id="rSector"><option value="">Todos os setores</option><option>Farinheira</option><option>Colorífico</option></select><select id="rKind"><option value="">Todos</option><option value="ENTRADA">Entradas</option><option value="CONSUMO">Consumos</option><option value="PERDA">Perdas</option></select><button class="btn primary" type="button" onclick="renderReport()">Filtrar</button><button class="btn light" type="button" onclick="exportCSV()">Exportar CSV</button><button class="btn success" type="button" onclick="exportExcelComplete()">📊 Exportar Excel completo</button></div>
 <div class="table-wrap"><table><thead><tr><th>Data</th><th>Movimento</th><th>Setor</th><th>Código</th><th>Tipo</th><th>Lote</th><th>Qtd.</th><th>Responsável</th><th>Obs.</th><th>Status</th><th>Ações</th></tr></thead><tbody id="reportBody"></tbody></table></div>
 </div>
@@ -311,7 +314,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="backup" class="page">
 <div class="panel"><h2>💾 Backup e restauração</h2><p class="small">Os registros ficam salvos no banco compartilhado. Faça backup antes de trocar de aparelho ou realizar alterações importantes.</p>
-<div id="backupStatus" class="info">Verificando a data do último backup…</div><div class="actions"><button class="btn primary" type="button" onclick="downloadBackup()">Baixar backup</button><button class="btn success" type="button" onclick="exportExcelComplete()">📊 Baixar Excel completo</button><label class="btn light">Restaurar backup<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(event)"></label><button class="btn light" type="button" onclick="changeLocalPassword()">🔐 Trocar senha</button><button class="btn danger" type="button" onclick="resetLocalAccess()">Redefinir acesso</button><button class="btn danger" type="button" onclick="clearAll()">Cancelar lançamentos ativos</button></div>
+<div id="backupStatus" class="info">Verificando a data do último backup…</div><div class="actions"><button class="btn primary" type="button" onclick="downloadBackup()">Baixar backup</button><button class="btn success" type="button" onclick="exportExcelComplete()">📊 Baixar Excel completo</button><label class="btn light">Restaurar backup<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(event)"></label><button class="btn primary admin-only" type="button" onclick="createLocalUser()">+ Cadastrar usuário</button><button class="btn light admin-only" type="button" onclick="changeLocalPassword()">🔐 Trocar senha do administrador</button><button class="btn danger admin-only" type="button" onclick="resetLocalAccess()">Redefinir acesso</button><button class="btn danger admin-only" type="button" onclick="clearAll()">Cancelar lançamentos ativos</button></div>
 </div>
 <div class="panel"><h2>Parâmetros fixos</h2><table><thead><tr><th>Setor</th><th>Tipo</th><th>Código</th><th>Cálculo do estoque</th></tr></thead><tbody>
 <tr><td>Farinheira</td><td>Big Bag 1.300 kg</td><td>1437</td><td>Calculado pelas movimentações</td></tr>
@@ -322,7 +325,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <footer>Controle de estoque e movimentações — Flotamil com registro, baixa e impressão direta automática</footer>
 </div>
 <div id="appToastWrap" class="app-toast-wrap" aria-live="polite"></div>
-<dialog id="appModal" class="app-modal"><form method="dialog" id="appModalForm"><div class="modal-head"><h2 id="appModalTitle">Confirmação</h2></div><div class="modal-body"><div id="appModalMessage"></div><div id="appModalFields" class="modal-fields"></div></div><div class="modal-actions"><button id="appModalCancel" class="btn light" value="cancel">Cancelar</button><button id="appModalConfirm" class="btn primary" value="confirm">Confirmar</button></div></form></dialog>
+<dialog id="appModal" class="app-modal"><form method="dialog" id="appModalForm"><div class="modal-head"><h2 id="appModalTitle">Confirmação</h2></div><div class="modal-body"><div id="appModalMessage"></div><div id="appModalFields" class="modal-fields"></div></div><div class="modal-actions"><button id="appModalCancel" class="btn light" value="cancel">🔒 Cancelar</button><button id="appModalConfirm" class="btn primary" value="confirm">Confirmar</button></div></form></dialog>
 
 <script>/*!
 
@@ -342,6 +345,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
 const STORAGE_KEY = 'controle_estoque_movimentacoes_offline_v1';
 const AUTH_KEY = 'controle_estoque_offline_auth_v1';
+const USERS_KEY = 'controle_estoque_offline_users_v1';
 const SESSION_KEY = 'controle_estoque_offline_session_v1';
 
 const CONFIG = {
@@ -367,7 +371,7 @@ function appDialog({title='Confirmação',message='',fields=[],confirmText='Conf
   return new Promise(resolve=>{
     const dialog=$('appModal'),form=$('appModalForm'),box=$('appModalFields');
     $('appModalTitle').textContent=title;$('appModalMessage').textContent=message;$('appModalConfirm').textContent=confirmText;$('appModalConfirm').className=`btn ${danger?'danger':'primary'}`;
-    box.innerHTML=fields.map((f,i)=>`<div class="field"><label>${esc(f.label)}${f.required?' *':''}</label>${f.type==='textarea'?`<textarea data-modal-field="${i}" placeholder="${esc(f.placeholder||'')}">${esc(f.value||'')}</textarea>`:`<input data-modal-field="${i}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" placeholder="${esc(f.placeholder||'')}">`}</div>`).join('');
+    box.innerHTML=fields.map((f,i)=>`<div class="field"><label>${esc(f.label)}${f.required?' *':''}</label>${f.type==='textarea'?`<textarea data-modal-field="${i}" placeholder="${esc(f.placeholder||'')}">${esc(f.value||'')}</textarea>`:f.type==='select'?`<select data-modal-field="${i}">${(f.options||[]).map(option=>`<option value="${esc(option)}"${option===f.value?' selected':''}>${esc(option)}</option>`).join('')}</select>`:`<input data-modal-field="${i}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" placeholder="${esc(f.placeholder||'')}">`}</div>`).join('');
     const finish=()=>{const confirmed=dialog.returnValue==='confirm';const values=confirmed?[...box.querySelectorAll('[data-modal-field]')].map(x=>x.value):null;dialog.removeEventListener('close',finish);resolve(values===null?null:{confirmed:true,values});};
     form.onsubmit=event=>{if(event.submitter?.value==='confirm'){const inputs=[...box.querySelectorAll('[data-modal-field]')];const missing=fields.some((f,i)=>f.required&&!inputs[i].value.trim());if(missing){event.preventDefault();showNotice('Preencha todos os campos obrigatórios.','error');inputs.forEach((x,i)=>x.classList.toggle('required-missing',!!fields[i].required&&!x.value.trim()));}}};
     dialog.addEventListener('close',finish);dialog.showModal();
@@ -460,6 +464,15 @@ function esc(s){ return String(s ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':
 function getLocalAuth(){
   try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch{return null;}
 }
+function getLocalUsers(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(USERS_KEY)||'[]');if(Array.isArray(saved)&&saved.length)return saved;
+    const legacy=getLocalAuth();if(legacy){const admin={...legacy,role:'admin',active:true};localStorage.setItem(USERS_KEY,JSON.stringify([admin]));return [admin];}
+  }catch(error){console.warn('Cadastro local de usuários inválido:',error);}return [];
+}
+function saveLocalUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users));}
+function adminAccount(){return getLocalUsers().find(x=>x.role==='admin'&&x.active!==false)||null;}
+function currentAccount(){const username=sessionStorage.getItem(SESSION_KEY);return getLocalUsers().find(x=>x.username===username&&x.active!==false)||null;}
 
 function bytesToHex(bytes){return [...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('');}
 function hexToBytes(hex){return new Uint8Array(String(hex).match(/.{1,2}/g)?.map(x=>parseInt(x,16))||[]);}
@@ -471,7 +484,7 @@ async function derivePassword(password,saltHex){
 }
 
 function configureLoginScreen(){
-  const hasAccount=!!getLocalAuth();
+  const hasAccount=getLocalUsers().length>0;
   $('loginScreen').style.display='flex';
   $('userBar').style.display='none';
   $('loginTitle').textContent=hasAccount?'Entre para acessar o aplicativo offline.':'Primeiro acesso: crie o usuário e a senha deste aparelho.';
@@ -482,10 +495,10 @@ function configureLoginScreen(){
   $('loginMsg').textContent='';
 }
 
-function showApp(username){
+function showApp(account){
   $('loginScreen').style.display='none';
   $('userBar').style.display='flex';
-  $('userName').textContent=username||'Modo offline';
+  const user=typeof account==='string'?getLocalUsers().find(x=>x.username===account):account;$('userName').textContent=user?.username||'Modo offline';$('userRole').textContent=user?.role==='admin'?'Administrador':'Operador';$('addUserButton').style.display=user?.role==='admin'?'inline-block':'none';document.querySelectorAll('.admin-only').forEach(el=>el.style.display=user?.role==='admin'?'':'none');
 }
 
 function logoutLocal(){
@@ -493,16 +506,25 @@ function logoutLocal(){
   $('loginForm').reset();
   configureLoginScreen();
 }
-async function verifyLocalPassword(password){const auth=getLocalAuth();return !!auth&&(await derivePassword(password,auth.salt))===auth.hash;}
+async function verifyLocalPassword(password){const auth=adminAccount();return !!auth&&(await derivePassword(password,auth.salt))===auth.hash;}
+async function requireAdminAuthorization(action){
+  const answer=await askFields('Autorização do Administrador',`A ação “${action}” é restrita. Digite a senha pessoal do Administrador para continuar.`,[{label:'Senha pessoal do Administrador',type:'password',required:true}],'Autorizar');if(!answer)return false;
+  if(!await verifyLocalPassword(answer.values[0])){showNotice('Autorização negada: senha do Administrador incorreta.','error');recordAudit('SISTEMA',0,'AUTORIZAÇÃO NEGADA',null,{acao:action,solicitante:currentUser()},'Tentativa com senha administrativa inválida');saveLocal();return false;}recordAudit('SISTEMA',0,'AUTORIZAÇÃO CONCEDIDA',null,{acao:action,solicitante:currentUser(),administrador:adminAccount()?.username},'Senha pessoal do Administrador validada');saveLocal();return true;
+}
+async function createLocalUser(){
+  if(!await requireAdminAuthorization('Cadastrar novo usuário'))return;
+  const answer=await askFields('Cadastrar novo usuário','O novo usuário terá perfil Operador e não poderá editar ou cancelar registros.',[{label:'Nome do usuário',required:true},{label:'Senha (mínimo 6 caracteres)',type:'password',required:true},{label:'Confirmar senha',type:'password',required:true}],'Cadastrar usuário');if(!answer)return;
+  const [username,password,confirmation]=answer.values,name=username.trim();if(name.length<3||password.length<6||password!==confirmation)return showNotice('Confira o nome, a senha e sua confirmação.','error');const users=getLocalUsers();if(users.some(x=>x.username.toLowerCase()===name.toLowerCase()))return showNotice('Já existe um usuário com esse nome.','error');const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(password,salt);users.push({username:name,salt,hash,role:'operador',active:true,createdAt:new Date().toISOString(),createdBy:currentUser()});saveLocalUsers(users);recordAudit('SISTEMA',0,'USUÁRIO CADASTRADO',null,{usuario:name,perfil:'OPERADOR'},'Cadastro autorizado pelo Administrador');saveLocal();showNotice(`Usuário ${name} cadastrado com perfil Operador.`, 'success');
+}
 async function changeLocalPassword(){
   const answer=await askFields('Trocar senha local','A nova senha protegerá o acesso neste aparelho. Os dados permanecerão intactos.',[{label:'Senha atual',type:'password',required:true},{label:'Nova senha (mínimo 6 caracteres)',type:'password',required:true},{label:'Confirmar nova senha',type:'password',required:true}],'Trocar senha');if(!answer)return;
   const [current,next,confirmation]=answer.values;if(!await verifyLocalPassword(current))return showNotice('A senha atual está incorreta.','error');if(next.length<6)return showNotice('A nova senha deve ter pelo menos 6 caracteres.','error');if(next!==confirmation)return showNotice('A confirmação da nova senha não corresponde.','error');
-  const auth=getLocalAuth(),salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(next,salt);localStorage.setItem(AUTH_KEY,JSON.stringify({...auth,salt,hash,updatedAt:new Date().toISOString()}));sessionStorage.setItem(SESSION_KEY,hash);recordAudit('SISTEMA',0,'SENHA ALTERADA',null,{usuario:auth.username},'Senha local alterada pelo usuário autenticado');saveLocal();showNotice('Senha alterada com sucesso.','success');
+  const auth=adminAccount(),salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(next,salt),users=getLocalUsers().map(x=>x.role==='admin'?{...x,salt,hash,updatedAt:new Date().toISOString()}:x);saveLocalUsers(users);localStorage.setItem(AUTH_KEY,JSON.stringify({...auth,salt,hash,role:'admin',updatedAt:new Date().toISOString()}));recordAudit('SISTEMA',0,'SENHA ALTERADA',null,{usuario:auth.username},'Senha pessoal do Administrador alterada');saveLocal();showNotice('Senha do Administrador alterada com sucesso.','success');
 }
 async function resetLocalAccess(){
   const answer=await askFields('Redefinir acesso local','Por segurança, confirme a senha atual. Um backup dos dados será baixado antes da redefinição.',[{label:'Senha atual',type:'password',required:true},{label:'Novo usuário',required:true},{label:'Nova senha (mínimo 6 caracteres)',type:'password',required:true},{label:'Confirmar nova senha',type:'password',required:true}],'Redefinir acesso');if(!answer)return;
   const [current,username,password,confirmation]=answer.values;if(!await verifyLocalPassword(current))return showNotice('A senha atual está incorreta.','error');if(username.trim().length<3||password.length<6||password!==confirmation)return showNotice('Confira o usuário, o tamanho da senha e sua confirmação.','error');downloadBackup('backup_antes_de_redefinir_acesso');
-  const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(password,salt);localStorage.setItem(AUTH_KEY,JSON.stringify({username:username.trim(),salt,hash,updatedAt:new Date().toISOString()}));sessionStorage.setItem(SESSION_KEY,hash);recordAudit('SISTEMA',0,'ACESSO REDEFINIDO',null,{usuario:username.trim()},'Redefinição autenticada do acesso local');saveLocal();showApp(username.trim());showNotice('Acesso local redefinido com sucesso.','success');
+  const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16))),hash=await derivePassword(password,salt),admin={username:username.trim(),salt,hash,role:'admin',active:true,updatedAt:new Date().toISOString()};saveLocalUsers([admin,...getLocalUsers().filter(x=>x.role!=='admin')]);localStorage.setItem(AUTH_KEY,JSON.stringify(admin));sessionStorage.setItem(SESSION_KEY,admin.username);recordAudit('SISTEMA',0,'ACESSO REDEFINIDO',null,{usuario:admin.username},'Redefinição autenticada do acesso administrativo');saveLocal();showApp(admin);showNotice('Acesso administrativo redefinido com sucesso.','success');
 }
 
 function toggleLocalPassword(){
@@ -511,7 +533,7 @@ function toggleLocalPassword(){
   $('loginPasswordConfirm').type=show?'text':'password';
 }
 
-function currentUser(){return getLocalAuth()?.username||$('userName')?.textContent||'Usuário local';}
+function currentUser(){return currentAccount()?.username||$('userName')?.textContent||'Usuário local';}
 function activeMovements(){return db.movements.filter(x=>x.status!=='cancelado');}
 function activeDocks(){return docks.records.filter(x=>x.status!=='cancelado');}
 function auditSnapshot(value){
@@ -610,10 +632,10 @@ function entryTotalForDay(date,sector,excludeId=null){
     .reduce((sum,m)=>sum+Number(m.qty||0),0);
 }
 
-function dockEntryComparison(date,sector,extraEntry=0){
+function dockEntryComparison(date,sector,extraEntry=0,excludeId=null){
   const dockDate=addDays(date,-1);
   const dock=latestDock(dockDate,sector);
-  const entries=entryTotalForDay(date,sector)+Number(extraEntry||0);
+  const entries=entryTotalForDay(date,sector,excludeId)+Number(extraEntry||0);
   if(!date||!sector)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:'Informe a data e o setor para realizar a conferência.'};
   if(!dock)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(dockDate)} (dia anterior à Entrada).`};
   const dockQty=Number(dock.qty||0),diff=entries-dockQty;
@@ -690,14 +712,32 @@ function syncConsumption(){
     ? `FIFO: utilizar primeiro ${first.lot} — primeira entrada ${fmt(first.firstDate)} — saldo ${first.qty} BAG(s).`
     : 'FIFO: não há lote com saldo disponível para este setor.';
 }
+function pendingDivergences(){
+  return activeMovements().filter(m=>m.kind==='ENTRADA'&&m.divergence_status!=='resolvida'&&(m.divergence_status==='pendente'||/divergência docas|sem contagem anterior/i.test(m.note||''))).sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id));
+}
+function divergenceDetails(m){
+  const dockDate=m.divergence_dock_date||addDays(m.date,-1),dock=m.divergence_dock_qty;
+  return {dockDate,dockQty:dock===undefined||dock===null?'Não informado':`${dock} BAGS`,entryQty:`${m.divergence_entry_qty??m.qty} BAGS`,difference:m.divergence_diff===undefined||m.divergence_diff===null?'Não calculada':`${Number(m.divergence_diff)>0?'+':''}${m.divergence_diff} BAGS`};
+}
+function renderDashboardDivergences(){
+  const target=$('dashboardDivergences');if(!target)return;const rows=pendingDivergences();
+  target.innerHTML=rows.length?rows.map(m=>{const d=divergenceDetails(m);return `<div class="divergence-item"><div><strong>${esc(m.sector)} — Entrada de ${fmt(m.date)}</strong><div class="divergence-meta">Lote ${esc(m.lot)} · Registro #${m.id} · Responsável: ${esc(m.responsible||'não informado')}</div><div class="divergence-values"><span>Docas ${fmt(d.dockDate)}: <b>${d.dockQty}</b></span><span>Entrada: <b>${d.entryQty}</b></span><span>Diferença: <b>${d.difference}</b></span></div></div><button class="btn primary" type="button" onclick="resolveDivergence(${m.id})">Concluir conferência</button></div>`;}).join(''):'<div class="empty">✓ Nenhuma divergência aguardando conferência.</div>';
+}
+async function resolveDivergence(id){
+  const item=db.movements.find(m=>m.id===id&&m.status!=='cancelado');if(!item||item.divergence_status==='resolvida')return;
+  if(!await requireAdminAuthorization('Concluir conferência de divergência'))return;
+  const details=divergenceDetails(item),answer=await askFields('Concluir conferência da divergência',`${item.sector} — Entrada de ${fmt(item.date)}\nDocas: ${details.dockQty} · Entrada: ${details.entryQty} · Diferença: ${details.difference}`,[{label:'Resultado da conferência',type:'select',options:['Contagem confirmada','Entrada corrigida','Docas corrigidas','Diferença justificada','Outro'],required:true},{label:'Responsável pela conferência',value:currentUser(),required:true},{label:'Data da conferência',type:'date',value:today(),required:true},{label:'Justificativa / conclusão',type:'textarea',placeholder:'Descreva o que foi verificado e a conclusão.',required:true}],'Marcar como resolvida');if(!answer)return;
+  const [result,responsible,date,conclusion]=answer.values,before={...item};Object.assign(item,{divergence_status:'resolvida',divergence_result:result,divergence_responsible:responsible.trim(),divergence_resolved_date:date,divergence_resolved_at:new Date().toISOString(),divergence_conclusion:conclusion.trim(),note:`${item.note||''}${item.note?' | ':''}Divergência resolvida em ${date} — Resultado: ${result} — Responsável: ${responsible.trim()} — Conclusão: ${conclusion.trim()}`});recordAudit('MOVIMENTAÇÃO',id,'DIVERGÊNCIA RESOLVIDA',before,item,conclusion.trim());saveLocal();updateAll();showNotice('Divergência marcada como resolvida e registrada na auditoria.','success');
+}
 
 function updateDashboard(){
   const f=totalStock('Farinheira'), c=totalStock('Colorífico');
   $('kFar').textContent=`${f} BAGS`; $('kCol').textContent=`${c} BAGS`;
   $('dFar').textContent=`${f} BAGS`; $('dCol').textContent=`${c} BAGS`; $('dTotal').textContent=`${f+c} BAGS`;
-  const pending=activeMovements().filter(m=>m.kind==='ENTRADA'&&/conferência pendente|sem contagem anterior/i.test(m.note||'')).length;
+  const pending=pendingDivergences().length;
   const low=[['Farinheira',f],['Colorífico',c]].filter(([,qty])=>qty<=5);
   $('dashboardOperationalStatus').innerHTML=`<div class="status-card ${pending?'warning':'ok'}"><span>Divergências pendentes</span><strong>${pending}</strong><small>${pending?'Revisar justificativas e conferências':'Nenhuma pendência registrada'}</small></div><div class="status-card ${f<=5?'danger':'ok'}"><span>Estoque Farinheira</span><strong>${f} BAGS</strong><small>${f<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div><div class="status-card ${c<=5?'danger':'ok'}"><span>Estoque Colorífico</span><strong>${c} BAGS</strong><small>${c<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div>`;
+  renderDashboardDivergences();
 
   const prev=previousDate();
   const prevQty=(sector,kind)=>activeMovements().filter(m=>m.kind===kind&&m.sector===sector&&String(m.date).slice(0,10)===prev).reduce((a,m)=>a+Number(m.qty),0);
@@ -801,7 +841,7 @@ function printFlotamilLabel(qty){
 }
 function renderLossHistory(){
  const st=$('lossStart').value,en=$('lossEnd').value,sec=$('lossFilterSector').value,a=activeMovements().filter(m=>(m.kind==='PERDA'||m.sector==='Farinha para o Flotamil')&&(!st||m.date>=st)&&(!en||m.date<=en)&&(!sec||m.sector===sec)).sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
- $('lossBody').innerHTML=a.length?a.map(m=>`<tr><td>${fmt(m.date)}</td><td>${esc(m.sector)}</td><td>${esc(m.lot)}</td><td><strong>${Number(m.qty).toLocaleString('pt-BR',{maximumFractionDigits:2})} ${m.sector==='Farinha para o Flotamil'?'kg':'BAG(s)'}</strong></td><td>${esc(movementPurpose(m))}</td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td><td><button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editMovement(${m.id})">Editar</button><button class="btn danger" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteMovement(${m.id})">Cancelar</button></td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum registro encontrado.</td></tr>';
+ $('lossBody').innerHTML=a.length?a.map(m=>`<tr><td>${fmt(m.date)}</td><td>${esc(m.sector)}</td><td>${esc(m.lot)}</td><td><strong>${Number(m.qty).toLocaleString('pt-BR',{maximumFractionDigits:2})} ${m.sector==='Farinha para o Flotamil'?'kg':'BAG(s)'}</strong></td><td>${esc(movementPurpose(m))}</td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td><td><button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editMovement(${m.id})">🔒 Editar</button><button class="btn danger" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteMovement(${m.id})">🔒 Cancelar</button></td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum registro encontrado.</td></tr>';
 }
 function movementPurpose(m){
  if(m.reason)return m.reason;
@@ -836,7 +876,7 @@ function renderDockHistory(){
   $('dockBody').innerHTML=a.length?a.map(m=>`<tr>
     <td>${fmt(m.date)}</td><td>${esc(m.sector)}</td><td>${esc(m.code)}</td><td>${esc(m.type)}</td>
     <td><strong>${m.qty}</strong></td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td>
-    <td><button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editDock(${m.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteDock(${m.id})">Cancelar</button></td>
+    <td><button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editDock(${m.id})">🔒 Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteDock(${m.id})">🔒 Cancelar</button></td>
   </tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum lançamento das docas para os filtros.</td></tr>';
 }
 
@@ -880,14 +920,14 @@ function renderFIFO(){
 function renderReport(){
   const st=$('rStart').value,en=$('rEnd').value,s=$('rSector').value,k=$('rKind').value;
   const a=db.movements.filter(m=>(!st||m.date>=st)&&(!en||m.date<=en)&&(!s||m.sector===s)&&(!k||m.kind===k)).sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
-  $('reportBody').innerHTML=a.length?a.map(m=>`<tr><td>${fmt(m.date)}</td><td><span class="badge ${m.kind==='ENTRADA'?'in':'out'}">${esc(m.kind)}</span></td><td>${esc(m.sector)}</td><td>${esc(m.code)}</td><td>${esc(m.type)}</td><td>${esc(m.lot)}</td><td>${m.qty}</td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td><td><span class="audit-status ${m.status==='cancelado'?'audit-cancelled':'audit-active'}">${m.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${m.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editMovement(${m.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteMovement(${m.id})">Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="11" class="empty">Nenhum registro para os filtros.</td></tr>';
+  $('reportBody').innerHTML=a.length?a.map(m=>`<tr><td>${fmt(m.date)}</td><td><span class="badge ${m.kind==='ENTRADA'?'in':'out'}">${esc(m.kind)}</span></td><td>${esc(m.sector)}</td><td>${esc(m.code)}</td><td>${esc(m.type)}</td><td>${esc(m.lot)}</td><td>${m.qty}</td><td>${esc(m.responsible)}</td><td>${esc(m.note)}</td><td><span class="audit-status ${m.status==='cancelado'?'audit-cancelled':'audit-active'}">${m.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${m.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editMovement(${m.id})">🔒 Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteMovement(${m.id})">🔒 Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="11" class="empty">Nenhum registro para os filtros.</td></tr>';
 }
 
 function renderProductLotHistory(){
   const st=$('phStart').value,en=$('phEnd').value,s=$('phSector').value,q=($('phLot').value||'').trim().toLowerCase();
   const a=db.productLots.filter(x=>(!st||x.date>=st)&&(!en||x.date<=en)&&(!s||x.sector===s)&&(!q||String(x.lot||'').toLowerCase().includes(q)))
     .sort((x,y)=>String(y.date).localeCompare(String(x.date))||Number(y.id)-Number(x.id));
-  $('productLotBody').innerHTML=a.length?a.map(x=>`<tr><td>${fmt(x.date)}</td><td>${esc(x.sector)}</td><td><strong>${esc(x.lot)}</strong></td><td>${esc(x.op)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td><td><span class="audit-status ${x.status==='cancelado'?'audit-cancelled':'audit-active'}">${x.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${x.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editProductLot(${x.id})">Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteProductLot(${x.id})">Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum lote de produto encontrado.</td></tr>';
+  $('productLotBody').innerHTML=a.length?a.map(x=>`<tr><td>${fmt(x.date)}</td><td>${esc(x.sector)}</td><td><strong>${esc(x.lot)}</strong></td><td>${esc(x.op)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td><td><span class="audit-status ${x.status==='cancelado'?'audit-cancelled':'audit-active'}">${x.status==='cancelado'?'CANCELADO':'ATIVO'}</span></td><td>${x.status==='cancelado'?'—':`<button class="btn primary" style="padding:6px 9px;font-size:11px" type="button" onclick="editProductLot(${x.id})">🔒 Editar</button><button class="btn warning" style="padding:6px 9px;font-size:11px;margin-left:4px" type="button" onclick="deleteProductLot(${x.id})">🔒 Cancelar</button>`}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum lote de produto encontrado.</td></tr>';
 }
 
 function exportProductLotCSV(){
@@ -918,6 +958,7 @@ function exportProductLotCSV(){
 
 async function editProductLot(id){
   const item=db.productLots.find(x=>x.id===id&&x.status!=='cancelado');if(!item)return;
+  if(!await requireAdminAuthorization('Editar Lote do Produto'))return;
   const answer=await askFields('Editar lote do produto','Altere as informações necessárias. A justificativa ficará registrada na auditoria.',[
     {label:'Data',type:'date',value:item.date,required:true},{label:'Lote do produto',value:item.lot,required:true},{label:'Ordem de produção',value:item.op},{label:'Responsável',value:item.responsible},{label:'Observação',type:'textarea',value:item.note},{label:'Justificativa da alteração',type:'textarea',required:true}
   ],'Salvar alteração');if(!answer)return;
@@ -925,6 +966,7 @@ async function editProductLot(id){
 }
 async function deleteProductLot(id){
   const item=db.productLots.find(x=>x.id===id&&x.status!=='cancelado');if(!item)return;
+  if(!await requireAdminAuthorization('Cancelar Lote do Produto'))return;
   const answer=await askFields('Cancelar lote do produto',`O lote ${item.lot} permanecerá na auditoria e deixará de aparecer nas exportações ativas.`,[{label:'Justificativa do cancelamento',type:'textarea',required:true}],'Cancelar registro');if(!answer)return;
   const before={...item};Object.assign(item,{status:'cancelado',cancel_reason:answer.values[0].trim(),cancelled_at:new Date().toISOString(),cancelled_by:currentUser()});recordAudit('LOTE DO PRODUTO',id,'CANCELADO',before,item,item.cancel_reason);saveLocal();updateAll();showNotice('Lote do produto cancelado.','success');
 }
@@ -959,6 +1001,7 @@ function friendlyError(err){
 
 async function editMovement(id){
   const m=db.movements.find(x=>x.id===id); if(!m)return;
+  if(!await requireAdminAuthorization('Editar movimentação'))return;
   const answer=await askFields('Editar movimentação','A alteração recalculará estoque e FIFO. Todos os campos modificados ficarão na auditoria.',[{label:'Data',type:'date',value:m.date,required:true},{label:'Lote',value:m.lot,required:true},{label:`Quantidade (${m.sector==='Farinha para o Flotamil'?'kg':'BAGS'})`,type:'number',value:m.qty,required:true},{label:'Responsável',value:m.responsible},{label:'Observação',type:'textarea',value:m.note},{label:'Justificativa da alteração',type:'textarea',required:true}],'Salvar alteração');if(!answer)return;
   const [date,lot,qtyRaw,responsible,note,editReason]=answer.values,qty=Number(qtyRaw);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!lot.trim()||!Number.isInteger(qty)||qty<1){
@@ -974,7 +1017,14 @@ async function editMovement(id){
     const before={...m};
     const patch={date,lot:lot.trim(),qty,responsible:responsible.trim(),note:note.trim(),updated_at:new Date().toISOString(),updated_by:currentUser()};
     db.movements=db.movements.map(x=>x.id===id?{...x,...patch}:x);
-    recordAudit('MOVIMENTAÇÃO',id,'EDITADO',before,db.movements.find(x=>x.id===id),editReason.trim());
+    const edited=db.movements.find(x=>x.id===id);
+    if(edited.kind==='ENTRADA'){
+      const comparison=dockEntryComparison(date,edited.sector,qty,id),hasDivergence=comparison.dockQty===null||comparison.diff!==0;
+      for(const key of ['divergence_result','divergence_responsible','divergence_resolved_date','divergence_resolved_at','divergence_conclusion'])delete edited[key];
+      if(hasDivergence)Object.assign(edited,{divergence_status:'pendente',divergence_type:comparison.dockQty===null?'SEM CONTAGEM ANTERIOR':comparison.diff<0?'ENTRADA MENOR':'ENTRADA MAIOR',divergence_dock_date:comparison.dockDate,divergence_dock_qty:comparison.dockQty,divergence_entry_qty:comparison.entries,divergence_diff:comparison.diff});
+      else for(const key of ['divergence_status','divergence_type','divergence_dock_date','divergence_dock_qty','divergence_entry_qty','divergence_diff'])delete edited[key];
+    }
+    recordAudit('MOVIMENTAÇÃO',id,'EDITADO',before,edited,editReason.trim());
     saveLocal();updateAll();
     showNotice('Movimentação editada com sucesso. O estoque e o FIFO foram recalculados.');
   }catch(e){showNotice('Erro ao editar movimentação: '+friendlyError(e));}
@@ -982,6 +1032,7 @@ async function editMovement(id){
 
 async function editDock(id){
   const m=docks.records.find(x=>x.id===id); if(!m)return;
+  if(!await requireAdminAuthorization('Editar lançamento das Docas'))return;
   const answer=await askFields('Editar contagem das Docas','A alteração ficará registrada na trilha de auditoria.',[{label:'Data',type:'date',value:m.date,required:true},{label:'Quantidade nas Docas (BAGS)',type:'number',value:m.qty,required:true},{label:'Responsável',value:m.responsible},{label:'Observação',type:'textarea',value:m.note},{label:'Justificativa da alteração',type:'textarea',required:true}],'Salvar alteração');if(!answer)return;
   const [date,qtyRaw,responsible,note,editReason]=answer.values,qty=Number(qtyRaw);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isInteger(qty)||qty<0)return showNotice('Informe uma data válida e uma quantidade inteira igual ou maior que zero.');
@@ -997,6 +1048,7 @@ async function editDock(id){
 
 async function deleteMovement(id){
   const m=db.movements.find(x=>x.id===id); if(!m)return;
+  if(!await requireAdminAuthorization('Cancelar movimentação'))return;
   if(m.sector==='Farinha para o Flotamil'&&m.kind==='ENTRADA'&&flotamilBalance()-Number(m.qty)<0){
     return showNotice('Não é possível cancelar este registro porque já existem baixas de envio vinculadas e o saldo ficaria negativo.');
   }
@@ -1013,6 +1065,7 @@ async function deleteMovement(id){
 
 async function deleteDock(id){
   const m=docks.records.find(x=>x.id===id); if(!m)return;
+  if(!await requireAdminAuthorization('Cancelar lançamento das Docas'))return;
   const answer=await askFields('Cancelar lançamento das Docas',`${fmt(m.date)} — ${m.sector} — ${m.qty} BAGS`,[{label:'Justificativa do cancelamento',type:'textarea',required:true}],'Cancelar lançamento');if(!answer)return;const reason=answer.values[0];
   try{await removeDock(id,reason.trim());showNotice('Lançamento das docas cancelado com sucesso.');}
   catch(e){showNotice('Erro ao apagar: '+friendlyError(e));}
@@ -1033,11 +1086,11 @@ function exportDockCSV(){
   a.href=URL.createObjectURL(b);a.download=`historico_docas_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
-const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',op:'Ordem de produção',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',cancel_reason:'Motivo do cancelamento',created_by:'Criado por',updated_by:'Alterado por',cancelled_by:'Cancelado por'};
-const AUDIT_FIELDS=['date','kind','sector','code','type','lot','op','qty','responsible','note','status','fifo_status','fifo_reason','fifo_supervisor','cancel_reason','created_by','updated_by','cancelled_by'];
+const AUDIT_LABELS={date:'Data',kind:'Movimento',sector:'Setor',code:'Código',type:'Produto / tipo',lot:'Lote / referência',op:'Ordem de produção',qty:'Quantidade',responsible:'Responsável',note:'Observação',status:'Status',fifo_status:'Situação FIFO',fifo_reason:'Motivo do desvio FIFO',fifo_supervisor:'Supervisor autorizador',divergence_status:'Situação da divergência',divergence_type:'Tipo de divergência',divergence_dock_date:'Data das Docas',divergence_dock_qty:'Quantidade nas Docas',divergence_entry_qty:'Quantidade de Entrada',divergence_diff:'Diferença',divergence_result:'Resultado da conferência',divergence_responsible:'Responsável pela conferência',divergence_resolved_date:'Data da conferência',divergence_conclusion:'Conclusão da conferência',cancel_reason:'Motivo do cancelamento',created_by:'Criado por',updated_by:'Alterado por',cancelled_by:'Cancelado por'};
+const AUDIT_FIELDS=['date','kind','sector','code','type','lot','op','qty','responsible','note','status','fifo_status','fifo_reason','fifo_supervisor','divergence_status','divergence_type','divergence_dock_date','divergence_dock_qty','divergence_entry_qty','divergence_diff','divergence_result','divergence_responsible','divergence_resolved_date','divergence_conclusion','cancel_reason','created_by','updated_by','cancelled_by'];
 function auditDisplayValue(key,value){
   if(value===null||value===undefined||value==='')return 'Não informado';
-  if(key==='date'&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return fmt(value);
+  if((key==='date'||key==='divergence_dock_date'||key==='divergence_resolved_date')&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return fmt(value);
   if(key==='qty')return Number(value).toLocaleString('pt-BR',{maximumFractionDigits:2});
   if(key==='status')return String(value).toUpperCase();
   return String(value);
@@ -1193,6 +1246,7 @@ function remindBackup(){const raw=localStorage.getItem('controle_estoque_ultimo_
 async function restoreBackup(ev){
   const f=ev.target.files?.[0]; if(!f)return;
   try{
+    if(!await requireAdminAuthorization('Restaurar backup'))return;
     const x=JSON.parse(await f.text());
     if(!Array.isArray(x.movements)||!Array.isArray(x.productLots||[])||!Array.isArray(x.docks||[])) throw new Error('Estrutura do backup inválida.');
     if(!await askConfirm('Restaurar backup','A restauração substituirá os lançamentos salvos neste aparelho. Antes disso, o aplicativo baixará automaticamente uma cópia dos dados atuais.','Restaurar backup',true))return;
@@ -1210,6 +1264,7 @@ async function restoreBackup(ev){
 }
 
 async function clearAll(){
+  if(!await requireAdminAuthorization('Cancelar todos os lançamentos ativos'))return;
   const answer=await askFields('Cancelar todos os lançamentos ativos','Os registros permanecerão disponíveis na trilha de auditoria e deixarão de afetar os cálculos.',[{label:'Justificativa do cancelamento em massa',type:'textarea',required:true}],'Cancelar lançamentos');if(!answer)return;const reason=answer.values[0];
   try{for(const m of activeMovements()){const before={...m};m.status='cancelado';m.cancel_reason=reason.trim();m.cancelled_at=new Date().toISOString();m.cancelled_by=currentUser();recordAudit('MOVIMENTAÇÃO',m.id,'CANCELADO',before,m,reason.trim());}for(const d of activeDocks()){const before={...d};d.status='cancelado';d.cancel_reason=reason.trim();d.cancelled_at=new Date().toISOString();d.cancelled_by=currentUser();recordAudit('DOCAS',d.id,'CANCELADO',before,d,reason.trim());}for(const p of db.productLots.filter(x=>x.status!=='cancelado')){const before={...p};p.status='cancelado';p.cancel_reason=reason.trim();p.cancelled_at=new Date().toISOString();p.cancelled_by=currentUser();recordAudit('LOTE DO PRODUTO',p.id,'CANCELADO',before,p,reason.trim());}saveLocal();updateAll();showNotice('Lançamentos ativos cancelados.','success');
   }catch(e){showNotice('Erro ao cancelar: '+friendlyError(e));}
@@ -1252,7 +1307,8 @@ $('entryForm').addEventListener('submit',async e=>{
       const answer=await askFields('Entrada acima das Docas',`${comparison.message}\n\nDiferença: ${comparison.diff} BAGS a mais.`,[{label:'Motivo da entrada a mais',type:'textarea',required:true}],'Registrar entrada');if(!answer)return;const reason=answer.values[0];
       note=`Divergência Docas × Entrada: ${comparison.diff} BAG(s) a mais — Motivo: ${reason.trim()}${note?' | '+note:''}`;
     }
-    const m={date,kind:'ENTRADA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot,qty,responsible:$('eResponsible').value.trim(),note};
+    const hasDivergence=comparison.dockQty===null||comparison.diff!==0;
+    const m={date,kind:'ENTRADA',sector:sec,type:CONFIG[sec].type,code:CONFIG[sec].code,lot,qty,responsible:$('eResponsible').value.trim(),note,...(hasDivergence?{divergence_status:'pendente',divergence_type:comparison.dockQty===null?'SEM CONTAGEM ANTERIOR':comparison.diff<0?'ENTRADA MENOR':'ENTRADA MAIOR',divergence_dock_date:comparison.dockDate,divergence_dock_qty:comparison.dockQty,divergence_entry_qty:comparison.entries,divergence_diff:comparison.diff}:{})};
     await addMovement(m);
     e.target.reset();
     setToday('eDate');
@@ -1271,6 +1327,7 @@ $('dockForm').addEventListener('submit',async e=>{
     if(!m.date||!Number.isInteger(m.qty)||m.qty<0)return showNotice('Informe a data e uma quantidade inteira válida.');
     const existing=activeDocks().find(x=>x.date===m.date&&x.sector===sec);
     if(existing){
+      if(!await requireAdminAuthorization('Substituir contagem existente das Docas'))return;
       const answer=await askFields('Substituir contagem das Docas',`Já existe uma contagem de ${existing.qty} BAGS para ${sec} em ${fmt(m.date)}. A nova contagem será ${m.qty} BAGS.`,[{label:'Justificativa da substituição',type:'textarea',required:true}],'Substituir contagem');if(!answer)return;const reason=answer.values[0];
       await removeDock(existing.id,`Substituída por nova contagem — ${reason.trim()}`);
     }
@@ -1365,11 +1422,10 @@ async function boot(){
   syncDockType();
   syncLossType();
   syncEntryType();
-  const auth=getLocalAuth();
-  const session=sessionStorage.getItem(SESSION_KEY);
-  if(auth&&session===auth.hash){
+  const users=getLocalUsers(),session=sessionStorage.getItem(SESSION_KEY),account=users.find(x=>x.username===session&&x.active!==false);
+  if(account){
     loadLocal();
-    showApp(auth.username);
+    showApp(account);
   }else{
     sessionStorage.removeItem(SESSION_KEY);
     configureLoginScreen();
@@ -1387,35 +1443,35 @@ $('loginForm').addEventListener('submit',async event=>{
   }
   const username=$('loginUser').value.trim();
   const password=$('loginPassword').value;
-  const auth=getLocalAuth();
+  const users=getLocalUsers();
   $('loginButton').disabled=true;
-  $('loginMsg').textContent=auth?'Verificando acesso…':'Criando acesso local…';
+  $('loginMsg').textContent=users.length?'Verificando acesso…':'Criando acesso do Administrador…';
   try{
-    if(!auth){
+    if(!users.length){
       const confirmation=$('loginPasswordConfirm').value;
       if(username.length<3)return void($('loginMsg').textContent='O usuário deve ter pelo menos 3 caracteres.');
       if(password.length<6)return void($('loginMsg').textContent='A senha deve ter pelo menos 6 caracteres.');
       if(password!==confirmation)return void($('loginMsg').textContent='As senhas não são iguais.');
       const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16)));
       const hash=await derivePassword(password,salt);
-      localStorage.setItem(AUTH_KEY,JSON.stringify({username,salt,hash,createdAt:new Date().toISOString()}));
-      sessionStorage.setItem(SESSION_KEY,hash);
+      const admin={username,salt,hash,role:'admin',active:true,createdAt:new Date().toISOString()};localStorage.setItem(AUTH_KEY,JSON.stringify(admin));saveLocalUsers([admin]);
+      sessionStorage.setItem(SESSION_KEY,username);
       loadLocal();
-      showApp(username);
+      showApp(admin);
       event.target.reset();
-      showNotice('Usuário e senha cadastrados com sucesso neste aparelho.');
+      showNotice('Administrador e senha pessoal cadastrados com sucesso neste aparelho.','success');
     }else{
-      const hash=await derivePassword(password,auth.salt);
-      if(username!==auth.username||hash!==auth.hash){
+      const account=users.find(x=>x.username.toLowerCase()===username.toLowerCase()&&x.active!==false),hash=account?await derivePassword(password,account.salt):'';
+      if(!account||hash!==account.hash){
         loginFailures++;
         if(loginFailures>=5){loginBlockedUntil=Date.now()+30000;loginFailures=0;}
         $('loginMsg').textContent='Usuário ou senha incorretos.';
         return;
       }
       loginFailures=0;
-      sessionStorage.setItem(SESSION_KEY,auth.hash);
+      sessionStorage.setItem(SESSION_KEY,account.username);
       loadLocal();
-      showApp(auth.username);
+      showApp(account);
       event.target.reset();
     }
   }catch(error){
