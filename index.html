@@ -170,7 +170,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </section>
 
 <section id="lotesSemana" class="page">
-<div class="panel weekly-lots"><h2>🗓️ Lotes utilizados na semana — dois setores</h2><div class="info">Mostra os lotes consumidos entre segunda-feira e domingo, separados por setor.</div><div class="toolbar"><input type="date" id="weeklyReference" onchange="renderWeeklyLots()"><button class="btn primary" type="button" onclick="renderWeeklyLots()">Atualizar</button></div><div id="weeklyLotsResult"></div></div>
+<div class="panel weekly-lots"><h2>🗓️ Lotes utilizados — dois setores</h2><div class="info">Selecione qualquer período para consultar os lotes consumidos na Farinheira e no Colorífico.</div><div class="toolbar"><div class="field"><label>Data inicial</label><input type="date" id="weeklyStart" onchange="renderWeeklyLots()"></div><div class="field"><label>Data final</label><input type="date" id="weeklyEnd" onchange="renderWeeklyLots()"></div><button class="btn primary" type="button" onclick="renderWeeklyLots()">Filtrar</button><button class="btn success" type="button" onclick="exportWeeklyLotsExcel()">Excel</button><button class="btn light" type="button" onclick="exportWeeklyLotsCSV()">CSV</button><button class="btn light" type="button" onclick="printWeeklyLots()">Imprimir</button></div><div id="weeklyLotsResult"></div></div>
 </section>
 
 <section id="estoque" class="page">
@@ -271,11 +271,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </section>
 
 <section id="produtosColorifico" class="page">
-<div class="panel weekly-lots"><h2>🏭 Cálculo da produção do Colorífico</h2><div class="info">Cada batelada produz <strong>750 kg</strong>. Referências: Fubá 92,6%, Óleo 2%, Sal 3% e Extrato de urucum 2,4%.</div>
-<form id="colorProductionForm"><div class="form-grid"><div class="field"><label>Data da produção *</label><input type="date" id="prodDate" required></div><div class="field"><label>Quantidade de bateladas *</label><input type="number" id="prodBatches" min="0.01" step="0.01" value="1" oninput="calculateColorProduction()" required></div><div class="field"><label>Lote / ordem de produção</label><input id="prodLot"></div><div class="field"><label>Responsável</label><input id="prodResponsible"></div><div class="field full"><label>Observação</label><textarea id="prodNote"></textarea></div></div><div id="productionTotal" class="total-kg" style="background:linear-gradient(135deg,#0b3d66,#1769aa)"></div><div id="productionIngredients" class="table-wrap" style="margin-top:14px"></div><div class="actions"><button class="btn success" type="submit">Confirmar produção e dar baixa</button><button class="btn light" type="reset">Limpar cálculo</button></div></form></div>
-<div class="panel"><h2>🧂 Produtos do Colorífico</h2><div class="info">Registre entradas, consumos e ajustes de fubá, óleo, sal e extrato de urucum. Para o cálculo da fórmula, utilize kg.</div>
-<form id="colorProductForm"><div class="form-grid"><div class="field"><label>Data *</label><input type="date" id="cpDate" required></div><div class="field"><label>Produto *</label><select id="cpProduct" onchange="syncColorProductUnit()" required><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select></div><div class="field"><label>Movimentação *</label><select id="cpKind" required><option value="ENTRADA">Entrada</option><option value="CONSUMO">Consumo</option><option value="AJUSTE+">Ajuste positivo</option><option value="AJUSTE-">Ajuste negativo</option></select></div><div class="field"><label>Quantidade *</label><input type="number" id="cpQty" min="0.01" step="0.01" required></div><div class="field"><label>Unidade *</label><select id="cpUnit" required><option>kg</option><option>L</option><option>un</option></select></div><div class="field"><label>Lote</label><input id="cpLot" placeholder="Lote do produto"></div><div class="field"><label>Fornecedor / referência</label><input id="cpSupplier"></div><div class="field"><label>Responsável</label><input id="cpResponsible"></div><div class="field full"><label>Observação</label><textarea id="cpNote"></textarea></div></div><div class="actions"><button class="btn success" type="submit">Registrar produto</button><button class="btn light" type="reset">Limpar</button></div></form></div>
-<div class="panel"><h2>📦 Saldos atuais</h2><div id="colorProductBalances" class="cards"></div></div><div class="panel"><h2>📋 Histórico dos produtos</h2><div class="toolbar"><select id="cpFilter" onchange="renderColorProducts()"><option value="">Todos os produtos</option><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select><button class="btn light" type="button" onclick="exportColorProductsCSV()">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Movimento</th><th>Quantidade</th><th>Lote</th><th>Fornecedor</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="colorProductBody"></tbody></table></div></div>
+<div class="panel"><h2>🏷️ Registrar lotes dos produtos do Colorífico</h2><div class="info">Cadastre somente os lotes de sal, óleo e extrato de urucum. O lote do fubá é puxado automaticamente das entradas de BAGS registradas para o setor Colorífico.</div><form id="colorProductForm"><div class="form-grid"><div class="field"><label>Data *</label><input type="date" id="cpDate" required></div><div class="field"><label>Produto *</label><select id="cpProduct" required><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select></div><div class="field"><label>Lote *</label><input id="cpLot" placeholder="Informe o lote do produto" required></div><div class="field"><label>Responsável</label><input id="cpResponsible"></div><div class="field full"><label>Observação</label><textarea id="cpNote"></textarea></div></div><div class="actions"><button class="btn success" type="submit">Registrar lote</button><button class="btn light" type="reset">Limpar</button></div></form></div>
+<div class="panel"><h2>📋 Lotes dos produtos</h2><div class="toolbar"><select id="cpFilter" onchange="renderColorProducts()"><option value="">Todos os produtos</option><option>Fubá</option><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select><button class="btn light" type="button" onclick="exportColorProductsCSV()">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Lote</th><th>Origem</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="colorProductBody"></tbody></table></div></div>
 </section>
 
 <section id="rastreio" class="page">
@@ -792,38 +789,36 @@ function weekRange(reference=today()){
   value.setDate(value.getDate()-day);const start=`${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;
   return {start,end:addDays(start,6)};
 }
-function weeklyLotsHtml(reference=today()){
-  const range=weekRange(reference),section=sector=>{
-    const map=new Map();activeMovements().filter(m=>m.kind==='CONSUMO'&&m.sector===sector&&m.date>=range.start&&m.date<=range.end).forEach(m=>{const key=m.lot||'Sem lote';map.set(key,(map.get(key)||0)+Number(m.qty||0));});
-    const items=[...map.entries()].map(([lot,qty])=>`<div class="weekly-item"><strong>${esc(lot)}</strong><div class="small">Consumido na semana: ${qty} BAGS</div></div>`).join('')||'<div class="empty">Nenhum lote consumido nesta semana.</div>';
+function weeklyPeriod(){
+  const fallback=weekRange(today()),start=$('weeklyStart')?.value||fallback.start,end=$('weeklyEnd')?.value||fallback.end;
+  return {start,end};
+}
+function weeklyLotRows(start,end){
+  const rows=[];for(const sector of ['Farinheira','Colorífico']){const map=new Map();activeMovements().filter(m=>m.kind==='CONSUMO'&&m.sector===sector&&m.date>=start&&m.date<=end).forEach(m=>{const key=m.lot||'Sem lote',old=map.get(key)||{qty:0,first:m.date,last:m.date};old.qty+=Number(m.qty||0);if(m.date<old.first)old.first=m.date;if(m.date>old.last)old.last=m.date;map.set(key,old);});for(const [lot,x] of map)rows.push({sector,lot,...x});}return rows;
+}
+function weeklyLotsHtml(start,end){
+  const rows=weeklyLotRows(start,end),section=sector=>{
+    const items=rows.filter(x=>x.sector===sector).map(x=>`<div class="weekly-item"><strong>${esc(x.lot)}</strong><div class="small">Consumido: ${x.qty} BAGS · ${fmt(x.first)} a ${fmt(x.last)}</div></div>`).join('')||'<div class="empty">Nenhum lote consumido no período.</div>';
     return `<div class="weekly-sector ${sector==='Colorífico'?'colorifico':''}"><h3 style="margin:0">${sector}</h3>${items}</div>`;
   };
-  return `<div class="small" style="margin-bottom:10px"><strong>Semana:</strong> ${fmt(range.start)} a ${fmt(range.end)}</div><div class="weekly-grid">${section('Farinheira')}${section('Colorífico')}</div>`;
+  return `<div class="small" style="margin-bottom:10px"><strong>Período:</strong> ${fmt(start)} a ${fmt(end)}</div><div class="weekly-grid">${section('Farinheira')}${section('Colorífico')}</div>`;
 }
 function renderWeeklyLots(dashboardOnly=false){
-  const reference=$('weeklyReference')?.value||today();if($('weeklyReference')&&!$('weeklyReference').value)$('weeklyReference').value=reference;
-  if($('dashboardWeeklyLots'))$('dashboardWeeklyLots').innerHTML=weeklyLotsHtml(today());
-  if(!dashboardOnly&&$('weeklyLotsResult'))$('weeklyLotsResult').innerHTML=weeklyLotsHtml(reference);
+  const current=weekRange(today());if($('dashboardWeeklyLots'))$('dashboardWeeklyLots').innerHTML=weeklyLotsHtml(current.start,current.end);
+  if(!dashboardOnly&&$('weeklyLotsResult')){const period=weeklyPeriod();$('weeklyStart').value=period.start;$('weeklyEnd').value=period.end;$('weeklyLotsResult').innerHTML=weeklyLotsHtml(period.start,period.end);}
 }
+function weeklyExportData(){const p=weeklyPeriod();return {period:p,rows:weeklyLotRows(p.start,p.end)};}
+function exportWeeklyLotsCSV(){const x=weeklyExportData(),rows=[['Período inicial','Período final','Setor','Lote','Primeiro consumo','Último consumo','Consumido (BAGS)'],...x.rows.map(r=>[x.period.start,x.period.end,r.sector,r.lot,r.first,r.last,r.qty])],csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lotes_por_periodo_'+x.period.start+'_a_'+x.period.end+'.csv';a.click();URL.revokeObjectURL(a.href);}
+function exportWeeklyLotsExcel(){const x=weeklyExportData(),body=x.rows.map(r=>'<tr><td>'+esc(r.sector)+'</td><td>'+esc(r.lot)+'</td><td>'+fmt(r.first)+'</td><td>'+fmt(r.last)+'</td><td>'+r.qty+'</td></tr>').join(''),html='<html><head><meta charset="UTF-8"></head><body><h2>Lotes utilizados — '+fmt(x.period.start)+' a '+fmt(x.period.end)+'</h2><table border="1"><tr><th>Setor</th><th>Lote</th><th>Primeiro consumo</th><th>Último consumo</th><th>Consumido (BAGS)</th></tr>'+body+'</table></body></html>',blob=new Blob(['\ufeff'+html],{type:'application/vnd.ms-excel'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lotes_por_periodo_'+x.period.start+'_a_'+x.period.end+'.xls';a.click();URL.revokeObjectURL(a.href);}
+function printWeeklyLots(){const x=weeklyExportData(),popup=window.open('','_blank','width=1000,height=750');if(!popup)return showNotice('Permita pop-ups para abrir a impressão.','warning');const sections=['Farinheira','Colorífico'].map(sector=>'<h2>'+sector+'</h2><table><thead><tr><th>Lote</th><th>Primeiro consumo</th><th>Último consumo</th><th>Consumido</th></tr></thead><tbody>'+((x.rows.filter(r=>r.sector===sector).map(r=>'<tr><td>'+esc(r.lot)+'</td><td>'+fmt(r.first)+'</td><td>'+fmt(r.last)+'</td><td>'+r.qty+' BAGS</td></tr>').join(''))||'<tr><td colspan="4">Nenhum lote no período.</td></tr>')+'</tbody></table>').join('');popup.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lotes utilizados</title><style>@page{size:landscape;margin:12mm}body{font-family:Arial;color:#172334}h1{background:#0b3d66;color:#fff;padding:12px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #ccd6df;padding:8px;text-align:left}th{background:#eaf3fb}</style></head><body><h1>Lotes utilizados — '+fmt(x.period.start)+' a '+fmt(x.period.end)+'</h1>'+sections+'</body></html>');popup.document.close();popup.focus();setTimeout(()=>popup.print(),300);}
 
-const COLOR_FORMULA=[{product:'Fubá',percent:92.6},{product:'Óleo',percent:2},{product:'Sal',percent:3},{product:'Extrato de urucum',percent:2.4}];
-function ensureColorProductOptions(){for(const id of ['cpProduct','cpFilter']){const select=$(id);if(select&&![...select.options].some(o=>o.value==='Fubá')){const option=document.createElement('option');option.textContent='Fubá';select.insertBefore(option,select.options[id==='cpFilter'?1:0]||null);}}}
-function syncColorProductUnit(){if($('cpProduct')&&$('cpUnit'))$('cpUnit').value='kg';}
-function colorProductBalance(product,unit){return activeColorProducts().filter(x=>x.product===product&&x.unit===unit).reduce((sum,x)=>sum+(x.kind==='ENTRADA'||x.kind==='AJUSTE+'?1:-1)*Number(x.qty||0),0);}
-function productionValues(){const batches=Math.max(0,Number($('prodBatches')?.value||0)),total=batches*750;return {batches,total,ingredients:COLOR_FORMULA.map(x=>({...x,expected:total*x.percent/100}))};}
-function calculateColorProduction(){
-  if(!$('productionTotal')||!$('productionIngredients'))return;const data=productionValues();
-  $('productionTotal').innerHTML='<div class="label">Produção total prevista</div><div class="value">'+data.total.toLocaleString('pt-BR',{maximumFractionDigits:2})+' kg</div>';
-  $('productionIngredients').innerHTML='<table><thead><tr><th>Ingrediente</th><th>Referência</th><th>Previsto</th><th>Consumo real (kg)</th><th>Diferença</th></tr></thead><tbody>'+data.ingredients.map((x,i)=>'<tr><td><strong>'+esc(x.product)+'</strong></td><td>'+x.percent.toLocaleString('pt-BR')+'%</td><td>'+x.expected.toLocaleString('pt-BR',{maximumFractionDigits:2})+' kg</td><td><input type="number" class="prod-actual" data-index="'+i+'" min="0" step="0.01" value="'+x.expected.toFixed(2)+'" oninput="updateProductionDifferences()"></td><td id="prodDiff'+i+'">0 kg</td></tr>').join('')+'</tbody></table>';
-}
-function updateProductionDifferences(){const data=productionValues();document.querySelectorAll('.prod-actual').forEach(input=>{const i=Number(input.dataset.index),diff=Number(input.value||0)-data.ingredients[i].expected,el=$('prodDiff'+i);if(el){el.textContent=(diff>0?'+':'')+diff.toLocaleString('pt-BR',{maximumFractionDigits:2})+' kg';el.className=Math.abs(diff)<0.005?'green':diff>0?'red':'yellow';}});}
 function renderColorProducts(){
-  ensureColorProductOptions();const products=['Fubá','Óleo','Sal','Extrato de urucum'];
-  $('colorProductBalances').innerHTML=products.map(product=>{const unit='kg',balance=colorProductBalance(product,unit);return `<div class="card stock"><div class="label">${esc(product)}</div><div class="value ${balance<0?'red':'green'}">${balance.toLocaleString('pt-BR',{maximumFractionDigits:2})} ${unit}</div></div>`;}).join('');
-  const filter=$('cpFilter').value,rows=activeColorProducts().filter(x=>!filter||x.product===filter).sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id));
-  $('colorProductBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${fmt(x.date)}</td><td><strong>${esc(x.product)}</strong></td><td><span class="badge ${x.kind==='ENTRADA'||x.kind==='AJUSTE+'?'in':'out'}">${esc(x.kind)}</span></td><td>${Number(x.qty).toLocaleString('pt-BR')} ${esc(x.unit)}</td><td>${esc(x.lot)}</td><td>${esc(x.supplier)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum produto registrado.</td></tr>';
+  const filter=$('cpFilter').value,manual=activeColorProducts().filter(x=>x.kind==='LOTE'&&(!filter||x.product===filter)).map(x=>({date:x.date,product:x.product,lot:x.lot,origin:'Cadastro nesta aba',responsible:x.responsible,note:x.note,id:x.id}));
+  const fuba=activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico'&&(!filter||filter==='Fubá')).map(m=>({date:m.date,product:'Fubá',lot:m.lot,origin:'Entrada do Colorífico',responsible:m.responsible,note:m.note,id:m.id}));
+  const rows=[...manual,...fuba].sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id));
+  $('colorProductBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${fmt(x.date)}</td><td><strong>${esc(x.product)}</strong></td><td><strong>${esc(x.lot)}</strong></td><td>${esc(x.origin)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">Nenhum lote registrado.</td></tr>';
 }
-function exportColorProductsCSV(){const rows=[['Data','Produto','Movimento','Quantidade','Unidade','Lote','Fornecedor','Responsável','Observação'],...activeColorProducts().map(x=>[x.date,x.product,x.kind,x.qty,x.unit,x.lot,x.supplier,x.responsible,x.note])],csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`produtos_colorifico_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);}
+function exportColorProductsCSV(){const filter=$('cpFilter').value,manual=activeColorProducts().filter(x=>x.kind==='LOTE'&&(!filter||x.product===filter)).map(x=>[x.date,x.product,x.lot,'Cadastro nesta aba',x.responsible,x.note]),fuba=activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico'&&(!filter||filter==='Fubá')).map(m=>[m.date,'Fubá',m.lot,'Entrada do Colorífico',m.responsible,m.note]),rows=[['Data','Produto','Lote','Origem','Responsável','Observação'],...manual,...fuba],csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`lotes_produtos_colorifico_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);}
 
 
 function previousDate(){const d=new Date();d.setDate(d.getDate()-1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -1048,7 +1043,7 @@ function renderPage(page){
     case 'estoque':renderStock();refreshFormComparisons();break;
     case 'consumo':syncConsumption();break;
     case 'loteProduto':renderProductLotHistory();break;
-    case 'produtosColorifico':renderColorProducts();syncColorProductUnit();calculateColorProduction();break;
+    case 'produtosColorifico':renderColorProducts();break;
     case 'rastreio':renderTrace();break;
     case 'fifo':renderFIFO();break;
     case 'perdas':renderLossHistory();renderFlotamilBalance();break;
@@ -1468,26 +1463,12 @@ $('lossForm').addEventListener('submit',async e=>{
 });
 $('lossForm').addEventListener('reset',()=>setTimeout(()=>{syncLossType();renderPalletInputs();$('flotamilSent').checked=false;$('flotamilSentKg').value='';},0));
 
-$('colorProductionForm').addEventListener('submit',async e=>{
-  e.preventDefault();if(!validateRequired(e.target))return;const data=productionValues();
-  if(!Number.isInteger(data.batches)||data.batches<1||!$('prodDate').value)return showNotice('Informe a data e uma quantidade inteira de bateladas.','warning');
-  const actuals=[...document.querySelectorAll('.prod-actual')].map(x=>Number(x.value));if(actuals.length!==4||actuals.some(x=>!Number.isFinite(x)||x<0))return showNotice('Confira os consumos reais dos quatro ingredientes.','warning');
-  const insufficient=data.ingredients.filter((x,i)=>actuals[i]>colorProductBalance(x.product,'kg')).map(x=>x.product+': saldo '+colorProductBalance(x.product,'kg').toLocaleString('pt-BR')+' kg');
-  if(insufficient.length){const proceed=await askConfirm('Saldo insuficiente em ingredientes','Há ingredientes sem saldo suficiente:\n\n'+insufficient.join('\n')+'\n\nDeseja confirmar a produção mesmo assim?','Confirmar mesmo assim');if(!proceed)return;}
-  const productionId='PROD-'+Date.now(),lot=$('prodLot').value.trim(),responsible=$('prodResponsible').value.trim(),note=$('prodNote').value.trim();
-  data.ingredients.forEach((x,i)=>{const item={id:nextLocalId++,status:'ativo',date:$('prodDate').value,product:x.product,kind:'CONSUMO',qty:actuals[i],unit:'kg',lot,supplier:'Produção do Colorífico',responsible,note:data.batches+' batelada(s) × 750 kg — Previsto: '+x.expected.toFixed(2)+' kg — Real: '+actuals[i].toFixed(2)+' kg — Diferença: '+(actuals[i]-x.expected).toFixed(2)+' kg'+(note?' | '+note:''),production_id:productionId,batches:data.batches,total_produced:data.total,expected_qty:x.expected,created_at:new Date().toISOString(),created_by:currentUser()};db.colorProducts.push(item);recordAudit('PRODUÇÃO DO COLORÍFICO',item.id,'CRIADO',null,item,'Produção confirmada e ingredientes baixados');});
-  saveLocal();updateAll();e.target.reset();setToday('prodDate');$('prodBatches').value='1';calculateColorProduction();showNotice('Produção confirmada: '+data.batches+' batelada(s), total de '+data.total.toLocaleString('pt-BR')+' kg. Os quatro ingredientes foram baixados do estoque.','success');
-});
-$('colorProductionForm').addEventListener('reset',()=>setTimeout(()=>{$('prodBatches').value='1';setToday('prodDate');calculateColorProduction();},0));
-
 $('colorProductForm').addEventListener('submit',async e=>{
   e.preventDefault();
   if(!validateRequired(e.target))return;
-  const qty=Number($('cpQty').value),kind=$('cpKind').value,product=$('cpProduct').value,unit=$('cpUnit').value;
-  if(!$('cpDate').value||!Number.isFinite(qty)||qty<=0)return showNotice('Informe uma data e uma quantidade maior que zero.','warning');
-  const current=colorProductBalance(product,unit);if((kind==='CONSUMO'||kind==='AJUSTE-')&&qty>current){const proceed=await askConfirm('Saldo insuficiente',`O saldo de ${product} é ${current} ${unit}, mas a saída informada é ${qty} ${unit}. Deseja registrar mesmo assim?`,'Registrar mesmo assim');if(!proceed)return;}
-  const item={id:nextLocalId++,status:'ativo',date:$('cpDate').value,product,kind,qty,unit,lot:$('cpLot').value.trim(),supplier:$('cpSupplier').value.trim(),responsible:$('cpResponsible').value.trim(),note:$('cpNote').value.trim(),created_at:new Date().toISOString(),created_by:currentUser()};
-  db.colorProducts.push(item);recordAudit('PRODUTO DO COLORÍFICO',item.id,'CRIADO',null,item,'Registro criado');saveLocal();updateAll();e.target.reset();setToday('cpDate');syncColorProductUnit();showNotice('Produto do Colorífico registrado com sucesso.','success');
+  const item={id:nextLocalId++,status:'ativo',date:$('cpDate').value,product:$('cpProduct').value,kind:'LOTE',qty:0,unit:'',lot:$('cpLot').value.trim(),supplier:'',responsible:$('cpResponsible').value.trim(),note:$('cpNote').value.trim(),created_at:new Date().toISOString(),created_by:currentUser()};
+  if(!item.date||!item.lot)return showNotice('Informe a data e o lote do produto.','warning');
+  db.colorProducts.push(item);recordAudit('LOTE DE PRODUTO DO COLORÍFICO',item.id,'CRIADO',null,item,'Lote registrado');saveLocal();updateAll();e.target.reset();setToday('cpDate');showNotice('Lote do produto registrado com sucesso.','success');
 });
 
 $('productLotForm').addEventListener('submit',async e=>{
@@ -1505,8 +1486,7 @@ async function boot(){
   setToday('cDate');
   setToday('pDate');
   setToday('cpDate');
-  setToday('prodDate');
-  setToday('weeklyReference');
+  const initialWeek=weekRange(today());$('weeklyStart').value=initialWeek.start;$('weeklyEnd').value=initialWeek.end;
   setToday('eDate');
   setToday('lossDate');
   $('analysisMonth').value=today().slice(0,7);
