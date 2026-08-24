@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.22-offline-usuarios-autorizacao-admin">
+<meta name="app-version" content="2026.08.24-lotes-semana-insumos-colorifico-ultima-doca">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -87,6 +87,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 .app-toast-wrap{position:fixed;right:18px;top:92px;z-index:12000;display:grid;gap:9px;max-width:min(390px,calc(100vw - 24px))}.app-toast{background:#fff;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:11px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:13px 16px;white-space:pre-line}.app-toast.success{border-left-color:var(--green)}.app-toast.error{border-left-color:var(--red)}.app-toast.warning{border-left-color:#d99000}
 .app-modal{border:0;border-radius:16px;padding:0;width:min(620px,calc(100vw - 24px));box-shadow:0 24px 70px rgba(0,0,0,.3)}.app-modal::backdrop{background:rgba(8,30,48,.58)}.modal-head{padding:18px 20px;background:linear-gradient(120deg,var(--primary2),var(--primary));color:#fff}.modal-head h2{margin:0;font-size:20px}.modal-body{padding:20px;white-space:pre-line}.modal-fields{display:grid;gap:12px;margin-top:15px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;padding:0 20px 20px}.backup-current{color:var(--green);font-weight:800}.backup-old{color:var(--red);font-weight:800}
 .divergence-list{display:grid;gap:10px}.divergence-item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px;border:1px solid #ead18a;background:#fffaf0;border-radius:11px}.divergence-item strong{color:#77500c}.divergence-meta{font-size:12px;color:var(--muted);margin-top:5px}.divergence-values{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:12px}@media(max-width:650px){.divergence-item{grid-template-columns:1fr}.divergence-item .btn{width:100%}}
+.weekly-lots{border:2px solid #1769aa;background:linear-gradient(135deg,#eef7ff,#fff)}.weekly-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.weekly-sector{padding:15px;border:1px solid var(--border);border-radius:12px;background:#fff}.weekly-item{padding:10px 12px;margin-top:8px;border-left:4px solid var(--green);background:#f4f8fb;border-radius:8px}.weekly-sector.colorifico .weekly-item{border-left-color:var(--yellow)}@media(max-width:700px){.weekly-grid{grid-template-columns:1fr}}
 .audit-list{display:grid;gap:14px;margin-top:16px}.audit-card{border:1px solid var(--border);border-radius:13px;background:#fff;overflow:hidden;box-shadow:0 4px 15px rgba(15,42,66,.05)}.audit-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 16px;background:#f4f8fb;border-bottom:1px solid var(--border)}.audit-card-title{font-size:16px;font-weight:800;color:var(--primary2)}.audit-card-time{font-size:12px;color:var(--muted);margin-top:4px}.audit-action{padding:6px 10px;border-radius:99px;background:#eaf3fb;color:#174d78;font-size:11px;font-weight:900;white-space:nowrap}.audit-action.cancelado{background:#fde5e5;color:#a52d2d}.audit-action.editado{background:#fff4d6;color:#77500c}.audit-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px;background:#fff}.audit-summary div{padding:9px 11px;border-radius:8px;background:#f8fafc}.audit-summary span,.audit-field span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:800;margin-bottom:4px}.audit-summary strong{display:block;overflow-wrap:anywhere}.audit-reason{margin:0 16px 14px;padding:11px 13px;border-left:4px solid var(--primary);background:#eef5fb;border-radius:7px;overflow-wrap:anywhere}.audit-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}.audit-value{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.audit-value h3{margin:0;padding:10px 12px;font-size:13px;background:#eef3f7}.audit-value.new h3{background:#e8f7ee;color:#11683d}.audit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.audit-field{padding:9px 12px;border-bottom:1px solid #edf1f4;overflow-wrap:anywhere;min-width:0}.audit-field.full{grid-column:1/-1}.audit-empty{padding:18px;color:var(--muted);font-style:italic;text-align:center}.audit-field strong{font-size:13px;font-weight:700}.audit-changed{background:#fff9e8}.audit-changed strong{color:#7a5200}@media(max-width:800px){.audit-summary{grid-template-columns:1fr}.audit-compare{grid-template-columns:1fr}.audit-card-head{flex-direction:column}.audit-fields{grid-template-columns:1fr}.audit-field.full{grid-column:auto}}
 </style>
 </head>
@@ -129,11 +130,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div class="container">
 <nav id="nav">
 <button class="active" data-page="dashboard">📊 Dashboard</button>
+<button data-page="lotesSemana">🗓️ Lotes da Semana</button>
 <button data-page="analiseSetor">📊 Análise por setor</button>
 <button data-page="docas">🚚 Docas</button>
 <button data-page="estoque">📦 Entrada</button>
 <button data-page="consumo">🔄 Consumo</button>
 <button data-page="loteProduto">🏷️ Lote do Produto</button>
+<button data-page="produtosColorifico">🧂 Produtos do Colorífico</button>
 <button data-page="rastreio">🔎 Rastreabilidade</button>
 <button data-page="fifo">📦 FIFO — Ordem de Consumo</button>
 <button data-page="perdas">⚠️ Perda, descarte e Flotamil</button>
@@ -144,6 +147,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="dashboard" class="page active">
 <div id="dashboardOperationalStatus" class="status-grid"></div>
+<div class="panel weekly-lots"><h2>🗓️ Lotes usados nesta semana</h2><div class="info">Período de segunda-feira a domingo. Atualizado automaticamente pelos consumos.</div><div id="dashboardWeeklyLots"></div></div>
 <div class="panel"><h2>🔍 Divergências aguardando conferência</h2><div class="info">Confira cada diferença entre Docas e Entrada. Ao concluir, registre o resultado, o responsável e a justificativa.</div><div id="dashboardDivergences" class="divergence-list"></div></div>
 <div class="cards dashboard-cards">
 <div class="card stock"><div class="label">Estoque · Farinheira · 1437</div><div id="kFar" class="value green">0 BAGS</div></div>
@@ -164,10 +168,14 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div class="panel"><h2>⚠️ Estoque por lote</h2><div id="lotSummary"></div></div>
 </section>
 
+<section id="lotesSemana" class="page">
+<div class="panel weekly-lots"><h2>🗓️ Lotes utilizados na semana — dois setores</h2><div class="info">Mostra os lotes consumidos entre segunda-feira e domingo, separados por setor.</div><div class="toolbar"><input type="date" id="weeklyReference" onchange="renderWeeklyLots()"><button class="btn primary" type="button" onclick="renderWeeklyLots()">Atualizar</button></div><div id="weeklyLotsResult"></div></div>
+</section>
+
 <section id="estoque" class="page">
 <div class="panel"><h2>➕ Entrada de BAGS no estoque</h2>
 <div class="info">Registre aqui as entradas de novos Big Bags. A entrada altera automaticamente o saldo do estoque e fica vinculada ao lote informado.</div>
-<div id="entryDockComparison" class="dock-compare pending">Informe a data e o setor para comparar a Entrada com as Docas do dia anterior.</div>
+<div id="entryDockComparison" class="dock-compare pending">Informe a data e o setor para comparar a Entrada com a última contagem anterior das Docas.</div>
 <form id="entryForm"><div class="form-grid">
 <div class="label-reader"><div class="actions"><label class="btn primary">📷 Ler etiqueta<input type="file" accept="image/*" capture="environment" hidden onchange="readBagLabel(event,'entry')"></label></div><div id="entryReaderStatus" class="reader-status">Fotografe a etiqueta para preencher código, setor e lote.</div></div>
 <div class="field"><label>Data *</label><input type="date" id="eDate" required></div>
@@ -259,6 +267,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div class="toolbar"><input type="date" id="phStart"><input type="date" id="phEnd"><select id="phSector"><option value="">Todos os setores</option><option>Farinheira</option><option>Colorífico</option></select><input id="phLot" placeholder="Pesquisar lote do produto..."><button class="btn primary" type="button" onclick="renderProductLotHistory()">Filtrar</button><button class="btn light" type="button" onclick="exportProductLotCSV()">Exportar CSV</button></div>
 <div class="table-wrap"><table><thead><tr><th>Data</th><th>Setor</th><th>Lote do produto</th><th>Ordem de produção</th><th>Responsável</th><th>Observação</th><th>Status</th><th>Ações</th></tr></thead><tbody id="productLotBody"></tbody></table></div>
 </div>
+</section>
+
+<section id="produtosColorifico" class="page">
+<div class="panel"><h2>🧂 Produtos do Colorífico</h2><div class="info">Registre entradas, consumos e ajustes de sal, óleo e extrato de urucum. O saldo é calculado por produto e unidade.</div>
+<form id="colorProductForm"><div class="form-grid"><div class="field"><label>Data *</label><input type="date" id="cpDate" required></div><div class="field"><label>Produto *</label><select id="cpProduct" onchange="syncColorProductUnit()" required><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select></div><div class="field"><label>Movimentação *</label><select id="cpKind" required><option value="ENTRADA">Entrada</option><option value="CONSUMO">Consumo</option><option value="AJUSTE+">Ajuste positivo</option><option value="AJUSTE-">Ajuste negativo</option></select></div><div class="field"><label>Quantidade *</label><input type="number" id="cpQty" min="0.01" step="0.01" required></div><div class="field"><label>Unidade *</label><select id="cpUnit" required><option>kg</option><option>L</option><option>un</option></select></div><div class="field"><label>Lote</label><input id="cpLot" placeholder="Lote do produto"></div><div class="field"><label>Fornecedor / referência</label><input id="cpSupplier"></div><div class="field"><label>Responsável</label><input id="cpResponsible"></div><div class="field full"><label>Observação</label><textarea id="cpNote"></textarea></div></div><div class="actions"><button class="btn success" type="submit">Registrar produto</button><button class="btn light" type="reset">Limpar</button></div></form></div>
+<div class="panel"><h2>📦 Saldos atuais</h2><div id="colorProductBalances" class="cards"></div></div><div class="panel"><h2>📋 Histórico dos produtos</h2><div class="toolbar"><select id="cpFilter" onchange="renderColorProducts()"><option value="">Todos os produtos</option><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select><button class="btn light" type="button" onclick="exportColorProductsCSV()">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Movimento</th><th>Quantidade</th><th>Lote</th><th>Fornecedor</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="colorProductBody"></tbody></table></div></div>
 </section>
 
 <section id="rastreio" class="page">
@@ -353,7 +367,7 @@ const CONFIG = {
   Colorífico:{type:'Big Bag 1.250 kg',code:'1436'}
 };
 
-let db = {movements:[],productLots:[],auditLog:[]};
+let db = {movements:[],productLots:[],colorProducts:[],auditLog:[]};
 let docks = {records:[]};
 let tesseractLoadPromise = null;
 let nextLocalId = 1;
@@ -536,6 +550,7 @@ function toggleLocalPassword(){
 function currentUser(){return currentAccount()?.username||$('userName')?.textContent||'Usuário local';}
 function activeMovements(){return db.movements.filter(x=>x.status!=='cancelado');}
 function activeDocks(){return docks.records.filter(x=>x.status!=='cancelado');}
+function activeColorProducts(){return (db.colorProducts||[]).filter(x=>x.status!=='cancelado');}
 function auditSnapshot(value){
   if(!value)return null;
   const copy={...value};delete copy.audit;return copy;
@@ -550,12 +565,13 @@ function saveLocal(){
 function loadLocal(){
   try{
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
-    if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db={...saved.db,auditLog:Array.isArray(saved.db.auditLog)?saved.db.auditLog:[]};
+    if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db={...saved.db,colorProducts:Array.isArray(saved.db.colorProducts)?saved.db.colorProducts:[],auditLog:Array.isArray(saved.db.auditLog)?saved.db.auditLog:[]};
     if(saved?.docks&&Array.isArray(saved.docks.records)) docks=saved.docks;
     db.movements=db.movements.map(x=>({...x,status:x.status||'ativo'}));
     db.productLots=db.productLots.map(x=>({...x,status:x.status||'ativo'}));
+    db.colorProducts=(db.colorProducts||[]).map(x=>({...x,status:x.status||'ativo'}));
     docks.records=docks.records.map(x=>({...x,status:x.status||'ativo'}));
-    const ids=[...db.movements,...db.productLots,...docks.records,...db.auditLog].map(x=>Number(x.id)||0);
+    const ids=[...db.movements,...db.productLots,...db.colorProducts,...docks.records,...db.auditLog].map(x=>Number(x.id)||0);
     nextLocalId=Math.max(Number(saved?.nextLocalId)||1,...ids)+1;
   }catch(error){console.warn('Dados locais inválidos:',error);}
   updateAll();
@@ -620,6 +636,11 @@ function latestDock(date,sector){
     .sort((a,b)=>Number(b.id)-Number(a.id))[0]||null;
 }
 
+function latestDockBefore(date,sector){
+  return activeDocks().filter(x=>x.sector===sector&&String(x.date).slice(0,10)<date)
+    .sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id))[0]||null;
+}
+
 function addDays(date,amount){
   if(!date)return '';
   const [y,m,d]=String(date).slice(0,10).split('-').map(Number);
@@ -633,15 +654,15 @@ function entryTotalForDay(date,sector,excludeId=null){
 }
 
 function dockEntryComparison(date,sector,extraEntry=0,excludeId=null){
-  const dockDate=addDays(date,-1);
-  const dock=latestDock(dockDate,sector);
+  const dock=latestDockBefore(date,sector);
+  const dockDate=dock?.date||'';
   const entries=entryTotalForDay(date,sector,excludeId)+Number(extraEntry||0);
   if(!date||!sector)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:'Informe a data e o setor para realizar a conferência.'};
-  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:`Ainda não existe contagem das Docas para ${sector} em ${fmt(dockDate)} (dia anterior à Entrada).`};
+  if(!dock)return {status:'pending',entries,dockQty:null,diff:null,entryDate:date,dockDate,message:`Ainda não existe uma contagem anterior das Docas para ${sector}.`};
   const dockQty=Number(dock.qty||0),diff=entries-dockQty;
-  if(diff===0)return {status:'ok',entries,dockQty,diff,entryDate:date,dockDate,message:'Conferência correta: a Entrada está igual às Docas do dia anterior.'};
-  if(diff<0)return {status:'less',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da contagem das Docas do dia anterior. Algo pode estar errado, mas essa situação pode acontecer e deve ser conferida.`};
-  return {status:'more',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${diff} BAG(s) acima da contagem das Docas do dia anterior. Verifique e informe o motivo da entrada a mais.`};
+  if(diff===0)return {status:'ok',entries,dockQty,diff,entryDate:date,dockDate,message:`Conferência correta: a Entrada está igual à última contagem das Docas, realizada em ${fmt(dockDate)}.`};
+  if(diff<0)return {status:'less',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${Math.abs(diff)} BAG(s) abaixo da última contagem das Docas, de ${fmt(dockDate)}. A situação deve ser conferida.`};
+  return {status:'more',entries,dockQty,diff,entryDate:date,dockDate,message:`A Entrada está ${diff} BAG(s) acima da última contagem das Docas, de ${fmt(dockDate)}. Verifique o motivo.`};
 }
 
 function renderDockEntryComparison(targetId,date,sector,extraEntry=0){
@@ -738,6 +759,7 @@ function updateDashboard(){
   const low=[['Farinheira',f],['Colorífico',c]].filter(([,qty])=>qty<=5);
   $('dashboardOperationalStatus').innerHTML=`<div class="status-card ${pending?'warning':'ok'}"><span>Divergências pendentes</span><strong>${pending}</strong><small>${pending?'Revisar justificativas e conferências':'Nenhuma pendência registrada'}</small></div><div class="status-card ${f<=5?'danger':'ok'}"><span>Estoque Farinheira</span><strong>${f} BAGS</strong><small>${f<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div><div class="status-card ${c<=5?'danger':'ok'}"><span>Estoque Colorífico</span><strong>${c} BAGS</strong><small>${c<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div>`;
   renderDashboardDivergences();
+  renderWeeklyLots(true);
 
   const prev=previousDate();
   const prevQty=(sector,kind)=>activeMovements().filter(m=>m.kind===kind&&m.sector===sector&&String(m.date).slice(0,10)===prev).reduce((a,m)=>a+Number(m.qty),0);
@@ -761,6 +783,35 @@ function updateDashboard(){
   }
   $('lotSummary').innerHTML=html||'<div class="empty">Nenhum lote registrado.</div>';
 }
+
+function weekRange(reference=today()){
+  const [y,m,d]=String(reference).slice(0,10).split('-').map(Number),value=new Date(y,m-1,d),day=(value.getDay()+6)%7;
+  value.setDate(value.getDate()-day);const start=`${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;
+  return {start,end:addDays(start,6)};
+}
+function weeklyLotsHtml(reference=today()){
+  const range=weekRange(reference),section=sector=>{
+    const map=new Map();activeMovements().filter(m=>m.kind==='CONSUMO'&&m.sector===sector&&m.date>=range.start&&m.date<=range.end).forEach(m=>{const key=m.lot||'Sem lote';map.set(key,(map.get(key)||0)+Number(m.qty||0));});
+    const items=[...map.entries()].map(([lot,qty])=>`<div class="weekly-item"><strong>${esc(lot)}</strong><div class="small">Consumido na semana: ${qty} BAGS</div></div>`).join('')||'<div class="empty">Nenhum lote consumido nesta semana.</div>';
+    return `<div class="weekly-sector ${sector==='Colorífico'?'colorifico':''}"><h3 style="margin:0">${sector}</h3>${items}</div>`;
+  };
+  return `<div class="small" style="margin-bottom:10px"><strong>Semana:</strong> ${fmt(range.start)} a ${fmt(range.end)}</div><div class="weekly-grid">${section('Farinheira')}${section('Colorífico')}</div>`;
+}
+function renderWeeklyLots(dashboardOnly=false){
+  const reference=$('weeklyReference')?.value||today();if($('weeklyReference')&&!$('weeklyReference').value)$('weeklyReference').value=reference;
+  if($('dashboardWeeklyLots'))$('dashboardWeeklyLots').innerHTML=weeklyLotsHtml(today());
+  if(!dashboardOnly&&$('weeklyLotsResult'))$('weeklyLotsResult').innerHTML=weeklyLotsHtml(reference);
+}
+
+function syncColorProductUnit(){if($('cpProduct')&&$('cpUnit'))$('cpUnit').value=$('cpProduct').value==='Óleo'?'L':'kg';}
+function colorProductBalance(product,unit){return activeColorProducts().filter(x=>x.product===product&&x.unit===unit).reduce((sum,x)=>sum+(x.kind==='ENTRADA'||x.kind==='AJUSTE+'?1:-1)*Number(x.qty||0),0);}
+function renderColorProducts(){
+  const products=['Sal','Óleo','Extrato de urucum'];
+  $('colorProductBalances').innerHTML=products.map(product=>{const unit=product==='Óleo'?'L':'kg',balance=colorProductBalance(product,unit);return `<div class="card stock"><div class="label">${esc(product)}</div><div class="value ${balance<0?'red':'green'}">${balance.toLocaleString('pt-BR')} ${unit}</div></div>`;}).join('');
+  const filter=$('cpFilter').value,rows=activeColorProducts().filter(x=>!filter||x.product===filter).sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id));
+  $('colorProductBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${fmt(x.date)}</td><td><strong>${esc(x.product)}</strong></td><td><span class="badge ${x.kind==='ENTRADA'||x.kind==='AJUSTE+'?'in':'out'}">${esc(x.kind)}</span></td><td>${Number(x.qty).toLocaleString('pt-BR')} ${esc(x.unit)}</td><td>${esc(x.lot)}</td><td>${esc(x.supplier)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Nenhum produto registrado.</td></tr>';
+}
+function exportColorProductsCSV(){const rows=[['Data','Produto','Movimento','Quantidade','Unidade','Lote','Fornecedor','Responsável','Observação'],...activeColorProducts().map(x=>[x.date,x.product,x.kind,x.qty,x.unit,x.lot,x.supplier,x.responsible,x.note])],csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`produtos_colorifico_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);}
 
 
 function previousDate(){const d=new Date();d.setDate(d.getDate()-1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -979,11 +1030,13 @@ function updateAll(){
 
 function renderPage(page){
   switch(page){
+    case 'lotesSemana':renderWeeklyLots();break;
     case 'analiseSetor':renderUnifiedAnalysis();break;
     case 'docas':renderDockCards();renderDockHistory();refreshFormComparisons();break;
     case 'estoque':renderStock();refreshFormComparisons();break;
     case 'consumo':syncConsumption();break;
     case 'loteProduto':renderProductLotHistory();break;
+    case 'produtosColorifico':renderColorProducts();syncColorProductUnit();break;
     case 'rastreio':renderTrace();break;
     case 'fifo':renderFIFO();break;
     case 'perdas':renderLossHistory();renderFlotamilBalance();break;
@@ -1231,7 +1284,7 @@ function exportCSV(){
 }
 
 function downloadBackup(prefix='backup_rastreabilidade_bags'){
-  const backup={version:8,exported_at:new Date().toISOString(),movements:db.movements,productLots:db.productLots,docks:docks.records,auditLog:db.auditLog};
+  const backup={version:9,exported_at:new Date().toISOString(),movements:db.movements,productLots:db.productLots,colorProducts:db.colorProducts,docks:docks.records,auditLog:db.auditLog};
   const b=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download=`${prefix}_${today()}.json`;a.click();
   localStorage.setItem('controle_estoque_ultimo_backup',new Date().toISOString());renderBackupStatus();
@@ -1254,6 +1307,7 @@ async function restoreBackup(ev){
     nextLocalId=1;
     db.movements=x.movements.map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     db.productLots=(x.productLots||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
+    db.colorProducts=(x.colorProducts||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     docks.records=(x.docks||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     db.auditLog=(x.auditLog||[]).map(a=>({...a,id:nextLocalId++}));
     recordAudit('SISTEMA',0,'BACKUP RESTAURADO',null,{registros:db.movements.length,docas:docks.records.length},'Restauração confirmada pelo usuário');
@@ -1402,6 +1456,16 @@ $('lossForm').addEventListener('submit',async e=>{
 });
 $('lossForm').addEventListener('reset',()=>setTimeout(()=>{syncLossType();renderPalletInputs();$('flotamilSent').checked=false;$('flotamilSentKg').value='';},0));
 
+$('colorProductForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!validateRequired(e.target))return;
+  const qty=Number($('cpQty').value),kind=$('cpKind').value,product=$('cpProduct').value,unit=$('cpUnit').value;
+  if(!$('cpDate').value||!Number.isFinite(qty)||qty<=0)return showNotice('Informe uma data e uma quantidade maior que zero.','warning');
+  const current=colorProductBalance(product,unit);if((kind==='CONSUMO'||kind==='AJUSTE-')&&qty>current){const proceed=await askConfirm('Saldo insuficiente',`O saldo de ${product} é ${current} ${unit}, mas a saída informada é ${qty} ${unit}. Deseja registrar mesmo assim?`,'Registrar mesmo assim');if(!proceed)return;}
+  const item={id:nextLocalId++,status:'ativo',date:$('cpDate').value,product,kind,qty,unit,lot:$('cpLot').value.trim(),supplier:$('cpSupplier').value.trim(),responsible:$('cpResponsible').value.trim(),note:$('cpNote').value.trim(),created_at:new Date().toISOString(),created_by:currentUser()};
+  db.colorProducts.push(item);recordAudit('PRODUTO DO COLORÍFICO',item.id,'CRIADO',null,item,'Registro criado');saveLocal();updateAll();e.target.reset();setToday('cpDate');syncColorProductUnit();showNotice('Produto do Colorífico registrado com sucesso.','success');
+});
+
 $('productLotForm').addEventListener('submit',async e=>{
   e.preventDefault();
   try{
@@ -1416,6 +1480,8 @@ async function boot(){
   setToday('dDate');
   setToday('cDate');
   setToday('pDate');
+  setToday('cpDate');
+  setToday('weeklyReference');
   setToday('eDate');
   setToday('lossDate');
   $('analysisMonth').value=today().slice(0,7);
