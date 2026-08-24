@@ -65,16 +65,17 @@ th{background:#f5f8fa;font-size:12px;white-space:nowrap}
 #loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#eef4f9,#dce9f3);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .login-box{background:#fff;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12);padding:28px;max-width:460px;width:100%}
 .login-box h2{margin-top:0;font-size:28px}.login-box input{padding:13px;margin:6px 0}.login-box .login-note{background:#eef5fb;border:1px solid #cddfed;border-radius:9px;padding:10px;font-size:12px;color:#34536d}.login-box .password-row{position:relative}.login-box .password-row input{padding-right:72px}.login-box .show-password{position:absolute;right:8px;top:13px;border:0;background:transparent;color:var(--primary);cursor:pointer;font-weight:700;padding:8px}
-.header-account{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:0 0 auto}
-#userBar{display:none;align-items:center;gap:7px;max-width:380px;background:rgba(255,255,255,.15);color:#fff;padding:5px 6px 5px 10px;border:1px solid rgba(255,255,255,.28);border-radius:99px;box-shadow:0 3px 12px rgba(0,0,0,.12);font-size:12px;white-space:nowrap}
-#userBar strong{max-width:105px;overflow:hidden;text-overflow:ellipsis}
-#userBar button{margin:0;padding:6px 10px;border-radius:99px;font-size:11px}
+.header-account{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:0 0 auto}
+#userBar{display:none;align-items:center;gap:4px;max-width:255px;background:rgba(255,255,255,.13);color:#fff;padding:3px 4px 3px 7px;border:1px solid rgba(255,255,255,.25);border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.1);font-size:11px;white-space:nowrap}
+#userBar strong{max-width:78px;overflow:hidden;text-overflow:ellipsis}
+#userRole{display:none}
+#userBar button{margin:0;padding:4px 7px;border-radius:99px;font-size:10px}
 #installApp{display:none;background:#fff;color:var(--primary2);padding:7px 12px;font-size:11px;box-shadow:0 3px 12px rgba(0,0,0,.12)}
 #loginMsg{min-height:18px;margin-bottom:0}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 @media(max-width:900px){.cards,.dashboard-cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.cards{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.container{padding:0 9px}}
-@media(max-width:560px){header{padding:14px 12px}.header{align-items:flex-start;gap:8px}h1{font-size:21px}.sub{font-size:11px}.header-account{gap:5px}#clock{font-size:10px!important}#userBar{max-width:245px;padding-left:8px;gap:5px;flex-wrap:wrap;justify-content:flex-end}#userBar strong{max-width:70px}#userBar button{padding:5px 8px}}
+@media(max-width:560px){header{padding:14px 12px}.header{align-items:flex-start;gap:8px}h1{font-size:21px}.sub{font-size:11px}.header-account{gap:4px}#clock{font-size:10px!important}#userBar{max-width:205px;padding:3px 4px 3px 6px;gap:3px;flex-wrap:nowrap;justify-content:flex-end}#userBar strong{max-width:58px}#userBar button{padding:4px 6px}}
 @media(max-width:560px){.sent-fields{grid-template-columns:1fr}}
 .fifo-first{border:2px solid var(--green);background:#edf9f2;border-radius:12px;padding:16px;margin-bottom:14px}.fifo-row{display:grid;grid-template-columns:70px 1fr 120px 120px 120px;gap:10px;align-items:center;padding:12px;border-bottom:1px solid var(--border)}.fifo-priority{font-size:22px;font-weight:900}.fifo-tag{display:inline-block;padding:5px 8px;border-radius:99px;background:#dff5e9;color:#11683d;font-size:11px;font-weight:800}.fifo-next{background:#f7f9fb;border-radius:10px;margin-bottom:8px}.fifo-muted{color:var(--muted);font-size:12px}@media(max-width:800px){.fifo-row{grid-template-columns:55px 1fr 1fr}.fifo-row>*:nth-child(n+4){grid-column:auto}}
 .hint{font-size:11px;color:#657482;margin-top:4px}.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.compare-card{border:1px solid var(--border);border-radius:12px;padding:16px;background:#f8fafc}.compare-card.today-card{border:2px solid var(--primary)}.compare-title{font-weight:800;font-size:16px;margin-bottom:12px}.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px}.metric span{display:block;font-size:11px;color:var(--muted)}.metric strong{display:block;font-size:20px;margin-top:4px}@media(max-width:700px){.compare-grid{grid-template-columns:1fr}.metric-row{grid-template-columns:1fr 1fr}}
