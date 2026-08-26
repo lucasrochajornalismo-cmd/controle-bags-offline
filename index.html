@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.26-edicao-cancelamento-reset-colorifico">
+<meta name="app-version" content="2026.08.26-ativacao-proprietario-offline">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -100,6 +100,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
     <p id="loginTitle">Entre para acessar o aplicativo offline.</p>
     <form id="loginForm">
       <input id="loginUser" autocomplete="username" placeholder="Usuário" minlength="3" required>
+      <div id="activationKeyField" class="password-row" style="display:none"><input id="activationKey" type="password" autocomplete="off" placeholder="Chave de autorização do proprietário"><button class="show-password" type="button" onclick="toggleActivationKey()">Mostrar</button></div>
       <div class="password-row"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Senha" minlength="6" required><button class="show-password" type="button" onclick="toggleLocalPassword()">Mostrar</button></div>
       <div id="confirmPasswordField" class="password-row" style="display:none"><input id="loginPasswordConfirm" type="password" autocomplete="new-password" placeholder="Confirme a senha" minlength="6"><button class="show-password" type="button" onclick="toggleLocalPassword()">Mostrar</button></div>
       <button id="loginButton" class="btn primary" style="width:100%;margin-top:10px" type="submit">Entrar</button>
@@ -346,6 +347,7 @@ const STORAGE_KEY = 'controle_estoque_movimentacoes_offline_v1';
 const AUTH_KEY = 'controle_estoque_offline_auth_v1';
 const USERS_KEY = 'controle_estoque_offline_users_v1';
 const SESSION_KEY = 'controle_estoque_offline_session_v1';
+const OWNER_ACTIVATION_HASH = '014c6d3a521f18b425d27fad33c79016e0aec64bcac5e3954663b73addb40d9b';
 
 const CONFIG = {
   Farinheira:{type:'Big Bag 1.300 kg',code:'1437'},
@@ -481,16 +483,20 @@ async function derivePassword(password,saltHex){
   const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:hexToBytes(saltHex),iterations:150000,hash:'SHA-256'},material,256);
   return bytesToHex(bits);
 }
+async function sha256Hex(value){return bytesToHex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(value))));}
+async function verifyOwnerActivationKey(value){return (await sha256Hex(String(value||'').trim().toLowerCase()))===OWNER_ACTIVATION_HASH;}
 
 function configureLoginScreen(){
   const hasAccount=getLocalUsers().length>0;
   $('loginScreen').style.display='flex';
   $('userBar').style.display='none';
-  $('loginTitle').textContent=hasAccount?'Entre para acessar o aplicativo offline.':'Primeiro acesso: crie o usuário e a senha deste aparelho.';
+  $('loginTitle').textContent=hasAccount?'Entre para acessar o aplicativo offline.':'Primeiro acesso: solicite ao proprietário a chave de autorização para ativar este aparelho.';
+  $('activationKeyField').style.display=hasAccount?'none':'flex';
+  $('activationKey').required=!hasAccount;
   $('confirmPasswordField').style.display=hasAccount?'none':'block';
   $('loginPasswordConfirm').required=!hasAccount;
   $('loginButton').textContent=hasAccount?'Entrar':'Criar acesso';
-  $('loginNote').textContent=hasAccount?'O acesso funciona somente neste aparelho e não utiliza internet.':'Guarde sua senha. Ela não pode ser recuperada pela internet, pois esta versão funciona localmente.';
+  $('loginNote').textContent=hasAccount?'O acesso funciona somente neste aparelho e não utiliza internet.':'A ativação depende da autorização do proprietário. Depois, crie e guarde a senha do Administrador deste aparelho.';
   $('loginMsg').textContent='';
 }
 
@@ -531,6 +537,7 @@ function toggleLocalPassword(){
   $('loginPassword').type=show?'text':'password';
   $('loginPasswordConfirm').type=show?'text':'password';
 }
+function toggleActivationKey(){const field=$('activationKey');field.type=field.type==='password'?'text':'password';}
 
 function currentUser(){return currentAccount()?.username||$('userName')?.textContent||'Usuário local';}
 function activeMovements(){return db.movements.filter(x=>x.status!=='cancelado');}
@@ -1602,12 +1609,17 @@ $('loginForm').addEventListener('submit',async event=>{
   try{
     if(!users.length){
       const confirmation=$('loginPasswordConfirm').value;
+      if(!await verifyOwnerActivationKey($('activationKey').value)){
+        loginFailures++;if(loginFailures>=5){loginBlockedUntil=Date.now()+30000;loginFailures=0;}
+        return void($('loginMsg').textContent='Chave de autorização inválida. Solicite a chave correta ao proprietário.');
+      }
       if(username.length<3)return void($('loginMsg').textContent='O usuário deve ter pelo menos 3 caracteres.');
       if(password.length<6)return void($('loginMsg').textContent='A senha deve ter pelo menos 6 caracteres.');
       if(password!==confirmation)return void($('loginMsg').textContent='As senhas não são iguais.');
       const salt=bytesToHex(crypto.getRandomValues(new Uint8Array(16)));
       const hash=await derivePassword(password,salt);
       const admin={username,salt,hash,role:'admin',active:true,createdAt:new Date().toISOString()};localStorage.setItem(AUTH_KEY,JSON.stringify(admin));saveLocalUsers([admin]);
+      loginFailures=0;
       sessionStorage.setItem(SESSION_KEY,username);
       loadLocal();
       showApp(admin);
