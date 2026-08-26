@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="app-version" content="2026.08.24-lotes-semana-insumos-colorifico-ultima-doca">
+<meta name="app-version" content="2026.08.26-saldos-alertas-insumos-colorifico">
 <meta name="theme-color" content="#0b3d66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -136,7 +136,6 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <button data-page="docas">🚚 Docas</button>
 <button data-page="estoque">📦 Entrada</button>
 <button data-page="consumo">🔄 Consumo</button>
-<button data-page="loteProduto">🏷️ Lote do Produto</button>
 <button data-page="produtosColorifico">🧂 Produtos do Colorífico</button>
 <button data-page="rastreio">🔎 Rastreabilidade</button>
 <button data-page="fifo">📦 FIFO — Ordem de Consumo</button>
@@ -148,6 +147,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <section id="dashboard" class="page active">
 <div id="dashboardOperationalStatus" class="status-grid"></div>
+<div id="dashboardIngredientAlerts"></div>
 <div class="panel weekly-lots"><h2>🗓️ Lotes usados nesta semana</h2><div class="info">Período de segunda-feira a domingo. Atualizado automaticamente pelos consumos.</div><div id="dashboardWeeklyLots"></div></div>
 <div class="panel"><h2>🔍 Divergências aguardando conferência</h2><div class="info">Confira cada diferença entre Docas e Entrada. Ao concluir, registre o resultado, o responsável e a justificativa.</div><div id="dashboardDivergences" class="divergence-list"></div></div>
 <div class="cards dashboard-cards">
@@ -252,27 +252,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </div>
 </section>
 
-<section id="loteProduto" class="page">
-<div class="panel"><h2>🏷️ Lote do Produto — preenchimento</h2>
-<div class="info">Use esta aba para registrar o <strong>lote do produto produzido</strong>, separado do lote do Big Bag. Os registros ficam salvos neste aparelho, entram na auditoria e podem ser consultados no histórico.</div>
-<form id="productLotForm"><div class="form-grid">
-<div class="field"><label>Data *</label><input type="date" id="pDate" required></div>
-<div class="field"><label>Setor *</label><select id="pSector" required><option>Farinheira</option><option>Colorífico</option></select></div>
-<div class="field"><label>Lote do produto *</label><input id="pLot" placeholder="Ex.: LP25081101" required></div>
-<div class="field"><label>Ordem de produção</label><input id="pOP" placeholder="Ex.: OP-00123"></div>
-<div class="field"><label>Responsável</label><input id="pResponsible"></div>
-<div class="field full"><label>Observação</label><textarea id="pNote" placeholder="Informações relacionadas ao lote do produto..."></textarea></div>
-</div><div class="actions"><button class="btn primary" type="submit">Salvar lote do produto</button><button class="btn light" type="reset">Limpar</button></div></form>
-</div>
-<div class="panel"><h2>📋 Histórico de lotes do produto</h2>
-<div class="toolbar"><input type="date" id="phStart"><input type="date" id="phEnd"><select id="phSector"><option value="">Todos os setores</option><option>Farinheira</option><option>Colorífico</option></select><input id="phLot" placeholder="Pesquisar lote do produto..."><button class="btn primary" type="button" onclick="renderProductLotHistory()">Filtrar</button><button class="btn light" type="button" onclick="exportProductLotCSV()">Exportar CSV</button></div>
-<div class="table-wrap"><table><thead><tr><th>Data</th><th>Setor</th><th>Lote do produto</th><th>Ordem de produção</th><th>Responsável</th><th>Observação</th><th>Status</th><th>Ações</th></tr></thead><tbody id="productLotBody"></tbody></table></div>
-</div>
-</section>
-
 <section id="produtosColorifico" class="page">
-<div class="panel"><h2>🏷️ Registrar lotes dos produtos do Colorífico</h2><div class="info">Cadastre somente os lotes de sal, óleo e extrato de urucum. O lote do fubá é puxado automaticamente das entradas de BAGS registradas para o setor Colorífico.</div><form id="colorProductForm"><div class="form-grid"><div class="field"><label>Data *</label><input type="date" id="cpDate" required></div><div class="field"><label>Produto *</label><select id="cpProduct" required><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select></div><div class="field"><label>Lote *</label><input id="cpLot" placeholder="Informe o lote do produto" required></div><div class="field"><label>Responsável</label><input id="cpResponsible"></div><div class="field full"><label>Observação</label><textarea id="cpNote"></textarea></div></div><div class="actions"><button class="btn success" type="submit">Registrar lote</button><button class="btn light" type="reset">Limpar</button></div></form></div>
-<div class="panel"><h2>📋 Lotes dos produtos</h2><div class="toolbar"><select id="cpFilter" onchange="renderColorProducts()"><option value="">Todos os produtos</option><option>Fubá</option><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select><button class="btn light" type="button" onclick="exportColorProductsCSV()">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Lote</th><th>Origem</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="colorProductBody"></tbody></table></div></div>
+<div class="panel"><h2>🏷️ Registrar entradas dos produtos do Colorífico</h2><div class="info">Cadastre o lote e a quantidade recebida de sal, óleo e extrato de urucum em kg. O fubá é calculado automaticamente pelas entradas de BAGS do Colorífico, considerando 1.250 kg por BAG.</div><form id="colorProductForm"><div class="form-grid"><div class="field"><label>Data *</label><input type="date" id="cpDate" required></div><div class="field"><label>Produto *</label><select id="cpProduct" required><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select></div><div class="field"><label>Lote *</label><input id="cpLot" placeholder="Informe o lote do produto" required></div><div class="field"><label>Quantidade recebida (kg) *</label><input type="number" id="cpQty" min="0.01" step="0.01" placeholder="Ex.: 500" required></div><div class="field"><label>Responsável</label><input id="cpResponsible"></div><div class="field full"><label>Observação</label><textarea id="cpNote"></textarea></div></div><div class="actions"><button class="btn success" type="submit">Registrar entrada</button><button class="btn light" type="reset">Limpar</button></div></form></div>
+<div class="panel"><h2>🚦 Saldos e alertas dos insumos</h2><div class="info">Os saldos são calculados pelas entradas menos o consumo proporcional das bateladas. Defina abaixo o nível mínimo de sal, óleo e extrato. O alerta aparecerá quando o saldo for igual ou menor ao valor informado.</div><div id="colorIngredientBalances" class="cards"></div><form id="colorThresholdForm"><div class="form-grid" style="margin-top:16px"><div class="field"><label>Nível mínimo de sal (kg)</label><input type="number" id="ctSal" min="0" step="0.01" placeholder="Ex.: 150"></div><div class="field"><label>Nível mínimo de óleo (kg)</label><input type="number" id="ctOleo" min="0" step="0.01" placeholder="Ex.: 100"></div><div class="field"><label>Nível mínimo de extrato (kg)</label><input type="number" id="ctExtrato" min="0" step="0.01" placeholder="Ex.: 80"></div></div><div class="actions"><button class="btn primary" type="submit">Salvar níveis mínimos</button></div></form><div id="colorIngredientWarnings"></div></div>
+<div class="panel"><h2>⚖️ Consumo proporcional por bateladas</h2><div class="info">Informe quantas bateladas de 750 kg foram produzidas no dia. O aplicativo calculará automaticamente o consumo de fubá (92,6%), óleo (2%), sal (3%) e extrato de urucum (2,4%).</div><form id="colorBatchForm"><div class="form-grid"><div class="field"><label>Data da produção *</label><input type="date" id="cbDate" required></div><div class="field"><label>Quantidade de bateladas produzidas *</label><input type="number" id="cbBatches" min="1" step="1" inputmode="numeric" placeholder="Ex.: 4" oninput="calculateColorBatch()" required></div><div class="field"><label>Responsável</label><input id="cbResponsible"></div><div class="field full"><label>Observação</label><textarea id="cbNote" placeholder="Informação opcional sobre a produção do dia"></textarea></div></div><div class="cards" style="margin-top:16px"><div class="card stock"><div class="label">Produção total</div><div id="cbTotal" class="value blue">0 kg</div></div><div class="card stock"><div class="label">Fubá · 92,6%</div><div id="cbFuba" class="value green">0 kg</div></div><div class="card stock"><div class="label">Óleo · 2%</div><div id="cbOleo" class="value yellow">0 kg</div></div><div class="card stock"><div class="label">Sal · 3%</div><div id="cbSal" class="value blue">0 kg</div></div><div class="card stock"><div class="label">Extrato · 2,4%</div><div id="cbExtrato" class="value red">0 kg</div></div></div><div class="actions"><button class="btn success" type="submit">Registrar consumo do dia</button><button class="btn light" type="reset">Limpar</button></div></form></div>
+<div class="panel"><h2>📊 Histórico de consumo por bateladas</h2><div class="toolbar"><button class="btn light" type="button" onclick="exportColorBatchCSV()">Exportar consumo em CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Bateladas</th><th>Produção total</th><th>Fubá</th><th>Óleo</th><th>Sal</th><th>Extrato</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="colorBatchBody"></tbody></table></div></div>
+<div class="panel"><h2>📋 Lotes e entradas dos produtos</h2><div class="toolbar"><select id="cpFilter" onchange="renderColorProducts()"><option value="">Todos os produtos</option><option>Fubá</option><option>Sal</option><option>Óleo</option><option>Extrato de urucum</option></select><button class="btn light" type="button" onclick="exportColorProductsCSV()">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Lote</th><th>Quantidade</th><th>Origem</th><th>Responsável</th><th>Observação</th></tr></thead><tbody id="colorProductBody"></tbody></table></div></div>
 </section>
 
 <section id="rastreio" class="page">
@@ -367,7 +352,7 @@ const CONFIG = {
   Colorífico:{type:'Big Bag 1.250 kg',code:'1436'}
 };
 
-let db = {movements:[],productLots:[],colorProducts:[],auditLog:[]};
+let db = {movements:[],productLots:[],colorProducts:[],colorSettings:{salMin:0,oleoMin:0,extratoMin:0},auditLog:[]};
 let docks = {records:[]};
 let tesseractLoadPromise = null;
 let nextLocalId = 1;
@@ -565,7 +550,7 @@ function saveLocal(){
 function loadLocal(){
   try{
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
-    if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db={...saved.db,colorProducts:Array.isArray(saved.db.colorProducts)?saved.db.colorProducts:[],auditLog:Array.isArray(saved.db.auditLog)?saved.db.auditLog:[]};
+    if(saved?.db&&Array.isArray(saved.db.movements)&&Array.isArray(saved.db.productLots)) db={...saved.db,colorProducts:Array.isArray(saved.db.colorProducts)?saved.db.colorProducts:[],colorSettings:{salMin:0,oleoMin:0,extratoMin:0,...(saved.db.colorSettings||{})},auditLog:Array.isArray(saved.db.auditLog)?saved.db.auditLog:[]};
     if(saved?.docks&&Array.isArray(saved.docks.records)) docks=saved.docks;
     db.movements=db.movements.map(x=>({...x,status:x.status||'ativo'}));
     db.productLots=db.productLots.map(x=>({...x,status:x.status||'ativo'}));
@@ -758,6 +743,7 @@ function updateDashboard(){
   const pending=pendingDivergences().length;
   const low=[['Farinheira',f],['Colorífico',c]].filter(([,qty])=>qty<=5);
   $('dashboardOperationalStatus').innerHTML=`<div class="status-card ${pending?'warning':'ok'}"><span>Divergências pendentes</span><strong>${pending}</strong><small>${pending?'Revisar justificativas e conferências':'Nenhuma pendência registrada'}</small></div><div class="status-card ${f<=5?'danger':'ok'}"><span>Estoque Farinheira</span><strong>${f} BAGS</strong><small>${f<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div><div class="status-card ${c<=5?'danger':'ok'}"><span>Estoque Colorífico</span><strong>${c} BAGS</strong><small>${c<=5?'ALERTA: estoque baixo':'Nível operacional'}</small></div>`;
+  renderColorIngredientStatus();
   renderDashboardDivergences();
   renderWeeklyLots(true);
 
@@ -813,12 +799,62 @@ function exportWeeklyLotsExcel(){const x=weeklyExportData(),body=x.rows.map(r=>'
 function printWeeklyLots(){const x=weeklyExportData(),popup=window.open('','_blank','width=1000,height=750');if(!popup)return showNotice('Permita pop-ups para abrir a impressão.','warning');const sections=['Farinheira','Colorífico'].map(sector=>'<h2>'+sector+'</h2><table><thead><tr><th>Lote</th><th>Primeiro consumo</th><th>Último consumo</th><th>Consumido</th></tr></thead><tbody>'+((x.rows.filter(r=>r.sector===sector).map(r=>'<tr><td>'+esc(r.lot)+'</td><td>'+fmt(r.first)+'</td><td>'+fmt(r.last)+'</td><td>'+r.qty+' BAGS</td></tr>').join(''))||'<tr><td colspan="4">Nenhum lote no período.</td></tr>')+'</tbody></table>').join('');popup.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lotes utilizados</title><style>@page{size:landscape;margin:12mm}body{font-family:Arial;color:#172334}h1{background:#0b3d66;color:#fff;padding:12px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #ccd6df;padding:8px;text-align:left}th{background:#eaf3fb}</style></head><body><h1>Lotes utilizados — '+fmt(x.period.start)+' a '+fmt(x.period.end)+'</h1>'+sections+'</body></html>');popup.document.close();popup.focus();setTimeout(()=>popup.print(),300);}
 
 function renderColorProducts(){
-  const filter=$('cpFilter').value,manual=activeColorProducts().filter(x=>x.kind==='LOTE'&&(!filter||x.product===filter)).map(x=>({date:x.date,product:x.product,lot:x.lot,origin:'Cadastro nesta aba',responsible:x.responsible,note:x.note,id:x.id}));
-  const fuba=activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico'&&(!filter||filter==='Fubá')).map(m=>({date:m.date,product:'Fubá',lot:m.lot,origin:'Entrada do Colorífico',responsible:m.responsible,note:m.note,id:m.id}));
+  const filter=$('cpFilter').value,manual=activeColorProducts().filter(x=>x.kind==='LOTE'&&(!filter||x.product===filter)).map(x=>({date:x.date,product:x.product,lot:x.lot,qtyKg:Number(x.qty||0),origin:'Entrada registrada nesta aba',responsible:x.responsible,note:x.note,id:x.id}));
+  const fuba=activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico'&&(!filter||filter==='Fubá')).map(m=>({date:m.date,product:'Fubá',lot:m.lot,qtyKg:Number(m.qty||0)*1250,origin:'Entrada do Colorífico',responsible:m.responsible,note:m.note,id:m.id}));
   const rows=[...manual,...fuba].sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id));
-  $('colorProductBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${fmt(x.date)}</td><td><strong>${esc(x.product)}</strong></td><td><strong>${esc(x.lot)}</strong></td><td>${esc(x.origin)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">Nenhum lote registrado.</td></tr>';
+  $('colorProductBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${fmt(x.date)}</td><td><strong>${esc(x.product)}</strong></td><td><strong>${esc(x.lot)}</strong></td><td>${formatKg(x.qtyKg)}</td><td>${esc(x.origin)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">Nenhuma entrada registrada.</td></tr>';
 }
-function exportColorProductsCSV(){const filter=$('cpFilter').value,manual=activeColorProducts().filter(x=>x.kind==='LOTE'&&(!filter||x.product===filter)).map(x=>[x.date,x.product,x.lot,'Cadastro nesta aba',x.responsible,x.note]),fuba=activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico'&&(!filter||filter==='Fubá')).map(m=>[m.date,'Fubá',m.lot,'Entrada do Colorífico',m.responsible,m.note]),rows=[['Data','Produto','Lote','Origem','Responsável','Observação'],...manual,...fuba],csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`lotes_produtos_colorifico_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);}
+function exportColorProductsCSV(){const filter=$('cpFilter').value,manual=activeColorProducts().filter(x=>x.kind==='LOTE'&&(!filter||x.product===filter)).map(x=>[x.date,x.product,x.lot,Number(x.qty||0),'Entrada registrada nesta aba',x.responsible,x.note]),fuba=activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico'&&(!filter||filter==='Fubá')).map(m=>[m.date,'Fubá',m.lot,Number(m.qty||0)*1250,'Entrada do Colorífico',m.responsible,m.note]),rows=[['Data','Produto','Lote','Quantidade (kg)','Origem','Responsável','Observação'],...manual,...fuba],csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`entradas_produtos_colorifico_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);}
+
+const COLOR_BATCH_KG=750;
+const COLOR_BATCH_PERCENT={fuba:0.926,oleo:0.02,sal:0.03,extrato:0.024};
+function colorBatchValues(batches){
+  const count=Number(batches)||0,total=count*COLOR_BATCH_KG;
+  return {batches:count,total,fuba:total*COLOR_BATCH_PERCENT.fuba,oleo:total*COLOR_BATCH_PERCENT.oleo,sal:total*COLOR_BATCH_PERCENT.sal,extrato:total*COLOR_BATCH_PERCENT.extrato};
+}
+function formatKg(value){return Number(value||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:2})+' kg';}
+function colorIngredientBalances(){
+  const batches=activeColorBatches(),consumed={fuba:0,oleo:0,sal:0,extrato:0};
+  batches.forEach(x=>{consumed.fuba+=Number(x.fubaKg||0);consumed.oleo+=Number(x.oleoKg||0);consumed.sal+=Number(x.salKg||0);consumed.extrato+=Number(x.extratoKg||0);});
+  const entered={
+    fuba:activeMovements().filter(m=>m.kind==='ENTRADA'&&m.sector==='Colorífico').reduce((sum,m)=>sum+Number(m.qty||0)*1250,0),
+    oleo:activeColorProducts().filter(x=>x.kind==='LOTE'&&x.product==='Óleo').reduce((sum,x)=>sum+Number(x.qty||0),0),
+    sal:activeColorProducts().filter(x=>x.kind==='LOTE'&&x.product==='Sal').reduce((sum,x)=>sum+Number(x.qty||0),0),
+    extrato:activeColorProducts().filter(x=>x.kind==='LOTE'&&x.product==='Extrato de urucum').reduce((sum,x)=>sum+Number(x.qty||0),0)
+  };
+  return {fuba:entered.fuba-consumed.fuba,oleo:entered.oleo-consumed.oleo,sal:entered.sal-consumed.sal,extrato:entered.extrato-consumed.extrato,entered,consumed};
+}
+function colorIngredientLowItems(){
+  const b=colorIngredientBalances(),s=db.colorSettings||{},items=[];
+  if(Number(s.salMin)>0&&b.sal<=Number(s.salMin))items.push({name:'Sal',balance:b.sal,min:Number(s.salMin)});
+  if(Number(s.oleoMin)>0&&b.oleo<=Number(s.oleoMin))items.push({name:'Óleo',balance:b.oleo,min:Number(s.oleoMin)});
+  if(Number(s.extratoMin)>0&&b.extrato<=Number(s.extratoMin))items.push({name:'Extrato de urucum',balance:b.extrato,min:Number(s.extratoMin)});
+  return items;
+}
+function renderColorIngredientStatus(){
+  const b=colorIngredientBalances(),s=db.colorSettings||{};
+  if($('colorIngredientBalances'))$('colorIngredientBalances').innerHTML=[['Fubá',b.fuba,0],['Óleo',b.oleo,Number(s.oleoMin||0)],['Sal',b.sal,Number(s.salMin||0)],['Extrato',b.extrato,Number(s.extratoMin||0)]].map(([name,balance,min])=>`<div class="card ${min>0&&balance<=min?'consumed':'stock'}"><div class="label">Saldo · ${name}</div><div class="value ${min>0&&balance<=min?'red':'green'}">${formatKg(balance)}</div><div class="small">${min>0?'Mínimo: '+formatKg(min):name==='Fubá'?'Entrada em BAGS × 1.250 kg menos consumo':'Limite ainda não definido'}</div></div>`).join('');
+  if($('ctSal')){$('ctSal').value=Number(s.salMin||0)||'';$('ctOleo').value=Number(s.oleoMin||0)||'';$('ctExtrato').value=Number(s.extratoMin||0)||'';}
+  const lows=colorIngredientLowItems();
+  if($('colorIngredientWarnings'))$('colorIngredientWarnings').innerHTML=lows.length?`<div class="alert" style="margin-top:14px"><strong>⚠️ Insumos em nível baixo:</strong> ${lows.map(x=>`${esc(x.name)} — saldo ${formatKg(x.balance)} (mínimo ${formatKg(x.min)})`).join(' · ')}</div>`:'<div class="info" style="margin-top:14px">✓ Nenhum insumo com nível mínimo configurado está em alerta.</div>';
+  if($('dashboardIngredientAlerts'))$('dashboardIngredientAlerts').innerHTML=lows.length?`<div class="alert"><strong>⚠️ Alerta de insumos do Colorífico:</strong> ${lows.map(x=>`${esc(x.name)}: ${formatKg(x.balance)}`).join(' · ')}</div>`:'';
+}
+function calculateColorBatch(){
+  const values=colorBatchValues($('cbBatches')?.value);
+  if(!$('cbTotal'))return values;
+  $('cbTotal').textContent=formatKg(values.total);$('cbFuba').textContent=formatKg(values.fuba);$('cbOleo').textContent=formatKg(values.oleo);$('cbSal').textContent=formatKg(values.sal);$('cbExtrato').textContent=formatKg(values.extrato);
+  return values;
+}
+function activeColorBatches(){return activeColorProducts().filter(x=>x.kind==='CONSUMO_BATELADA');}
+function renderColorBatches(){
+  if(!$('colorBatchBody'))return;
+  const rows=activeColorBatches().sort((a,b)=>String(b.date).localeCompare(String(a.date))||Number(b.id)-Number(a.id));
+  $('colorBatchBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${fmt(x.date)}</td><td><strong>${Number(x.batches)}</strong></td><td>${formatKg(x.totalKg)}</td><td>${formatKg(x.fubaKg)}</td><td>${formatKg(x.oleoKg)}</td><td>${formatKg(x.salKg)}</td><td>${formatKg(x.extratoKg)}</td><td>${esc(x.responsible)}</td><td>${esc(x.note)}</td></tr>`).join(''):'<tr><td colspan="9" class="empty">Nenhum consumo por bateladas registrado.</td></tr>';
+}
+function exportColorBatchCSV(){
+  const items=activeColorBatches().sort((a,b)=>String(a.date).localeCompare(String(b.date))),rows=[['Data','Bateladas','Produção total (kg)','Fubá 92,6% (kg)','Óleo 2% (kg)','Sal 3% (kg)','Extrato 2,4% (kg)','Responsável','Observação'],...items.map(x=>[x.date,x.batches,x.totalKg,x.fubaKg,x.oleoKg,x.salKg,x.extratoKg,x.responsible,x.note])];
+  const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n'),blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`consumo_colorifico_bateladas_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
+}
 
 
 function previousDate(){const d=new Date();d.setDate(d.getDate()-1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -1042,8 +1078,7 @@ function renderPage(page){
     case 'docas':renderDockCards();renderDockHistory();refreshFormComparisons();break;
     case 'estoque':renderStock();refreshFormComparisons();break;
     case 'consumo':syncConsumption();break;
-    case 'loteProduto':renderProductLotHistory();break;
-    case 'produtosColorifico':renderColorProducts();break;
+    case 'produtosColorifico':renderColorProducts();renderColorBatches();renderColorIngredientStatus();calculateColorBatch();break;
     case 'rastreio':renderTrace();break;
     case 'fifo':renderFIFO();break;
     case 'perdas':renderLossHistory();renderFlotamilBalance();break;
@@ -1291,7 +1326,7 @@ function exportCSV(){
 }
 
 function downloadBackup(prefix='backup_rastreabilidade_bags'){
-  const backup={version:9,exported_at:new Date().toISOString(),movements:db.movements,productLots:db.productLots,colorProducts:db.colorProducts,docks:docks.records,auditLog:db.auditLog};
+  const backup={version:10,exported_at:new Date().toISOString(),movements:db.movements,productLots:db.productLots,colorProducts:db.colorProducts,colorSettings:db.colorSettings,docks:docks.records,auditLog:db.auditLog};
   const b=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download=`${prefix}_${today()}.json`;a.click();
   localStorage.setItem('controle_estoque_ultimo_backup',new Date().toISOString());renderBackupStatus();
@@ -1315,6 +1350,7 @@ async function restoreBackup(ev){
     db.movements=x.movements.map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     db.productLots=(x.productLots||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     db.colorProducts=(x.colorProducts||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
+    db.colorSettings={salMin:0,oleoMin:0,extratoMin:0,...(x.colorSettings||{})};
     docks.records=(x.docks||[]).map(m=>({...m,id:nextLocalId++,status:m.status||'ativo'}));
     db.auditLog=(x.auditLog||[]).map(a=>({...a,id:nextLocalId++}));
     recordAudit('SISTEMA',0,'BACKUP RESTAURADO',null,{registros:db.movements.length,docas:docks.records.length},'Restauração confirmada pelo usuário');
@@ -1466,26 +1502,33 @@ $('lossForm').addEventListener('reset',()=>setTimeout(()=>{syncLossType();render
 $('colorProductForm').addEventListener('submit',async e=>{
   e.preventDefault();
   if(!validateRequired(e.target))return;
-  const item={id:nextLocalId++,status:'ativo',date:$('cpDate').value,product:$('cpProduct').value,kind:'LOTE',qty:0,unit:'',lot:$('cpLot').value.trim(),supplier:'',responsible:$('cpResponsible').value.trim(),note:$('cpNote').value.trim(),created_at:new Date().toISOString(),created_by:currentUser()};
-  if(!item.date||!item.lot)return showNotice('Informe a data e o lote do produto.','warning');
-  db.colorProducts.push(item);recordAudit('LOTE DE PRODUTO DO COLORÍFICO',item.id,'CRIADO',null,item,'Lote registrado');saveLocal();updateAll();e.target.reset();setToday('cpDate');showNotice('Lote do produto registrado com sucesso.','success');
+  const qty=Number($('cpQty').value),item={id:nextLocalId++,status:'ativo',date:$('cpDate').value,product:$('cpProduct').value,kind:'LOTE',qty,unit:'kg',lot:$('cpLot').value.trim(),supplier:'',responsible:$('cpResponsible').value.trim(),note:$('cpNote').value.trim(),created_at:new Date().toISOString(),created_by:currentUser()};
+  if(!item.date||!item.lot||!Number.isFinite(qty)||qty<=0)return showNotice('Informe a data, o lote e uma quantidade recebida maior que zero.','warning');
+  db.colorProducts.push(item);recordAudit('ENTRADA DE INSUMO DO COLORÍFICO',item.id,'CRIADO',null,item,'Entrada em kg registrada');saveLocal();updateAll();e.target.reset();setToday('cpDate');showNotice(`Entrada de ${formatKg(qty)} de ${item.product} registrada com sucesso.`,'success');
 });
 
-$('productLotForm').addEventListener('submit',async e=>{
+$('colorThresholdForm').addEventListener('submit',e=>{
   e.preventDefault();
-  try{
-    if(!validateRequired(e.target))return;
-    const x={date:$('pDate').value,sector:$('pSector').value,lot:$('pLot').value.trim(),op:$('pOP').value.trim(),responsible:$('pResponsible').value.trim(),note:$('pNote').value.trim()};
-    if(!x.date||!x.lot)return showNotice('Informe a data e o lote do produto.');
-    await addProductLot(x);e.target.reset();setToday('pDate');showNotice('Lote do produto registrado com sucesso.');
-  }catch(err){showNotice('Erro ao registrar lote: '+friendlyError(err));}
+  const values={salMin:Number($('ctSal').value||0),oleoMin:Number($('ctOleo').value||0),extratoMin:Number($('ctExtrato').value||0)};
+  if(Object.values(values).some(x=>!Number.isFinite(x)||x<0))return showNotice('Os níveis mínimos devem ser números iguais ou maiores que zero.','warning');
+  const before={...(db.colorSettings||{})};db.colorSettings=values;recordAudit('NÍVEIS MÍNIMOS DO COLORÍFICO',0,'ATUALIZADO',before,values,'Valores de referência atualizados');saveLocal();updateAll();showNotice('Níveis mínimos dos insumos atualizados.','success');
 });
+
+$('colorBatchForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  if(!validateRequired(e.target))return;
+  const batches=Number($('cbBatches').value);
+  if(!Number.isInteger(batches)||batches<1)return showNotice('Informe uma quantidade inteira de bateladas, igual ou maior que 1.','warning');
+  const values=colorBatchValues(batches),item={id:nextLocalId++,status:'ativo',kind:'CONSUMO_BATELADA',date:$('cbDate').value,batches,totalKg:values.total,fubaKg:values.fuba,oleoKg:values.oleo,salKg:values.sal,extratoKg:values.extrato,responsible:$('cbResponsible').value.trim(),note:$('cbNote').value.trim(),created_at:new Date().toISOString(),created_by:currentUser()};
+  db.colorProducts.push(item);recordAudit('CONSUMO DO COLORÍFICO',item.id,'CRIADO',null,item,`${batches} batelada(s) produzida(s)`);saveLocal();updateAll();e.target.reset();setToday('cbDate');calculateColorBatch();showNotice(`Consumo de ${batches} batelada(s) registrado. Produção total: ${formatKg(values.total)}.`,'success');
+});
+$('colorBatchForm').addEventListener('reset',()=>setTimeout(calculateColorBatch,0));
 
 async function boot(){
   setToday('dDate');
   setToday('cDate');
-  setToday('pDate');
   setToday('cpDate');
+  setToday('cbDate');
   const initialWeek=weekRange(today());$('weeklyStart').value=initialWeek.start;$('weeklyEnd').value=initialWeek.end;
   setToday('eDate');
   setToday('lossDate');
